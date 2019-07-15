@@ -1,6 +1,7 @@
 import asyncio
 import json
 import logging
+import re
 from datetime import datetime, timezone
 from urllib.parse import urlparse
 
@@ -87,12 +88,12 @@ class SteamHttpClient:
         text = await response.text()
 
         def parse(text):
-            html = HTML(html=text)
             # find login
-            pulldown = html.find("#account_pulldown", first=True)
-            if not pulldown:
+            start = re.search('data-miniprofile="(\d+)">', text).end()
+            if start == -1:
                 raise UnknownBackendResponse()
-            login = pulldown.text
+            end = text.find('</a>', start)
+            login = text[start:end]
 
             # find steam id
             variable = 'g_steamID = "'
