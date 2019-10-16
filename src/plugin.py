@@ -84,6 +84,7 @@ class SteamPlugin(Plugin):
         self._achievements_cache = Cache()
         self._achievements_cache_updated = False
         self._achievements_semaphore = asyncio.Semaphore(20)
+        self._tick_count = 0
 
         self.create_task(self._update_local_games(), "Update local games")
 
@@ -272,8 +273,10 @@ class SteamPlugin(Plugin):
         ]
 
     def tick(self):
-        if self._regmon.is_updated():
-            self.create_task(self._update_local_games(), "Update local games")
+        self._tick_count += 1
+        if self._tick_count % 60 == 0:
+            if self._regmon.is_updated():
+                self.create_task(self._update_local_games(), "Update local games")
 
     async def _update_local_games(self):
         loop = asyncio.get_running_loop()
