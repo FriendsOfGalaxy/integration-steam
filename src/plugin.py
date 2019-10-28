@@ -216,7 +216,7 @@ class SteamPlugin(Plugin):
                 for game in othergames:
                     hasit = any(f == str(game["appid"]) for f in owngames) or any(f.game_id == str(game["appid"]) for f in newgames)
                     if not hasit:
-                        self.otherGames.append(str(game["appid"]))
+                        self._ither_games.append(str(game["appid"]))
                         newgame = Game(
                             str(game["appid"]),
                             game["name"],
