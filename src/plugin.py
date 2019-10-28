@@ -269,7 +269,7 @@ class SteamPlugin(Plugin):
             logging.debug(vdfFile)
             data = load_vdf(vdfFile)
             timedata = data["UserLocalConfigStore"]["Software"]["Valve"]["Steam"]["Apps"]
-            for gameid in self.otherGames:
+            for gameid in self._other_games:
                 playTime = 0
                 lastPlayed = 86400
                 if gameid in timedata:
