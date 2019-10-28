@@ -1,6 +1,7 @@
 import asyncio
 import json
 import logging
+import os
 import platform
 import random
 import re
@@ -22,7 +23,7 @@ from galaxy.api.jsonrpc import InvalidParams
 
 import achievements_cache
 from backend import SteamHttpClient, AuthenticatedHttpClient
-from client import local_games_list, get_state_changes, get_client_executable
+from client import local_games_list, get_state_changes, get_client_executable, load_vdf, get_configuration_folder
 from registry_monitor import get_steam_registry_monitor
 from uri_scheme_handler import is_uri_handler_installed
 from version import __version__
@@ -76,6 +77,9 @@ def parse_stored_cookies(cookies):
 class SteamPlugin(Plugin):
     def __init__(self, reader, writer, token):
         super().__init__(Platform.Steam, __version__, reader, writer, token)
+        self._own_games: List = []
+        self._other_games: List[str] = []
+        self._own_friends: List[FriendInfo] = []
         self._steam_id = None
         self._regmon = get_steam_registry_monitor()
         self._local_games_cache: List[LocalGame] = []
@@ -191,7 +195,39 @@ class SteamPlugin(Plugin):
             logging.exception("Can not parse backend response")
             raise UnknownBackendResponse()
 
+
+        self._own_games = games
+        
+        game_ids = list(map(lambda x: x.game_id, owned_games))
+        other_games = await self.get_steam_sharing_games(game_ids)
+        for i in other_games:
+            owned_games.append(i)
+
         return owned_games
+
+    async def get_steam_sharing_games(self,owngames: List[str]) -> List[Game]:
+        profiles = list(filter(lambda x: "!" in x.user_name, self._own_friends))
+        newgames: List[Game] = []
+        self._other_games = []
+        for i in profiles:
+            othergames = await self._client.get_games(i.user_id)
+
+            try:
+                for game in othergames:
+                    hasit = any(f == str(game["appid"]) for f in owngames) or any(f.game_id == str(game["appid"]) for f in newgames)
+                    if not hasit:
+                        self.otherGames.append(str(game["appid"]))
+                        newgame = Game(
+                            str(game["appid"]),
+                            game["name"],
+                            [],
+                            LicenseInfo(LicenseType.OtherUserLicense, i.user_name)
+                        )
+                        newgames.append(newgame)
+            except (KeyError, ValueError):
+                logging.exception("Can not parse backend response")
+                raise UnknownBackendResponse()
+        return newgames
 
     async def prepare_game_times_context(self, game_ids: List[str]) -> Any:
         if self._steam_id is None:
@@ -202,11 +238,11 @@ class SteamPlugin(Plugin):
     async def get_game_time(self, game_id: str, context: Any) -> GameTime:
         game_time = context.get(game_id)
         if game_time is None:
-            raise UnknownError("Game {} not owned".format(game_id))
+            logging.exception("Game {} not owned".format(game_id))
         return game_time
 
     async def _get_game_times_dict(self) -> Dict[str, GameTime]:
-        games = await self._client.get_games(self._steam_id)
+        games = self._own_games
 
         game_times = {}
 
@@ -225,6 +261,26 @@ class SteamPlugin(Plugin):
         except (KeyError, ValueError):
             logging.exception("Can not parse backend response")
             raise UnknownBackendResponse()
+
+        try:
+            steamFolder = get_configuration_folder()
+            accountId = str( int(self._steam_id) - 76561197960265728  )
+            vdfFile = os.path.join(steamFolder, "userdata", accountId, "config", "localconfig.vdf")
+            logging.debug(vdfFile)
+            data = load_vdf(vdfFile)
+            timedata = data["UserLocalConfigStore"]["Software"]["Valve"]["Steam"]["Apps"]
+            for gameid in self.otherGames:
+                playTime = 0
+                lastPlayed = 86400
+                if gameid in timedata:
+                    item = timedata[gameid]
+                    if 'playtime' in item:
+                        playTime = item["playTime"]
+                    if 'lastplayed' in item:
+                        lastPlayed = item["LastPlayed"]
+                game_times[gameid] = GameTime(gameid, playTime, lastPlayed)
+        except (KeyError, ValueError):
+            logging.exception("Can not parse friend games")
 
         return game_times
 
@@ -266,10 +322,12 @@ class SteamPlugin(Plugin):
         if self._steam_id is None:
             raise AuthenticationRequired()
 
-        return [
+        self._own_friends = [
             FriendInfo(user_id=user_id, user_name=user_name)
             for user_id, user_name in (await self._client.get_friends(self._steam_id)).items()
         ]
+        
+        return self._own_friends
 
     def tick(self):
         if self._regmon.is_updated():
