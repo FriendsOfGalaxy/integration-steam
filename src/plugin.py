@@ -82,13 +82,10 @@ class SteamPlugin(Plugin):
         super().__init__(Platform.Steam, __version__, reader, writer, token)
         self._steam_id = None
         self._miniprofile_id = None
-<<<<<<< HEAD
         self._own_games: List = []
         self._family_sharing_games: List[str] = []
         self._own_friends: List[FriendInfo] = []
 
-=======
->>>>>>> 5b424849d4caad5186d8ea09e5393b236799f8fa
         self._level_db_parser = None
         self._regmon = get_steam_registry_monitor()
         self._local_games_cache: List[LocalGame] = []
