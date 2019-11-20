@@ -3,9 +3,10 @@ import json
 import logging
 from datetime import datetime, timezone
 from urllib.parse import urlparse
+import vdf
 
 import aiohttp
-from galaxy.api.errors import AccessDenied, AuthenticationRequired, UnknownBackendResponse
+from galaxy.api.errors import AccessDenied, AuthenticationRequired, UnknownBackendResponse, UnknownError, BackendError
 from galaxy.http import HttpClient
 from requests_html import HTML
 from yarl import URL
@@ -93,7 +94,7 @@ class SteamHttpClient:
     async def get_profile_data(self, url):
         text = await get_text(await self._http_client.get(url, allow_redirects=True))
 
-        def parse(text):
+        def parse(text, user_profile_url):
             html = HTML(html=text)
             # find persona_name
             div = html.find("div.profile_header_centered_persona", first=True)
@@ -116,10 +117,20 @@ class SteamHttpClient:
             end = text.find('";', start)
             steam_id = text[start:end]
 
-            return steam_id, persona_name
+            # find miniprofile id
+            profile_link = f'{user_profile_url}" data-miniprofile="'
+            start = text.find(profile_link)
+            if start == -1:
+                logging.error("Can not parse backend response - no steam profile href")
+                raise UnknownBackendResponse()
+            start += len(profile_link)
+            end = text.find('">', start)
+            miniprofile_id = text[start:end]
+
+            return steam_id, miniprofile_id, persona_name
 
         loop = asyncio.get_running_loop()
-        return await loop.run_in_executor(None, parse, text)
+        return await loop.run_in_executor(None, parse, text, url)
 
     async def get_games(self, steam_id):
         url = "https://steamcommunity.com/profiles/{}/games/?tab=all".format(steam_id)
@@ -235,3 +246,64 @@ class SteamHttpClient:
                 )
             )
         )
+
+    async def get_game_library_settings_file(self):
+        remotestorageapp = await self._http_client.get(
+            "https://store.steampowered.com/account/remotestorageapp/?appid=7")
+        remotestorageapp_text = await remotestorageapp.text(encoding="utf-8", errors="replace")
+        start_index = remotestorageapp_text.find("sharedconfig.vdf")
+        if start_index == -1:
+            # Fresh user, has no sharedconfig
+            return []
+        url_start = remotestorageapp_text.find('href="', start_index)
+        url_end = remotestorageapp_text.find('">', url_start)
+        url = remotestorageapp_text[int(url_start) + len('href="'): int(url_end)]
+        sharedconfig = vdf.loads(await get_text(await self._http_client.get(url, allow_redirects=True)))
+        logging.info(f"Sharedconfig file contents {sharedconfig}")
+        try:
+            apps = sharedconfig["UserRoamingConfigStore"]["Software"]["Valve"]["Steam"]["Apps"]
+        except KeyError:
+            logging.warning('Cant read users sharedconfig, assuming no tags set')
+            return []
+        game_settings = []
+        for app in apps:
+            tags = []
+            if "tags" in apps[app]:
+                for tag in apps[app]["tags"]:
+                    tags.append(apps[app]['tags'][tag])
+            hidden = True if "Hidden" in apps[app] and apps[app]['Hidden'] == '1' else False
+            game_settings.append({'game_id': app, 'tags': tags, 'hidden': hidden})
+        return game_settings
+
+    async def get_store_popular_tags(self):
+        popular_tags = await self._http_client.get("https://store.steampowered.com/tagdata/populartags/english")
+        popular_tags = await popular_tags.json()
+        return popular_tags
+
+    async def get_game_tags(self, appid):
+        try:
+            game_info = await self._http_client.get(f"https://store.steampowered.com/broadcast/ajaxgetappinfoforcap?appid={appid}&l=english")
+            game_info = await game_info.json()
+        except (UnknownError, BackendError):
+            logging.info(f"No store tags defined for {appid}")
+            return {}
+        tags = {}
+
+        if "tags" in game_info:
+            for tag in game_info["tags"]:
+                if "browseable" in tag and tag["browseable"]:
+                    tags[tag["tagid"]] = tag["name"]
+
+        return tags
+
+    async def get_game_categories(self, appid):
+        try:
+            game_info = await self._http_client.get(f"https://store.steampowered.com/api/appdetails/?appids={appid}&filters=categories&l=english")
+            game_info = await game_info.json()
+        except (UnknownError, BackendError):
+            logging.info(f"No details defined for {appid}")
+            return []
+        if str(appid) in game_info and 'data' in game_info[str(appid)] and 'categories' in game_info[str(appid)]['data']:
+            return game_info[str(appid)]['data']['categories']
+        return []
+

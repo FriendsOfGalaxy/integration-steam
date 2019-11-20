@@ -1,8 +1,9 @@
 from unittest.mock import MagicMock
 
 import pytest
-from galaxy.unittest.mock import AsyncMock
-
+from galaxy.unittest.mock import AsyncMock, async_return_value
+import os, sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../output')))
 from plugin import SteamPlugin
 
 
@@ -25,9 +26,12 @@ async def create_plugin(backend_client, mocker):
     created_plugins = []
 
     def function():
+        writer = MagicMock(name="stream_writer")
+        writer.drain.side_effect = lambda: async_return_value(None)
+
         mocker.patch("plugin.SteamHttpClient", return_value=backend_client)
         mocker.patch("plugin.local_games_list", return_value=[])
-        plugin = SteamPlugin(MagicMock(), MagicMock(), None)
+        plugin = SteamPlugin(MagicMock(), writer, None)
         created_plugins.append(plugin)
         return plugin
 
@@ -53,12 +57,17 @@ def login():
 
 
 @pytest.fixture()
+def miniprofile():
+    return "123"
+
+
+@pytest.fixture()
 async def create_authenticated_plugin(create_plugin, backend_client, mocker):
-    async def function(steam_id, login, cache):
+    async def function(steam_id, login, miniprofile, cache):
         mocker.patch.object(SteamPlugin, "persistent_cache", new_callable=mocker.PropertyMock, return_value=cache)
         plugin = create_plugin()
         backend_client.get_profile.return_value = "http://url"
-        backend_client.get_profile_data.return_value = steam_id, login
+        backend_client.get_profile_data.return_value = steam_id, login, miniprofile
         credentials = {
             "cookies": [
                 {
@@ -78,5 +87,5 @@ async def create_authenticated_plugin(create_plugin, backend_client, mocker):
 
 
 @pytest.fixture()
-async def authenticated_plugin(create_authenticated_plugin, steam_id, login):
-    return await create_authenticated_plugin(steam_id, login, {})
+async def authenticated_plugin(create_authenticated_plugin, steam_id, login, miniprofile):
+    return await create_authenticated_plugin(steam_id, login, miniprofile, {})

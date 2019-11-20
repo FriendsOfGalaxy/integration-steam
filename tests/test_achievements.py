@@ -121,7 +121,7 @@ async def test_invalid_cache(authenticated_plugin, backend_client, push_cache):
 
 
 @pytest.mark.asyncio
-async def test_initialize_cache(create_authenticated_plugin, backend_client, steam_id, login):
+async def test_initialize_cache(create_authenticated_plugin, backend_client, steam_id, miniprofile, login):
     cache = {
         "achievements": """{
             "17923": {
@@ -139,7 +139,7 @@ async def test_initialize_cache(create_authenticated_plugin, backend_client, ste
             }
         }"""
     }
-    plugin = await create_authenticated_plugin(steam_id, login, cache)
+    plugin = await create_authenticated_plugin(steam_id, login,miniprofile, cache)
 
     context = {
         "17923": GameTime(game_id="17923", time_played=180, last_played_time=1549385501)

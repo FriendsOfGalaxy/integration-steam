@@ -26,7 +26,7 @@ def stored_credentials(cookies):
 
 @pytest.fixture()
 def auth_info():
-    return Authentication("19", "Jan")
+    return ["19", "123", "Jan"]
 
 @pytest.mark.asyncio
 async def test_no_stored_credentials(
@@ -47,13 +47,13 @@ async def test_no_stored_credentials(
     ) == await plugin.authenticate()
 
     backend_client.get_profile.return_value = PROFILE_URL
-    backend_client.get_profile_data.return_value = auth_info.user_id, auth_info.user_name
+    backend_client.get_profile_data.return_value = auth_info[0], auth_info[1], auth_info[2]
 
     store_credentials = mocker.patch.object(plugin, "store_credentials")
-    assert auth_info == await plugin.pass_login_credentials(
+    assert Authentication(auth_info[0], auth_info[2]) == await plugin.pass_login_credentials(
         "random step name",
         {"end_uri": "https://steamcommunity.com/id/{}/goto".format(
-            auth_info.user_id
+            auth_info[0]
         )},
         cookies
     )
@@ -70,9 +70,9 @@ async def test_stored_credentials(
     stored_credentials
 ):
     backend_client.get_profile.return_value = PROFILE_URL
-    backend_client.get_profile_data.return_value = auth_info.user_id, auth_info.user_name
+    backend_client.get_profile_data.return_value = auth_info[0], auth_info[1], auth_info[2]
 
-    assert auth_info == await plugin.authenticate(stored_credentials)
+    assert Authentication(auth_info[0], auth_info[2]) == await plugin.authenticate(stored_credentials)
 
     backend_client.get_profile.assert_called_with()
     backend_client.get_profile_data.assert_called_with(PROFILE_URL)
@@ -98,9 +98,9 @@ async def test_stored_credentials_old_format(backend_client, plugin, auth_info):
         }
     }
     backend_client.get_profile.return_value = PROFILE_URL
-    backend_client.get_profile_data.return_value = auth_info.user_id, auth_info.user_name
+    backend_client.get_profile_data.return_value = auth_info[0], auth_info[1], auth_info[2]
 
-    assert auth_info == await plugin.authenticate(stored_credentials)
+    assert Authentication(auth_info[0], auth_info[2]) == await plugin.authenticate(stored_credentials)
 
     backend_client.get_profile.assert_called_with()
     backend_client.get_profile_data.assert_called_with(PROFILE_URL)
