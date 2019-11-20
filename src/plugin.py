@@ -13,7 +13,7 @@ from typing import Any, Dict, List
 
 from galaxy.api.plugin import Plugin, create_and_run_plugin
 from galaxy.api.types import (
-    Achievement, Authentication, Cookie, FriendInfo, Game, GameTime, LicenseInfo, NextStep, LocalGame
+    Achievement, Authentication, Cookie, FriendInfo, Game, GameTime, LicenseInfo, NextStep, LocalGame, GameLibrarySettings
 )
 from galaxy.api.errors import (
     AuthenticationRequired, UnknownBackendResponse, AccessDenied, InvalidCredentials, UnknownError
@@ -28,6 +28,7 @@ from registry_monitor import get_steam_registry_monitor
 from uri_scheme_handler import is_uri_handler_installed
 from version import __version__
 from cache import Cache
+from leveldb_parser import LevelDbParser
 
 def is_windows():
     return platform.system().lower() == "windows"
@@ -36,6 +37,8 @@ def is_windows():
 LOGIN_URI = r"https://steamcommunity.com/login/home/?goto="
 JS_PERSISTENT_LOGIN = r"document.getElementById('remember_login').checked = true;"
 END_URI_REGEX = r"^https://steamcommunity.com/(profiles|id)/.*"
+NO_LAST_PLAY = 86400 # 86400 is used as sentinel value for games no supporting last_played
+FRIEND_SHARING_END_PATTERN = "#"
 
 AUTH_PARAMS = {
     "window_title": "Login to Steam",
@@ -77,19 +80,27 @@ def parse_stored_cookies(cookies):
 class SteamPlugin(Plugin):
     def __init__(self, reader, writer, token):
         super().__init__(Platform.Steam, __version__, reader, writer, token)
-        self._own_games: List = []
-        self._other_games: List[str] = []
-        self._own_friends: List[FriendInfo] = []
         self._steam_id = None
+        self._miniprofile_id = None
+        self._own_games: List = []
+        self._family_sharing_games: List[str] = []
+        self._own_friends: List[FriendInfo] = []
+
+        self._level_db_parser = None
         self._regmon = get_steam_registry_monitor()
         self._local_games_cache: List[LocalGame] = []
         self._http_client = AuthenticatedHttpClient()
         self._client = SteamHttpClient(self._http_client)
         self._achievements_cache = Cache()
         self._achievements_cache_updated = False
-        self._achievements_semaphore = asyncio.Semaphore(20)
 
-        self.create_task(self._update_local_games(), "Update local games")
+        self._achievements_semaphore = asyncio.Semaphore(20)
+        self._tags_semaphore = asyncio.Semaphore(5)
+
+        self._library_settings_import_iterator = 0
+        self._game_tags_cache = {}
+
+        self._update_task = self.create_task(self._update_local_games(), "Update local games")
 
     def _store_cookies(self, cookies):
         credentials = {
@@ -133,7 +144,7 @@ class SteamPlugin(Plugin):
             raise InvalidCredentials()
 
         try:
-            self._steam_id, login = await self._client.get_profile_data(profile_url)
+            self._steam_id, self._miniprofile_id, login = await self._client.get_profile_data(profile_url)
         except AccessDenied:
             raise InvalidCredentials()
 
@@ -195,7 +206,6 @@ class SteamPlugin(Plugin):
             logging.exception("Can not parse backend response")
             raise UnknownBackendResponse()
 
-
         self._own_games = games
         
         game_ids = list(map(lambda x: x.game_id, owned_games))
@@ -206,9 +216,9 @@ class SteamPlugin(Plugin):
         return owned_games
 
     async def get_steam_sharing_games(self,owngames: List[str]) -> List[Game]:
-        profiles = list(filter(lambda x: "!" in x.user_name, self._own_friends))
+        profiles = list(filter(lambda x: x.user_name.endswith(FRIEND_SHARING_END_PATTERN + "*"), self._own_friends))
         newgames: List[Game] = []
-        self._other_games = []
+        self._family_sharing_games = []
         for i in profiles:
             othergames = await self._client.get_games(i.user_id)
 
@@ -216,7 +226,7 @@ class SteamPlugin(Plugin):
                 for game in othergames:
                     hasit = any(f == str(game["appid"]) for f in owngames) or any(f.game_id == str(game["appid"]) for f in newgames)
                     if not hasit:
-                        self._other_games.append(str(game["appid"]))
+                        self._family_sharing_games.append(str(game["appid"]))
                         newgame = Game(
                             str(game["appid"]),
                             game["name"],
@@ -228,6 +238,7 @@ class SteamPlugin(Plugin):
                 logging.exception("Can not parse backend response")
                 raise UnknownBackendResponse()
         return newgames
+
 
     async def prepare_game_times_context(self, game_ids: List[str]) -> Any:
         if self._steam_id is None:
@@ -250,8 +261,7 @@ class SteamPlugin(Plugin):
             for game in games:
                 game_id = str(game["appid"])
                 last_played = game.get("last_played")
-                if last_played == 86400:
-                    # 86400 is used as sentinel value for games no supporting last_played
+                if last_played == NO_LAST_PLAY:
                     last_played = None
                 game_times[game_id] = GameTime(
                     game_id,
@@ -261,17 +271,16 @@ class SteamPlugin(Plugin):
         except (KeyError, ValueError):
             logging.exception("Can not parse backend response")
             raise UnknownBackendResponse()
-
+        
         try:
             steamFolder = get_configuration_folder()
-            accountId = str( int(self._steam_id) - 76561197960265728  )
-            vdfFile = os.path.join(steamFolder, "userdata", accountId, "config", "localconfig.vdf")
-            logging.debug(vdfFile)
+            vdfFile = os.path.join(steamFolder, "userdata", self._miniprofile_id, "config", "localconfig.vdf")
+            logging.debug(f"Users Localconfig.vdf {vdfFile}")
             data = load_vdf(vdfFile)
             timedata = data["UserLocalConfigStore"]["Software"]["Valve"]["Steam"]["Apps"]
-            for gameid in self._other_games:
+            for gameid in self._family_sharing_games:
                 playTime = 0
-                lastPlayed = 86400
+                lastPlayed = NO_LAST_PLAY
                 if gameid in timedata:
                     item = timedata[gameid]
                     if 'playtime' in item:
@@ -283,6 +292,39 @@ class SteamPlugin(Plugin):
             logging.exception("Can not parse friend games")
 
         return game_times
+
+    async def prepare_game_library_settings_context(self, game_ids: List[str]) -> Any:
+        if self._steam_id is None:
+            raise AuthenticationRequired()
+
+        if not self._level_db_parser:
+            self._level_db_parser = LevelDbParser(self._miniprofile_id)
+
+        self._level_db_parser.parse_leveldb()
+
+        if not self._level_db_parser.lvl_db_is_present:
+            return None
+        else:
+            leveldb_static_games_collections_dict = self._level_db_parser.get_static_collections_tags()
+            logging.info(f"Leveldb static settings dict {leveldb_static_games_collections_dict}")
+            return leveldb_static_games_collections_dict
+
+    async def get_game_library_settings(self, game_id: str, context: Any) -> GameLibrarySettings:
+        if not context:
+            return GameLibrarySettings(game_id, None, None)
+        else:
+            game_tags = context.get(game_id)
+            if not game_tags:
+                return GameLibrarySettings(game_id, [], False)
+
+            hidden = False
+            for tag in game_tags:
+                if tag.lower() == 'hidden':
+                    hidden = True
+            if hidden:
+                game_tags.remove('hidden')
+            return GameLibrarySettings(game_id, game_tags, hidden)
+
 
     async def prepare_achievements_context(self, game_ids: List[str]) -> Any:
         if self._steam_id is None:
@@ -326,12 +368,12 @@ class SteamPlugin(Plugin):
             FriendInfo(user_id=user_id, user_name=user_name)
             for user_id, user_name in (await self._client.get_friends(self._steam_id)).items()
         ]
-        
+
         return self._own_friends
 
     def tick(self):
-        if self._regmon.is_updated():
-            self.create_task(self._update_local_games(), "Update local games")
+        if self._update_task.done() and self._regmon.is_updated():
+            self._update_task = self.create_task(self._update_local_games(), "Update local games")
 
     async def _update_local_games(self):
         loop = asyncio.get_running_loop()
