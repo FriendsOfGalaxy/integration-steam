@@ -258,7 +258,7 @@ class SteamPlugin(Plugin):
             self._games_cache.loads(self.persistent_cache['games'])
 
         steam_run_task = self.create_task(self._steam_client.run(), "Run WebSocketClient")
-        connection_timeout = 30
+        connection_timeout = 120
         try:
             await asyncio.wait_for(self._user_info_cache.initialized.wait(), connection_timeout)
         except asyncio.TimeoutError:
