@@ -15,7 +15,8 @@ from galaxy.api.types import (
     LocalGame, LocalGameState, GameLibrarySettings, UserPresence, UserInfo, Subscription, SubscriptionGame
 )
 from galaxy.api.errors import (
-    AuthenticationRequired, UnknownBackendResponse, UnknownError, AccessDenied, BackendTimeout, BackendError
+    AuthenticationRequired, UnknownBackendResponse, UnknownError, AccessDenied, BackendTimeout, BackendError,
+    InvalidCredentials
 )
 from galaxy.api.consts import Platform, LicenseType, SubscriptionDiscovery
 
@@ -188,6 +189,9 @@ class SteamPlugin(Plugin):
                 self.raise_websocket_errors()
             except BackendError as e:
                 logging.info(f"Unable to keep connection with steam backend {repr(e)}")
+                raise
+            except InvalidCredentials:
+                logging.info(f"Invalid credentials during authentication")
                 raise
             except Exception as e:
                 logging.info(f"Internal websocket exception caught during auth {repr(e)}")
