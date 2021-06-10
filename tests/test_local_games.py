@@ -182,10 +182,21 @@ def test_get_custom_library_folders(tmp_path):
     data = """\
         "LibraryFolders"
         {
-            "TimeNextStatsReport"		"1507807583"
             "ContentStatsID"		"313251607278753000"
-            "1"		"D:\\Steam"
-            "2"		"E:\\Games\\Steam"
+            "1"
+            {
+                "path"		"D:\\Steam"
+                "label"		"Games"
+                "mounted"		"1"
+                "contentid"		"24707729912644713069"
+            }
+            "2"
+            {
+                "path"		"E:\\Games\\Steam"
+                "label"		"Extras"
+                "mounted"		"2"
+                "contentid"		"24307526915614213469"
+            }
         }
     """
     path = tmp_path / "libraryfolders.vdf"
