@@ -7,7 +7,7 @@ GOG Galaxy 2.0 Community integration for Steam.
 *Latest release should be available directly from Galaxy*
 
 For custom build:
-- Replace the content of the folder created by GoG <br> e.g. `C:\Users\<User>\AppData\Local\GOG.com\Galaxy\plugins\installed\steam_ca27391f-2675-49b1-92c0-896d43afa4f8`
+- Replace the content of the folder created by GoG <br> e.g. `C:\Users\<User>\AppData\Local\GOG.com\Galaxy\plugins\installed\steam_ca..`
 - with the content of the downloaded zip archive
 
 ## Credits
