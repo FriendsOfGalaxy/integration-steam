@@ -11,7 +11,7 @@ GOG Galaxy 2.0 Community integration for Steam.
 - remove previously installed plugin folder (if any), usually<br>
 `%localappdata%\GOG.com\Galaxy\plugins\installed\steam_ca27391f-2675-49b1-92c0-896d43afa4f8`
 - create a folder of any name at the following path and copy the custom build to it:<br>
-`C:\Users\<User>\AppData\Local\GOG.com\Galaxy\plugins\installed\`
+`%localappdata%\GOG.com\Galaxy\plugins\installed\`
 
 Once the latest version on Github is newer than the version provided in `manifest.json` in the custom build, Galaxy will download the newer version and replace the custom build. To prevent this, you can manually set the version in `manifest.json` to something significantly bigger like `9.9`.
 
