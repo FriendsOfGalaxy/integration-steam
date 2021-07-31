@@ -279,10 +279,21 @@ class SteamPlugin(Plugin):
         self._games_cache.add_game_lever = True
 
         try:
-            temp_title = None
+            witcher_3_app_id = "292030"
+            witcher_3_dlc_app_ids = ("355880", "378648", "378649")
+
+            witcher_3_dlc_pass_set = {"355880"}
+            witcher_3_dlc_set = {"378648", "378649"}
+
+            witcher_3_title = None
+            witcher_3_owned_dlc_set = set()
+
             async for app in self._games_cache.get_owned_games():
-                if str(app.appid) == "292030":
-                    temp_title = app.title
+                if app.appid == witcher_3_app_id:
+                    witcher_3_title = app.title
+                elif app.appid in witcher_3_dlc_app_ids:
+                    witcher_3_owned_dlc_set.add(app.appid)
+
                 owned_games.append(
                     Game(
                         str(app.appid),
@@ -292,17 +303,17 @@ class SteamPlugin(Plugin):
                     )
                 )
 
-            if temp_title:
-                dlcs = []
-                async for dlc in self._games_cache.get_dlcs():
-                    dlcs.append(str(dlc.appid))
-                if "355880" in dlcs or ("378648" in dlcs and "378649" in dlcs):
-                    owned_games.append(Game(
-                        "499450",
-                        temp_title,
-                        [],
-                        LicenseInfo(LicenseType.SinglePurchase, None)
-                    ))
+            owns_witcher_3_dlc_pass = len(witcher_3_dlc_pass_set - witcher_3_owned_dlc_set) == 0
+            owns_witcher_3_dlcs = len(witcher_3_dlc_set - witcher_3_owned_dlc_set) == 0
+
+            if owns_witcher_3_dlc_pass or owns_witcher_3_dlcs:
+                owned_games.append(Game(
+                    "499450",
+                    witcher_3_title,
+                    [],
+                    LicenseInfo(LicenseType.SinglePurchase, None)
+                ))
+
 
         except (KeyError, ValueError):
             logger.exception("Can not parse backend response")

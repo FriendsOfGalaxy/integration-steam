@@ -109,7 +109,7 @@ class GamesCache(ProtoCache):
     async def __consume_resolved_apps(self, shared_licenses: bool, apptype: str):
         storing_map = copy.copy(self._storing_map)
         for license in storing_map.licenses:
-            await asyncio.sleep(0.001)  # do not block event loop; waiting one frame (0) was not enough 78#issuecomment-687140437
+            await asyncio.sleep(0.0001)  # do not block event loop; waiting one frame (0) was not enough 78#issuecomment-687140437
             if license.shared != shared_licenses:
                 continue
             for appid in license.app_ids:
@@ -119,6 +119,9 @@ class GamesCache(ProtoCache):
                 app = self._storing_map.apps[appid]
                 if app.type == apptype:
                     self._sent_apps.append(app)
+                    yield app
+                # Necessary for the Witcher 3 => Witcher 3 GOTY import hack
+                elif apptype == 'game' and app.type == 'dlc' and appid in ("355880", "378648", "378649"):
                     yield app
 
     async def get_owned_games(self) -> AsyncGenerator[App, None]:
