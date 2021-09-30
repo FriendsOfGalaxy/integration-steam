@@ -3,7 +3,7 @@ import logging
 import ssl
 from contextlib import suppress
 from distutils.util import strtobool
-from typing import Callable, List, Any, Dict, Union, Set
+from typing import Callable, List, Any, Dict, Union
 from urllib import parse
 
 from galaxy.api.errors import (
