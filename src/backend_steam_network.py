@@ -365,7 +365,7 @@ class SteamNetworkBackend(BackendInterface):
                         str(app.appid),
                         app.title,
                         [],
-                        LicenseInfo(LicenseType.SinglePurchase, None)
+                        LicenseInfo(LicenseType.SinglePurchase, None),
                     )
                 )
                 if app.appid in WITCHER_3_DLCS_APP_IDS:
@@ -377,18 +377,18 @@ class SteamNetworkBackend(BackendInterface):
                         WITCHER_3_GOTY_APP_ID,
                         WITCHER_3_GOTY_TITLE,
                         [],
-                        LicenseInfo(LicenseType.SinglePurchase, None)
+                        LicenseInfo(LicenseType.SinglePurchase, None),
                     )
                 )
 
         except (KeyError, ValueError):
-            logger.exception("Can not parse backend response")
+            logger.exception("Cannot parse backend response")
             raise UnknownBackendResponse()
 
         finally:
             self._owned_games_parsed = True
 
-        self.persistent_cache['games'] = self._games_cache.dump()
+        self._persistent_cache['games'] = self._games_cache.dump()
         self._persistent_storage_state.modified = True
 
         return owned_games

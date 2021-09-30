@@ -7,7 +7,7 @@ WITCHER_3_GOTY_TITLE = "The Witcher 3: Wild Hunt - Game of the Year Edition"
 
 
 def does_witcher_3_dlcs_set_resolve_to_GOTY(owned_dlc_app_ids: Set[int]) -> bool:
-    W3_EXPANSION_PASS = "355880"
-    W3_DLCS_GOTY_COMPONENTS = {"378648", "378649"}
-    return W3_EXPANSION_PASS in owned_dlc_app_ids \
-        or len(W3_DLCS_GOTY_COMPONENTS - owned_dlc_app_ids) == 0
+    w3_expansion_pass = "355880"
+    w3_dlcs_goty_components = {"378648", "378649"}
+    return w3_expansion_pass in owned_dlc_app_ids \
+        or len(w3_dlcs_goty_components - owned_dlc_app_ids) == 0
