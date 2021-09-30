@@ -6,463 +6,251 @@ import ssl
 import sys
 import webbrowser
 import time
-from typing import Any, List, Optional, NewType, Dict
+from functools import partial
+from contextlib import suppress
+from typing import List, Optional, NewType, Dict, AsyncGenerator, Any, Callable
 
 import certifi
 from galaxy.api.plugin import Plugin, create_and_run_plugin
 from galaxy.api.types import (
-    Achievement, Authentication, Game, GameTime, LicenseInfo,
-    LocalGame, LocalGameState, GameLibrarySettings, UserPresence, UserInfo, Subscription, SubscriptionGame
+    LocalGame,
+    LocalGameState,
+    UserPresence,
+    UserInfo,
+    Game,
+    GameLibrarySettings,
+    GameTime,
+    Achievement,
+    SubscriptionGame,
+    Subscription,
 )
 from galaxy.api.errors import (
-    AuthenticationRequired, UnknownBackendResponse, UnknownError, AccessDenied, BackendTimeout, BackendError,
-    InvalidCredentials
+    AccessDenied,
+    InvalidCredentials,
+    NetworkError,
+    UnknownError,
 )
-from galaxy.api.consts import Platform, LicenseType, SubscriptionDiscovery
+from galaxy.api.consts import Platform
 
-from backend import SteamHttpClient, AuthenticatedHttpClient
+from backend_interface import BackendInterface
+from backend_public_profiles import PublicProfilesBackend
+from backend_steam_network import SteamNetworkBackend
+from backend_configuration import BackendMode, BackendConfiguration, USER_CONFIG_LOCATION
+from http_client import HttpClient
 from client import (
-    StateFlags, local_games_list, get_state_changes, get_client_executable,
-    load_vdf, get_library_folders, get_app_manifests, app_id_from_manifest_path
+    StateFlags,
+    local_games_list,
+    get_state_changes,
+    get_client_executable,
+    load_vdf,
+    get_library_folders,
+    get_app_manifests,
+    app_id_from_manifest_path,
 )
-from local_machine_cache import LocalMachineCache
-from websocket_list import WebSocketList
-from presence import presence_from_user_info
-from friends_cache import FriendsCache
-from games_cache import GamesCache
-from stats_cache import StatsCache
-from user_info_cache import UserInfoCache
-from times_cache import TimesCache
 from persistent_cache_state import PersistentCacheState
-from ownership_ticket_cache import OwnershipTicketCache
-from protocol.websocket_client import WebSocketClient, UserActionRequired
-from protocol.types import ProtoUserInfo
 from registry_monitor import get_steam_registry_monitor
 from uri_scheme_handler import is_uri_handler_installed
+from user_profile import UserProfileChecker
 from version import __version__
-
-from urllib import parse
-from authentication import START_URI, END_URI, next_step_response
-
-from contextlib import suppress
 
 
 logger = logging.getLogger(__name__)
 
-Timestamp = NewType('Timestamp', int)
+Timestamp = NewType("Timestamp", int)
+
+COOLDOWN_TIME = 5
+AUTH_SETUP_ON_VERSION__CACHE_KEY = "auth_setup_on_version"
+
+BACKEND_MAP = {
+    BackendMode.PublicProfiles: PublicProfilesBackend,
+    BackendMode.SteamNetwork: SteamNetworkBackend,
+}
 
 
 def is_windows():
     return platform.system().lower() == "windows"
 
 
-NO_AVATAR_SET = '0000000000000000000000000000000000000000'
-AVATAR_URL_PREFIX = 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/'
-AVATAR_URL_SUFIX = '_full.jpg'
-DEFAULT_AVATAR = 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/fe/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg'
-STEAMCOMMUNITY_PROFILE_LINK = 'https://steamcommunity.com/profiles/'
-
-COOLDOWN_TIME = 5
-
-
-# TODO: Remove - Steamcommunity auth element
-def morsels_to_dicts(morsels):
-    cookies = []
-    for morsel in morsels:
-        cookie = {
-            "name": morsel.key,
-            "value": morsel.value,
-            "domain": morsel["domain"],
-            "path": morsel["path"]
-        }
-        cookies.append(cookie)
-    return cookies
-
-
-def galaxy_user_info_from_user_info(user_id, user_info):
-    avatar_url = user_info.avatar_hash.hex()
-    if avatar_url == NO_AVATAR_SET:
-        avatar_url = DEFAULT_AVATAR
-    else:
-        avatar_url = AVATAR_URL_PREFIX + avatar_url[0:2] + '/' + avatar_url + AVATAR_URL_SUFIX
-    profile_link = STEAMCOMMUNITY_PROFILE_LINK + user_id
-    return UserInfo(user_id,
-                 user_info.name,
-                 avatar_url,
-                 profile_link)
-
-
 class SteamPlugin(Plugin):
     def __init__(self, reader, writer, token):
         super().__init__(Platform.Steam, __version__, reader, writer, token)
+
+        # local features
         self._regmon = get_steam_registry_monitor()
         self._local_games_cache: Optional[List[LocalGame]] = None
+        self._last_launch: Timestamp = 0
+        self._update_local_games_task = asyncio.create_task(asyncio.sleep(0))
+
+        # http client
         self._ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
         self._ssl_context.load_verify_locations(certifi.where())
-        self._http_client = AuthenticatedHttpClient()
-        self._client = SteamHttpClient(self._http_client)
+        self._http_client = HttpClient()
+        self._user_profile_checker = UserProfileChecker(self._http_client)
+
+        # cache management
         self._persistent_storage_state = PersistentCacheState()
-        self._friends_cache = FriendsCache()
-        self._games_cache = GamesCache()
-        self._translations_cache = dict()
-        self._stats_cache = StatsCache()
-        self._user_info_cache = UserInfoCache()
-        self._times_cache = TimesCache()
-
-        # waits for persistent cache to initialize
-        self._steam_client = None
-        self._steam_client_run_task = None
-
-        self._tags_semaphore = asyncio.Semaphore(5)
-
-        self._library_settings_import_iterator = 0
-        self._last_launch: Timestamp = 0
-
-        self._update_local_games_task = asyncio.create_task(asyncio.sleep(0))
-        self._update_owned_games_task = asyncio.create_task(asyncio.sleep(0))
         self._pushing_cache_task = asyncio.create_task(asyncio.sleep(0))
-        self._owned_games_parsed = None
 
-        self._auth_data = None
+        # backend client
+        self._backend_config = BackendConfiguration()
+        self._backend_config.read_strict(USER_CONFIG_LOCATION)
+        self.__backend_mode = self._backend_config.initial_mode
+        self.__backend: Optional[BackendInterface] = None
 
-        async def user_presence_update_handler(user_id: str, proto_user_info: ProtoUserInfo):
-            self.update_user_presence(user_id, await presence_from_user_info(proto_user_info, self._translations_cache))
+    @property
+    def features(self):
+        curr_backend_cls = BACKEND_MAP[self.__backend_mode]
+        non_backend_features = set(super().features) - set(BackendInterface.POSSIBLE_FEATURES)
+        return list(non_backend_features | curr_backend_cls.features())
 
-        self._friends_cache.updated_handler = user_presence_update_handler
-
+    @property
+    def _backend(self) -> BackendInterface:
+        if self.__backend is None:
+            raise UnknownError("Backend not set")
+        return self.__backend
+    
     def handshake_complete(self):
-        websocket_list = WebSocketList(self._client)
-        ownership_ticket_cache = OwnershipTicketCache(self.persistent_cache, self._persistent_storage_state)
-        local_machine_cache = LocalMachineCache(self.persistent_cache, self._persistent_storage_state)
-        self._steam_client = WebSocketClient(self._client, self._ssl_context, websocket_list, self._friends_cache,
-                                             self._games_cache, self._translations_cache, self._stats_cache,
-                                             self._times_cache, self._user_info_cache, local_machine_cache, ownership_ticket_cache)
+        self._load_backend(self.__backend_mode)
+        with suppress(OSError):
+            self._backend_config.regenerate_user_config(USER_CONFIG_LOCATION)
+
+    def _switch_backend(self, backend: Optional[BackendMode]):
+        logger.info(f"Requested backend switch from {self.__backend_mode} to {backend}")
+        if backend is None:
+            raise ValueError("Backend switch stopped as requested.")
+        if backend == self.__backend_mode:
+            raise ValueError(f"Backend switch refused: alredy on {backend}.")
+        self._load_backend(backend)
+
+    def _load_backend(self, backend_mode: BackendMode):
+        backend_specification = dict(
+            http_client=self._http_client,
+            user_profile_checker=self._user_profile_checker,
+            persistent_storage_state=self._persistent_storage_state,
+            persistent_cache=self.persistent_cache,
+            store_credentials=self.store_credentials,
+        )
+        if backend_mode == BackendMode.SteamNetwork:
+            backend_specification.update(
+                ssl_context=self._ssl_context,
+                update_user_presence=self.update_user_presence,
+                add_game=self.add_game,
+            )
+
+        try:
+            self.__backend = BACKEND_MAP[backend_mode](**backend_specification)
+        except KeyError:
+            raise ValueError(f"Unknown backend mode: {backend_mode}")
+        self.__backend_mode = backend_mode
+    
+    async def pass_login_credentials(self, step, credentials, cookies):
+        result = await self._backend.pass_login_credentials(step, credentials, cookies)
+        self.__store_current_version_in_cache(key=AUTH_SETUP_ON_VERSION__CACHE_KEY)
+        return result
+
+    def __store_current_version_in_cache(self, key: str):
+        if self.persistent_cache.get(key) != __version__:
+            self.persistent_cache[key] = __version__
+            self.push_cache()
+        
+    async def authenticate(self, stored_credentials=None):
+
+        def credentials_problem_handler(fallback: Callable = self.lost_authentication):
+            try:
+                self._switch_backend(self._backend_config.fallback_mode) 
+            except ValueError:
+                fallback()
+            except Exception as e:
+                logger.error(f"Unexpected problem during backend switch: {e!r}")
+                fallback()
+            else:
+                self._backend.register_auth_lost_callback(credentials_problem_handler)
+
+        def raise_exception(exc):
+            raise exc
+
+        try:
+            auth = await self._backend.authenticate(stored_credentials)
+        except NetworkError:  # casuses "Offline. Retry"
+            raise
+        except (
+            InvalidCredentials, AccessDenied,  # re-raised would cause "Connection Lost"
+            Exception  # re-raised would cause "Offline. Retry"
+        ) as e:
+            logger.warning(f"Authentication for initial backend failed with {e!r}")
+            credentials_problem_handler(partial(raise_exception, e))
+            auth = await self._backend.authenticate(stored_credentials)
+        else:
+            self._backend.register_auth_lost_callback(credentials_problem_handler)
+        return auth
 
     async def shutdown(self):
         self._regmon.close()
-        await self._steam_client.close()
         await self._http_client.close()
-        await self._steam_client.wait_closed()
+        await self._backend.shutdown()
 
         with suppress(asyncio.CancelledError):
             self._update_local_games_task.cancel()
-            self._update_owned_games_task.cancel()
             self._pushing_cache_task.cancel()
             await self._update_local_games_task
-            await self._update_owned_games_task
             await self._pushing_cache_task
 
-    async def cancel_task(self, task):
-        try:
-            task.cancel()
-            await task
-        except asyncio.CancelledError:
-            pass
+    async def get_owned_games(self) -> List[Game]:
+        return await self._backend.get_owned_games()
 
-    async def authenticate(self, stored_credentials=None):
-        if not stored_credentials:
-            self.create_task(self._steam_client.run(), "Run WebSocketClient")
-            return next_step_response(START_URI.LOGIN, END_URI.LOGIN_FINISHED)
+    async def get_subscriptions(self) -> List[Subscription]:
+        return await self._backend.get_subscriptions()
 
-        if stored_credentials.get("cookies", []):
-            logger.error('Old http login flow is not unsupported. Please reconnect the plugin')
-            raise AccessDenied()
+    async def prepare_subscription_games_context(self, subscription_names: List[str]) -> Any:
+        return await self._backend.prepare_subscription_games_context(subscription_names)
 
-        self._user_info_cache.from_dict(stored_credentials)
-        if 'games' in self.persistent_cache:
-            self._games_cache.loads(self.persistent_cache['games'])
-
-        steam_run_task = self.create_task(self._steam_client.run(), "Run WebSocketClient")
-        connection_timeout = 30
-        try:
-            await asyncio.wait_for(self._user_info_cache.initialized.wait(), connection_timeout)
-        except asyncio.TimeoutError:
-            try:
-                self.raise_websocket_errors()
-            except BackendError as e:
-                logging.info(f"Unable to keep connection with steam backend {repr(e)}")
-                raise
-            except InvalidCredentials:
-                logging.info("Invalid credentials during authentication")
-                raise
-            except Exception as e:
-                logging.info(f"Internal websocket exception caught during auth {repr(e)}")
-                raise
-            else:
-                logging.info(f"Failed to initialize connection with steam client within {connection_timeout} seconds")
-                raise BackendTimeout()
-            finally:
-                await self.cancel_task(steam_run_task)
-
-        self.store_credentials(self._user_info_cache.to_dict())
-        return Authentication(self._user_info_cache.steam_id, self._user_info_cache.persona_name)
-
-    async def _get_websocket_auth_step(self):
-        try:
-            result = await asyncio.wait_for(self._steam_client.communication_queues['plugin'].get(), 60)
-            result = result['auth_result']
-        except asyncio.TimeoutError:
-            self.raise_websocket_errors()
-            raise BackendTimeout()
-        return result
-
-    async def _handle_login_finished(self, credentials):
-        parsed_url = parse.urlsplit(credentials['end_uri'])
-
-        params = parse.parse_qs(parsed_url.query)
-        if 'username' not in params or 'password' not in params:
-            return next_step_response(START_URI.LOGIN_FAILED, END_URI.LOGIN_FINISHED)
-
-        username = params['username'][0]
-        password = params['password'][0]
-        self._user_info_cache.account_username = username
-        self._auth_data = [username, password]
-        await self._steam_client.communication_queues['websocket'].put({'password': password})
-        result = await self._get_websocket_auth_step()
-        if result == UserActionRequired.NoActionRequired:
-            self._auth_data = None
-            self.store_credentials(self._user_info_cache.to_dict())
-            return Authentication(self._user_info_cache.steam_id, self._user_info_cache.persona_name)
-        if result == UserActionRequired.EmailTwoFactorInputRequired:
-            return next_step_response(START_URI.TWO_FACTOR_MAIL, END_URI.TWO_FACTOR_MAIL_FINISHED)
-        if result == UserActionRequired.PhoneTwoFactorInputRequired:
-            return next_step_response(START_URI.TWO_FACTOR_MOBILE, END_URI.TWO_FACTOR_MOBILE_FINISHED)
-        else:
-            return next_step_response(START_URI.LOGIN_FAILED, END_URI.LOGIN_FINISHED)
-
-    async def _handle_two_step(self, params, fail, finish):
-        if 'code' not in params:
-            return next_step_response(fail, finish)
-
-        two_factor = params['code'][0]
-        await self._steam_client.communication_queues['websocket'].put(
-            {'password': self._auth_data[1], 'two_factor': two_factor})
-        result = await self._get_websocket_auth_step()
-        logger.info(f'2fa result {result}')
-        if result != UserActionRequired.NoActionRequired:
-            return next_step_response(fail, finish)
-        else:
-            self._auth_data = None
-            self.store_credentials(self._user_info_cache.to_dict())
-            return Authentication(self._user_info_cache.steam_id, self._user_info_cache.persona_name)
-
-    async def _handle_two_step_mobile_finished(self, credentials):
-        parsed_url = parse.urlsplit(credentials['end_uri'])
-        params = parse.parse_qs(parsed_url.query)
-        return await self._handle_two_step(params, START_URI.TWO_FACTOR_MOBILE_FAILED, END_URI.TWO_FACTOR_MOBILE_FINISHED)
-
-    async def _handle_two_step_email_finished(self, credentials):
-        parsed_url = parse.urlsplit(credentials['end_uri'])
-        params = parse.parse_qs(parsed_url.query)
-
-        if 'resend' in params:
-            await self._steam_client.communication_queues['websocket'].put({'password': self._auth_data[1]})
-            await self._get_websocket_auth_step() # Clear the queue
-            return next_step_response(START_URI.TWO_FACTOR_MAIL, END_URI.TWO_FACTOR_MAIL_FINISHED)
-
-        return await self._handle_two_step(params, START_URI.TWO_FACTOR_MAIL_FAILED, END_URI.TWO_FACTOR_MAIL_FINISHED)
-
-    async def pass_login_credentials(self, step, credentials, cookies):
-        if 'login_finished' in credentials['end_uri']:
-            return await self._handle_login_finished(credentials)
-        if 'two_factor_mobile_finished' in credentials['end_uri']:
-            return await self._handle_two_step_mobile_finished(credentials)
-        if 'two_factor_mail_finished' in credentials['end_uri']:
-            return await self._handle_two_step_email_finished(credentials)
-
-    async def get_owned_games(self):
-        if self._user_info_cache.steam_id is None:
-            raise AuthenticationRequired()
-
-        await self._games_cache.wait_ready(90)
-        owned_games = []
-        self._games_cache.add_game_lever = True
-
-        try:
-            witcher_3_app_id = "292030"
-            witcher_3_dlc_app_ids = ("355880", "378648", "378649")
-
-            witcher_3_dlc_pass_set = {"355880"}
-            witcher_3_dlc_set = {"378648", "378649"}
-
-            witcher_3_title = None
-            witcher_3_owned_dlc_set = set()
-
-            async for app in self._games_cache.get_owned_games():
-                if app.appid == witcher_3_app_id:
-                    witcher_3_title = app.title
-                elif app.appid in witcher_3_dlc_app_ids:
-                    witcher_3_owned_dlc_set.add(app.appid)
-
-                owned_games.append(
-                    Game(
-                        str(app.appid),
-                        app.title,
-                        [],
-                        LicenseInfo(LicenseType.SinglePurchase, None)
-                    )
-                )
-
-            owns_witcher_3_dlc_pass = len(witcher_3_dlc_pass_set - witcher_3_owned_dlc_set) == 0
-            owns_witcher_3_dlcs = len(witcher_3_dlc_set - witcher_3_owned_dlc_set) == 0
-
-            if owns_witcher_3_dlc_pass or owns_witcher_3_dlcs:
-                owned_games.append(Game(
-                    "499450",
-                    witcher_3_title,
-                    [],
-                    LicenseInfo(LicenseType.SinglePurchase, None)
-                ))
-
-
-        except (KeyError, ValueError):
-            logger.exception("Can not parse backend response")
-            raise UnknownBackendResponse()
-
-
-        finally:
-            self._owned_games_parsed = True
-        self.persistent_cache['games'] = self._games_cache.dump()
-        self._persistent_storage_state.modified = True
-
-        return owned_games
+    async def get_subscription_games(
+        self, subscription_name: str, context: Any
+    ) -> AsyncGenerator[List[SubscriptionGame], None]:
+        async for hunk in self._backend.get_subscription_games(subscription_name, context):
+            yield hunk
 
     async def prepare_achievements_context(self, game_ids: List[str]) -> Any:
-        if self._user_info_cache.steam_id is None:
-            raise AuthenticationRequired()
-
-        if not self._stats_cache.import_in_progress:
-            await self._steam_client.refresh_game_stats(game_ids.copy())
-        else:
-            logger.info("Game stats import already in progress")
-        await self._stats_cache.wait_ready(10 * 60) # Don't block future imports in case we somehow don't receive one of the responses
-        logger.info("Finished achievements context prepare")
+        return await self._backend.prepare_achievements_context(game_ids)
 
     async def get_unlocked_achievements(self, game_id: str, context: Any) -> List[Achievement]:
-        logger.info(f"Asked for achievs for {game_id}")
-        game_stats = self._stats_cache.get(game_id)
-        achievements = []
-        if game_stats:
-            if 'achievements' not in game_stats:
-                return []
-            for achievement in game_stats['achievements']:
-
-                # Fix for trailing whitespace in some achievement names which resulted in achievements not matching with website data
-                achi_name = achievement['name']
-                achi_name = achi_name.strip()
-                if not achi_name:
-                    achi_name = achievement['name']
-
-                achievements.append(Achievement(achievement['unlock_time'], achievement_id=None, achievement_name=achi_name))
-        return achievements
+        return await self._backend.get_unlocked_achievements(game_id, context)
 
     async def prepare_game_times_context(self, game_ids: List[str]) -> Any:
-        if self._user_info_cache.steam_id is None:
-            raise AuthenticationRequired()
-
-        if not self._times_cache.import_in_progress:
-            await self._steam_client.refresh_game_times()
-        else:
-            logger.info("Game stats import already in progress")
-        await self._times_cache.wait_ready(10 * 60) # Don't block future imports in case we somehow don't receive one of the responses
-        logger.info("Finished game times context prepare")
+        return await self._backend.prepare_game_times_context(game_ids)
 
     async def get_game_time(self, game_id: str, context: Dict[int, int]) -> GameTime:
-        time_played = self._times_cache.get(game_id, {}).get('time_played')
-        last_played = self._times_cache.get(game_id, {}).get('last_played')
-        if last_played == 86400:
-            last_played = None
-        return GameTime(game_id, time_played, last_played)
+        return await self._backend.get_game_time(game_id, context)
 
     async def prepare_game_library_settings_context(self, game_ids: List[str]) -> Any:
-        if self._user_info_cache.steam_id is None:
-            raise AuthenticationRequired()
-
-        return await self._steam_client.retrieve_collections()
+        return await self._backend.prepare_game_library_settings_context(game_ids)
 
     async def get_game_library_settings(self, game_id: str, context: Any) -> GameLibrarySettings:
-        if not context:
-            return GameLibrarySettings(game_id, None, None)
-        else:
-            game_in_collections = []
-            hidden = False
-            for collection_name in context:
-                if int(game_id) in context[collection_name]:
-                    if collection_name.lower() == 'hidden':
-                        hidden = True
-                    else:
-                        game_in_collections.append(collection_name)
+        return await self._backend.get_game_library_settings(game_id, context)
 
-            return GameLibrarySettings(game_id, game_in_collections, hidden)
-
-    async def get_friends(self):
-        if self._user_info_cache.steam_id is None:
-            raise AuthenticationRequired()
-
-        friends_ids = await self._steam_client.get_friends()
-        friends_infos = await self._steam_client.get_friends_info(friends_ids)
-        friends_nicknames = await self._steam_client.get_friends_nicknames()
-
-        friends = []
-        for friend_id in friends_infos:
-            friend = galaxy_user_info_from_user_info(str(friend_id), friends_infos[friend_id])
-            if str(friend_id) in friends_nicknames:
-                friend.user_name += f" ({friends_nicknames[friend_id]})"
-            friends.append(friend)
-        return friends
+    async def get_friends(self) -> List[UserInfo]:
+        return await self._backend.get_friends()
 
     async def prepare_user_presence_context(self, user_ids: List[str]) -> Any:
-        return await self._steam_client.get_friends_info(user_ids)
+        return await self._backend.prepare_user_presence_context(user_ids)
 
     async def get_user_presence(self, user_id: str, context: Any) -> UserPresence:
-        user_info = context.get(user_id)
-        if user_info is None:
-            raise UnknownError(
-                "User {} not in friend list (plugin only supports fetching presence for friends)".format(user_id)
-            )
-        return await presence_from_user_info(user_info, self._translations_cache)
+        return await self._backend.get_user_presence(user_id, context)
 
-    async def _update_owned_games(self):
-        new_games = self._games_cache.consume_added_games()
-        if not new_games:
-            return
+    def achievements_import_complete(self):
+        self._backend.achievements_import_complete()
 
-        self.persistent_cache['games'] = self._games_cache.dump()
-        self._persistent_storage_state.modified = True
+    def game_times_import_complete(self):
+        self._backend.game_times_import_complete()
 
-        for i, game in enumerate(new_games):
-            self.add_game(Game(game.appid, game.title, [], license_info=LicenseInfo(LicenseType.SinglePurchase)))
-            if i % 50 == 49:
-                await asyncio.sleep(5)  # give Galaxy a breath in case of adding thousands games
+    def game_library_settings_import_complete(self):
+        self._backend.game_library_settings_import_complete()
 
-    def raise_websocket_errors(self):
-        try:
-            result = self._steam_client.communication_queues['errors'].get_nowait()
-            if result and isinstance(result, Exception):
-                raise result
-        except asyncio.queues.QueueEmpty:
-            pass
+    def user_presence_import_complete(self):
+        self._backend.user_presence_import_complete()
 
-    def tick(self):
-        if self._local_games_cache is not None and self._update_local_games_task.done() and self._regmon.is_updated():
-            self._update_local_games_task = asyncio.create_task(self._update_local_games())
-
-        if self._update_owned_games_task.done() and self._owned_games_parsed:
-            self._update_owned_games_task = asyncio.create_task(self._update_owned_games())
-
-        if self._pushing_cache_task.done() and self._persistent_storage_state.modified:
-            self._pushing_cache = asyncio.create_task(self._push_cache())
-
-        if self._user_info_cache.changed:
-            self.store_credentials(self._user_info_cache.to_dict())
-
-        if self._user_info_cache.initialized.is_set():
-            self.raise_websocket_errors()
-
-    async def _push_cache(self):
-        self.push_cache()
-        self._persistent_storage_state.modified = False
-        await asyncio.sleep(COOLDOWN_TIME)  # lower pushing cache rate to do not clog socket in case of big cache
+    def subscription_games_import_complete(self):
+        self._backend.subscription_games_import_complete()
 
     async def _update_local_games(self):
         loop = asyncio.get_running_loop()
@@ -474,6 +262,26 @@ class SteamPlugin(Plugin):
                 self._last_launch = time.time()
             self.update_local_game_status(game)
         await asyncio.sleep(COOLDOWN_TIME)
+
+    async def _push_cache(self):
+        self.push_cache()
+        self._persistent_storage_state.modified = False
+        await asyncio.sleep(
+            COOLDOWN_TIME
+        )  # lower pushing cache rate to do not clog socket in case of big cache
+
+    def tick(self):
+        self._backend.tick()
+
+        if (
+            self._local_games_cache is not None
+            and self._update_local_games_task.done()
+            and self._regmon.is_updated()
+        ):
+            self._update_local_games_task = asyncio.create_task(self._update_local_games())
+
+        if self._pushing_cache_task.done() and self._persistent_storage_state.modified:
+            self._pushing_cache = asyncio.create_task(self._push_cache())
 
     async def get_local_games(self):
         loop = asyncio.get_running_loop()
@@ -498,28 +306,10 @@ class SteamPlugin(Plugin):
     async def uninstall_game(self, game_id):
         SteamPlugin._steam_command("uninstall", game_id)
 
-    async def get_subscriptions(self) -> List[Subscription]:
-        if not self._owned_games_parsed:
-            await self._games_cache.wait_ready(90)
-        any_shared_game = False
-        async for _ in self._games_cache.get_shared_games():
-            any_shared_game = True
-            break
-        return [Subscription("Steam Family Sharing", any_shared_game, None, SubscriptionDiscovery.AUTOMATIC)]
-
-    async def get_subscription_games(self, subscription_name: str, context: Any):
-        games = []
-        async for game in self._games_cache.get_shared_games():
-            games.append(SubscriptionGame(game_id=str(game.appid), game_title=game.title))
-        yield games
-
     async def prepare_local_size_context(self, game_ids: List[str]) -> Dict[str, str]:
         library_folders = get_library_folders()
         app_manifests = list(get_app_manifests(library_folders))
-        return {
-            app_id_from_manifest_path(path): path
-            for path in app_manifests
-        }
+        return {app_id_from_manifest_path(path): path for path in app_manifests}
 
     async def get_local_size(self, game_id: str, context: Dict[str, str]) -> Optional[int]:
         try:
@@ -528,12 +318,12 @@ class SteamPlugin(Plugin):
             return 0
         try:
             manifest = load_vdf(manifest_path)
-            app_state = manifest['AppState']
-            state_flags = StateFlags(int(app_state['StateFlags']))
+            app_state = manifest["AppState"]
+            state_flags = StateFlags(int(app_state["StateFlags"]))
             if StateFlags.FullyInstalled in state_flags:
-                return int(app_state['SizeOnDisk'])
+                return int(app_state["SizeOnDisk"])
             else:  # as SizeOnDisk is 0
-                return int(app_state['BytesDownloaded'])
+                return int(app_state["BytesDownloaded"])
         except Exception as e:
             logger.warning("Cannot parse SizeOnDisk in %s: %r", manifest_path, e)
             return None
@@ -542,7 +332,7 @@ class SteamPlugin(Plugin):
         launch_debounce_time = 30
         if time.time() < self._last_launch + launch_debounce_time:
             # workaround for quickly closed game (Steam sometimes dumps false positive just after a launch)
-            logging.info('Ignoring shutdown request because game was launched a moment ago')
+            logging.info("Ignoring shutdown request because game was launched a moment ago")
             return
         if is_windows():
             exe = get_client_executable()
@@ -552,7 +342,9 @@ class SteamPlugin(Plugin):
         else:
             cmd = "osascript -e 'quit app \"Steam\"'"
         logger.debug("Running command '%s'", cmd)
-        process = await asyncio.create_subprocess_shell(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        process = await asyncio.create_subprocess_shell(
+            cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+        )
         await process.communicate()
 
 

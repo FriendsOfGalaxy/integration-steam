@@ -1,0 +1,383 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
+/* FONT */
+
+/* FILES WERE CONVERTED BY FONTSQUIRREL (https://www.fontsquirrel.com/tools/webfont-generator) 
+TO REDUCE SIZE. IF YOU HAVE ANY PROBLEMS WITH MISSING CHARS THEN INCLUDE ORIGINAL FONT FILES
+*/
+
+@font-face {
+    font-family: "LatoWeb";
+    font-weight: 400;
+    font-style: normal;
+    font-display: block;
+    src: url("../fonts/LatoWeb/LatoWeb-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "LatoWeb";
+    font-weight: 300;
+    font-style: normal;
+    font-display: block;
+    src: url("../fonts/LatoWeb/LatoWeb-Light.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "LatoWeb";
+    font-weight: 600;
+    font-style: normal;
+    font-display: block;
+    src: url("../fonts/LatoWeb/LatoWeb-Semibold.ttf") format("truetype");
+}
+
+/* CONTAINERS */
+
+body {
+    font-family: "LatoWeb", sans-serif;
+    font-size: 16px;
+    color: #f2f2f2;
+    background: #2c2b2e;
+}
+
+.main-content {
+    padding: 30px;
+    min-height: 269px;
+    display: flex;
+    flex-grow: 1;
+}
+
+.main-header {
+    height: 74px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 30px;
+    background: rgba(255, 255, 255, .03);
+}
+
+.main-header__container {
+    display: flex;
+    align-items: center;
+}
+
+.main-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 76px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 21px 30px;
+    border-top: 1px solid rgba(242, 242, 242, 0.05);
+}
+
+.main-footer__container--left {
+    margin-right: auto;
+    margin-left: 25px;
+}
+
+@media (max-height: 380px) {
+    .main-footer {
+        position: unset;
+        bottom: unset;
+        width: unset;
+    }
+}
+
+.main-footer.not-sticky {
+    position: unset;
+    bottom: unset;
+    width: unset;
+}
+
+@media (min-height: 490px) {
+    .main-footer.not-sticky {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+    }
+}
+
+/* BUTTONS */
+
+.basic-button {
+    font-family: "LatoWeb", sans-serif;
+}
+
+.forgot-password {
+    display: none;
+}
+
+.resend-button, .resend-button:visited, .resend-button:active {
+    color: #a380d1;
+}
+
+.main-footer__button {
+    width: 105px;
+    height: 35px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    color: rgba(242, 242, 242, 0.9);
+    background: none;
+    font-size: 14px;
+    cursor: pointer;
+    transition: border .2s ease;
+    vertical-align: middle;
+}
+
+.main-footer__button--primary {
+    background-color: rgb(163, 128, 209);
+    border: 0;
+    margin-left: 15px;
+    font-size: 16px;
+    transition: background-color .2s ease;
+}
+
+.main-footer__button--primary:hover {
+    background-color: rgb(176, 146, 216);
+    transition: background-color .2s ease;
+}
+
+.main-footer__button--secondary:hover {
+    border: 1px solid rgba(242, 242, 242, .6);
+    transition: border .2s ease;
+}
+
+.steam-help {
+    white-space: nowrap;
+}
+
+.forgot-password, .forgot-password:visited, .forgot-password:active, .steam-help, .steam-help:visited, .steam-help:active {
+    color: rgba(242, 242, 242, 0.4);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: color .2s ease;
+}
+
+.forgot-password:hover, .steam-help:hover {
+    color: rgba(242, 242, 242, 0.7);
+    transition: color .2s ease;
+}
+
+/* ICONS */
+
+.steam-logo-icon {
+    height: 42px;
+    width: 42px;
+    margin-right: 15px;
+}
+
+.padlock-icon {
+    height: 15px;
+    width: 15px;
+    fill: #43f8c0;
+    transition: color .2s ease;
+}
+
+.padlock-icon:hover {
+    fill: #75fad1;
+    transition: color .2s ease;
+}
+
+.error-icon {
+    margin-right: 10px;
+}
+
+.error-icon--aligned-top {
+    margin-top: 3px;
+}
+
+/* FORM */
+
+.main-form legend {
+    font-size: 13px;
+    margin-bottom: 30px;
+    color: rgba(242, 242, 242, 0.9);
+    line-height: 19px;
+}
+
+.field-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.field-group--no-justify {
+    justify-content: unset;
+}
+
+.field-group.relative {
+    position: relative;
+}
+
+.main-form label {
+    font-size: 13px;
+    color: rgba(242, 242, 242, .6);
+}
+
+/* INPUTS */
+
+.basic-input {
+    border: 1px solid rgba(242, 242, 242, 0.25);
+    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.05);
+    color: #f2f2f2;
+    padding-left: 15px;
+    font-family: "LatoWeb", sans-serif;
+    font-size: 13px;
+    transition: border .2s ease;
+}
+
+.basic-input:focus {
+    outline: 0 none;
+    border: 1px solid #a380d1;
+}
+
+.basic-input:hover {
+    border: 1px solid rgba(242, 242, 242, 0.5);
+    transition: border .2s ease;
+}
+
+.basic-input:focus:hover {
+    border: 1px solid #a380d1;
+}
+
+@-webkit-keyframes autofill {
+    0%,100% {
+        color: #f2f2f2;
+        background: transparent;
+    }
+}
+
+.basic-input:-webkit-autofill {
+    -webkit-animation-delay: 1s;
+    -webkit-animation-name: autofill;
+    -webkit-animation-fill-mode: both;
+}
+
+.basic-input::-webkit-credentials-auto-fill-button {
+    background-color: white;
+    margin-right: 10px;
+}
+
+.basic-input.errored {
+    outline: 0 none;
+    border: 1px solid #f74638;
+}
+
+.basic-input.errored:focus {
+    outline: 0 none;
+    border: 1px solid #a380d1;
+}
+
+.login-input {
+    width: 250px;
+    height: 36px;
+}
+
+/* COMMONS */
+
+.title {
+    font-weight: 600;
+}
+
+.subtitle {
+    font-size: 13px;
+    padding-top: 5px;
+    font-weight: 300;
+    color: rgba(242, 242, 242, 0.9);
+}
+
+.error-message {
+    display: flex;
+    align-items: end;
+    font-size: 13px;
+    line-height: 19px;
+    font-weight: 700;
+    color: rgb(255, 94, 81);
+}
+
+.error-message--centered {
+    align-items: center;
+}
+
+.error-message--start {
+    align-items: start;
+}
+
+.resend-code {
+    font-size: 13px;
+    color: #f2f2f2;
+    margin-top: 25px;
+    margin-bottom: 30px;
+    color: rgba(242, 242, 242, 0.9);
+}
+
+.tooltip {
+    visibility: hidden;
+    position: absolute;
+    font-size: 13px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 300;
+    background: #2c2b2e;
+    border-radius: 3px;
+    box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.3);
+    padding: 10px 15px;
+    line-height: 15px;
+}

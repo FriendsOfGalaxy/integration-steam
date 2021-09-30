@@ -1,0 +1,172 @@
+/* WINDOWS SCROLLBARS */
+
+body.windows::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+body.windows::-webkit-scrollbar-track {
+    border: 0;
+    background-color: transparent;
+}
+
+body.windows::-webkit-scrollbar-thumb {
+    background-clip: padding-box;
+    background-color: rgb(242, 242, 242, 0.3);
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-radius: 12px;
+    min-height: 33px;
+}
+
+body.windows::-webkit-scrollbar-thumb:hover, ::-webkit-scrollbar-thumb:active {
+    background-color: rgba(242, 242, 242, 0.5);
+    border-left-width: 3px;
+    border-right-width: 3px;
+}
+
+body.windows::-webkit-scrollbar-button,
+body.windows::-webkit-scrollbar-track-piece,
+body.windows::-webkit-scrollbar-corner,
+body.windows::-webkit-resizer {
+    display: none;
+}
+
+/* CONTAINERS */
+
+.container {
+    position: absolute;
+    background: #2c2b2e;
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+}
+
+/* FORM */
+
+.main-form legend.prompt-legend {
+    margin-bottom: 15px;
+}
+
+.main-form legend.centered {
+    display: flex;
+    align-items: center;
+}
+
+/* COMMONS */
+
+.padlock-tooltip {
+    left: -248px;
+    top: 10px;
+    height: 68px;
+    width: 256px;
+}
+
+.padlock-icon-container {
+    position: relative;
+    cursor: pointer;
+}
+
+.padlock-icon-container:hover .padlock-tooltip {
+    visibility: visible;
+}
+
+.password-tooltip {
+    left: -47px;
+    top: -30px;
+    height: 35px;
+    width: 118px;
+}
+
+.show-password {
+    position: absolute;
+    width: 40px;
+    height: calc(100% - 4px);
+    right: 2px;
+    background: #2a282c;
+    cursor: pointer;
+}
+
+.show-password:after {
+    position: absolute;
+    content: '';
+    width: 19px;
+    left: 10px;
+    height: 11px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: url('../../../commonWeb/img/icon-show.svg');
+    cursor: pointer;
+}
+
+.show-password:hover .password-tooltip {
+    visibility: visible;
+}
+
+.note {
+    display: flex;
+    color: rgba(242, 242, 242, 0.4);
+    font-size: 13px;
+    margin-top: 20px;
+    line-height: 20px;
+}
+
+.note:before {
+    content: 'i';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(242, 242, 242);
+    font-weight: 600;
+    font-size: 10px;
+    min-height: 15px;
+    min-width: 15px;
+    height: 15px;
+    width: 15px;
+    background: rgba(242, 242, 242, 0.1);
+    border-radius: 50%;
+    margin-right: 10px;
+    margin-top: 4px;
+}
+
+.read-more, .read-more:visited, .read-more:active {
+    display: inline;
+    color: rgba(242, 242, 242, 0.4);
+}
+
+.read-more:hover {
+    color: rgba(242, 242, 242, 0.7);
+    transition: color .2s ease;
+}
+
+.warning {
+    color: rgb(255, 184, 60);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.prompt-text {
+    font-size: 13px;
+    line-height: 20px;
+    color: rgb(242, 242, 242);
+}
+
+.prompt-text:not(:last-child) {
+    padding-bottom: 20px;
+}
+
+.learn-how, .learn-how:visited, .learn-how:active {
+    color: rgb(242, 242, 242);
+}
+
+/* INPUTS */
+
+.steam-guard-input {
+    height: 50px;
+    width: 190px;
+    font-size: 36px;
+    text-transform: uppercase;
+    margin-left: 40px;
+}
