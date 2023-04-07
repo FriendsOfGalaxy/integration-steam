@@ -186,11 +186,12 @@ class SteamNetworkBackend(BackendInterface):
     async def _get_websocket_auth_step(self):
         try:
             result = await asyncio.wait_for(
-                self._websocket_client.communication_queues["plugin"].get(), 60
+                self._websocket_client.communication_queues["plugin"].get(), 20
             )
             return result["auth_result"]
         except asyncio.TimeoutError:
-            raise BackendTimeout()
+            return UserActionRequired.NoActionRequired
+            #raise BackendTimeout()
 
     async def pass_login_credentials(self, step, credentials, cookies):
         if "login_finished" in credentials["end_uri"]:
@@ -241,7 +242,8 @@ class SteamNetworkBackend(BackendInterface):
         else:
             self._auth_data = None
             self._store_credentials(self._user_info_cache.to_dict())
-            return await self._check_public_profile()
+            #return await self._check_public_profile()
+            return Authentication(self._user_info_cache.steam_id, self._user_info_cache.persona_name)
 
     async def _handle_two_step_mobile_finished(self, credentials):
         parsed_url = parse.urlsplit(credentials["end_uri"])
