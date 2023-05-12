@@ -14,6 +14,7 @@ from galaxy.api.errors import (
     BackendError,
 )
 from requests_html import HTML
+import xml.etree.ElementTree as ET
 
 
 logger = logging.getLogger(__name__)
@@ -91,25 +92,35 @@ class SteamHttpClient:
         return await loop.run_in_executor(None, parse, text)
 
     async def get_games(self, steam_id):
-        url = "https://steamcommunity.com/profiles/{}/games/?tab=all".format(steam_id)
+        url = "https://steamcommunity.com/profiles/{}/games/?xml=1".format(steam_id)
 
-        # find js array with games
         text = await get_text(await self._http_client.get(url))
-        variable = "var rgGames ="
-        start = text.find(variable)
-        if start == -1:
-            raise UnknownBackendResponse()
-        start += len(variable)
-        end = text.find(";\r\n", start)
-        array = text[start:end]
-
         try:
-            games = json.loads(array)
-        except json.JSONDecodeError:
-            logger.exception("Can not parse backend response")
+            root = ET.fromstring(text)
+        except ET.ParseError:
+            logger.error(f'Can not parse backend response - not valid xml')
             raise UnknownBackendResponse()
 
-        return games
+        error_txt = getattr(root.find('./error'), 'text', None)
+        if error_txt:
+            logger.error(f'Error from Steam: {error_txt}')
+            raise UnknownBackendResponse()
+
+        game_elms = root.findall('./games/game')
+
+        if len(game_elms) == 0:
+            logger.error(f'Can not parse backend response - unable to find any game element')
+            raise UnknownBackendResponse()
+
+        return [
+            {
+                "appid": game_elem.find("appID").text,
+                "name": game_elem.find("name").text,
+                "hoursOnRecord": getattr(game_elem.find("hoursOnRecord"), 'text', None),
+                "statsLink": getattr(game_elem.find("statsLink"), 'text', None),
+            }
+            for game_elem in game_elms
+        ]
 
     async def setup_steam_profile(self, profile_url):
         url = profile_url.split("/home")[0]
@@ -142,43 +153,43 @@ class SteamHttpClient:
         )
         raise UnknownBackendResponse()
 
-    async def get_achievements(self, steam_id, game_id):
-        host = "https://steamcommunity.com"
-        url = host + "/profiles/{}/stats/{}/".format(steam_id, game_id)
-        params = {"tab": "achievements", "l": "english"}
+    async def get_achievements(self, stats_url):
+        params = {"xml": "1", "l": "english"}
         # manual redirects, append params
-        while True:
-            response = await self._http_client.get(url, allow_redirects=False, params=params)
-            if 300 <= response.status and response.status < 400:
-                url = response.headers["Location"]
-                if not is_absolute(url):
-                    url = host + url
-                continue
-            break
-
+        response = await self._http_client.get(stats_url, allow_redirects=False, params=params)
         text = await get_text(response)
 
-        def parse(text):
-            html = HTML(html=text)
-            rows = html.find(".achieveRow")
+        try:
+            root = ET.fromstring(text)
+        except ET.ParseError:
+            logger.error(f'{stats_url} - Can not parse backend response - not valid xml')
+            raise UnknownBackendResponse()
+
+        error_txt = getattr(root.find('./error'), 'text', None)
+        if error_txt:
+            logger.error(f'{stats_url} - Error from Steam: {error_txt}')
+            raise UnknownBackendResponse()
+
+        def parse(root):
+            achievement_elems = root.findall("./achievements/achievement")
             achievements = []
             try:
-                for row in rows:
-                    unlock_time = row.find(".achieveUnlockTime", first=True)
-                    if unlock_time is None:
+                for achievement_elem in achievement_elems:
+                    unlock_time_str = getattr(achievement_elem.find("./unlockTimestamp"), 'text', '')
+                    if len(unlock_time_str) == 0:
                         continue
-                    unlock_time = int(self.parse_date(unlock_time.text).timestamp())
-                    name = row.find("h3", first=True).text
+                    unlock_time = int(unlock_time_str)
+                    name = achievement_elem.find("./name").text
                     name = name if name != "" else " "
                     achievements.append((unlock_time, name))
             except (AttributeError, ValueError, TypeError):
-                logger.exception("Can not parse backend response")
+                logger.exception(f'{stats_url} - Can not parse backend response')
                 raise UnknownBackendResponse()
 
             return achievements
 
         loop = asyncio.get_running_loop()
-        return await loop.run_in_executor(None, parse, text)
+        return await loop.run_in_executor(None, parse, root)
 
     async def get_friends(self, steam_id):
         def parse_response(text):

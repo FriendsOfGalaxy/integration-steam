@@ -56,7 +56,7 @@ class PublicProfilesBackend(BackendInterface):
 
         self._achievements_cache = Cache()
         self._achievements_cache_updated = False
-        self._achievements_semaphore = asyncio.Semaphore(20)
+        self._achievements_semaphore = asyncio.Semaphore(2)
 
         self._authentication_lost = lambda: None
 
@@ -173,20 +173,26 @@ class PublicProfilesBackend(BackendInterface):
         if self._steam_id is None:
             raise AuthenticationRequired()
 
-        return await self._get_game_times_dict()
+        return await self._get_game_achivement_info_dict()
 
     async def get_unlocked_achievements(self, game_id: str, context: Any) -> List[Achievement]:
-        game_time = await self.get_game_time(game_id, context)
+        achivement_info = context.get(game_id)
+        if achivement_info is None:
+            logger.error("Game {} not owned".format(game_id))
+            raise UnknownError("Game {} not owned".format(game_id))
 
-        fingerprint = achievements_cache.Fingerprint(game_time.last_played_time, game_time.time_played)
+        if not achivement_info["stats_url"]:
+            return []
+
+        fingerprint = achievements_cache.Fingerprint(None, achivement_info["time_played"])
         achievements = self._achievements_cache.get(game_id, fingerprint)
 
         if achievements is not None:
-            # return from cache
-            return achievements
+           # return from cache
+           return achievements
 
         # fetch from http_client and update cache
-        achievements = await self._get_achievements(game_id)
+        achievements = await self._get_achievements(achivement_info["stats_url"])
         self._achievements_cache.update(game_id, achievements, fingerprint)
         self._achievements_cache_updated = True
         return achievements
@@ -197,10 +203,27 @@ class PublicProfilesBackend(BackendInterface):
             self._persistent_storage_state.modified = True
             self._achievements_cache_updated = False
 
-    async def _get_achievements(self, game_id):
+    async def _get_achievements(self, stats_url):
         async with self._achievements_semaphore:
-            achievements = await self._client.get_achievements(self._steam_id, game_id)
+            achievements = await self._client.get_achievements(stats_url)
             return [Achievement(unlock_time, None, name) for unlock_time, name in achievements]
+
+    async def _get_game_achivement_info_dict(self) -> Dict[str, GameTime]:
+        games = await self._client.get_games(self._steam_id)
+
+        game_achivement_infos = {}
+
+        try:
+            for game in games:
+                game_achivement_infos[str(game["appid"])] = {
+                    "stats_url": game["statsLink"],
+                    "time_played": int(float((game["hoursOnRecord"] or "0").replace(",", "")) * 60),
+                }
+        except (KeyError, ValueError):
+            logger.exception("Cannot parse backend response")
+            raise UnknownBackendResponse()
+
+        return game_achivement_infos
 
     async def prepare_game_times_context(self, game_ids: List[str]) -> Any:
         if self._steam_id is None:
@@ -222,12 +245,13 @@ class PublicProfilesBackend(BackendInterface):
         try:
             for game in games:
                 game_id = str(game["appid"])
-                last_played = game.get("last_played")
-                if last_played == GAME_DOES_NOT_SUPPORT_LAST_PLAYED_VALUE:
-                    last_played = None
+                # last_played = game.get("last_played")
+                # if last_played == GAME_DOES_NOT_SUPPORT_LAST_PLAYED_VALUE:
+                #     last_played = None
+                last_played = None
                 game_times[game_id] = GameTime(
                     game_id,
-                    int(float(game.get("hours_forever", "0").replace(",", "")) * 60),
+                    int(float((game["hoursOnRecord"] or "0").replace(",", "")) * 60),
                     last_played
                 )
         except (KeyError, ValueError):
