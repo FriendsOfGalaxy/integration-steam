@@ -222,12 +222,13 @@ class PublicProfilesBackend(BackendInterface):
         try:
             for game in games:
                 game_id = str(game["appid"])
-                last_played = game.get("last_played")
-                if last_played == GAME_DOES_NOT_SUPPORT_LAST_PLAYED_VALUE:
-                    last_played = None
+                # last_played = game.get("last_played")
+                # if last_played == GAME_DOES_NOT_SUPPORT_LAST_PLAYED_VALUE:
+                #     last_played = None
+                last_played = None
                 game_times[game_id] = GameTime(
                     game_id,
-                    int(float(game.get("hours_forever", "0").replace(",", "")) * 60),
+                    int(float((game["hoursOnRecord"] or "0").replace(",", "")) * 60),
                     last_played
                 )
         except (KeyError, ValueError):

@@ -14,6 +14,7 @@ from galaxy.api.errors import (
     BackendError,
 )
 from requests_html import HTML
+import xml.etree.ElementTree as ET
 
 
 logger = logging.getLogger(__name__)
@@ -91,25 +92,29 @@ class SteamHttpClient:
         return await loop.run_in_executor(None, parse, text)
 
     async def get_games(self, steam_id):
-        url = "https://steamcommunity.com/profiles/{}/games/?tab=all".format(steam_id)
+        url = "https://steamcommunity.com/profiles/{}/games/?xml=1".format(steam_id)
 
-        # find js array with games
         text = await get_text(await self._http_client.get(url))
-        variable = "var rgGames ="
-        start = text.find(variable)
-        if start == -1:
-            raise UnknownBackendResponse()
-        start += len(variable)
-        end = text.find(";\r\n", start)
-        array = text[start:end]
-
         try:
-            games = json.loads(array)
-        except json.JSONDecodeError:
-            logger.exception("Can not parse backend response")
+            root = ET.fromstring(text)
+        except ET.ParseError:
+            logger.error(f'Can not parse backend response - not valid xml')
             raise UnknownBackendResponse()
 
-        return games
+        game_elms = root.findall('./games/game')
+
+        if len(game_elms) == 0:
+            logger.error(f'Can not parse backend response - unable to find any game element')
+            raise UnknownBackendResponse()
+
+        return [
+            {
+                "appid": game_elem.find("appID").text,
+                "name": game_elem.find("name").text,
+                "hoursOnRecord": getattr(game_elem.find("hoursOnRecord"), 'text', None),
+            }
+            for game_elem in game_elms
+        ]
 
     async def setup_steam_profile(self, profile_url):
         url = profile_url.split("/home")[0]
