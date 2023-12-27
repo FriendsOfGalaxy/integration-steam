@@ -1,135 +1,41 @@
 import asyncio
 import logging
-import enum
-import platform
 import secrets
-from typing import List, TYPE_CHECKING
+from typing import Callable, List, TYPE_CHECKING, Optional, Tuple, Dict
 
-import galaxy.api.errors
+from .steam_public_key import SteamPublicKey
+from .steam_auth_polling_data import SteamPollingData
 
+from .utils import get_os, translate_error
+
+from asyncio import Future
 from .local_machine_cache import LocalMachineCache
 from .protocol.protobuf_client import ProtobufClient, SteamLicense
-from .protocol.consts import EResult, EFriendRelationship, EPersonaState, STEAM_CLIENT_APP_ID, EOSType
+from .protocol.consts import EResult, EFriendRelationship, EPersonaState
 from .friends_cache import FriendsCache
 from .games_cache import GamesCache
 from .stats_cache import StatsCache
 from .user_info_cache import UserInfoCache
 from .times_cache import TimesCache
-from .ownership_ticket_cache import OwnershipTicketCache
+from .authentication_cache import AuthenticationCache
 
-if TYPE_CHECKING:
-    from protocol.messages import steammessages_clientserver_pb2
+from .enums import TwoFactorMethod, UserActionRequired, to_TwoFactorWithMessage, to_EAuthSessionGuardType
+from .utils import get_os, translate_error
+
+from rsa import PublicKey
+
+from .protocol.messages.steammessages_auth_pb2 import (
+    CAuthentication_BeginAuthSessionViaCredentials_Response,
+    CAuthentication_AllowedConfirmation,
+    CAuthentication_PollAuthSessionStatus_Response,
+)
+
+from .protocol.messages.steammessages_clientserver_userstats_pb2 import (
+    CMsgClientGetUserStatsResponse,
+)
 
 
 logger = logging.getLogger(__name__)
-
-
-def get_os() -> EOSType:
-    system = platform.system()
-    if system == 'Windows':
-        release = platform.release()
-        releases = {
-            'XP': EOSType.WinXP,
-            'Vista': EOSType.WinVista,
-            '7': EOSType.Windows7,
-            '8': EOSType.Windows8,
-            '8.1': EOSType.Windows81,
-            '10': EOSType.Windows10,
-        }
-        return releases.get(release, EOSType.WinUnknown)
-    elif system == 'Darwin':
-        release = platform.mac_ver()[0]
-        releases = {
-            '10.4': EOSType.MacOS104,
-            '10.5': EOSType.MacOS105,
-            '10.6': EOSType.MacOS106,
-            '10.7': EOSType.MacOS107,
-            '10.8': EOSType.MacOS108,
-            '10.9': EOSType.MacOS109,
-            '10.10': EOSType.MacOS1010,
-            '10.11': EOSType.MacOS1011,
-            '10.12': EOSType.MacOS1012,
-            '10.13': EOSType.MacOS1013,
-            '10.14': EOSType.MacOS1014,
-            '10.15': EOSType.MacOS1015,
-            '10.16': EOSType.MacOS1016,
-        }
-        return releases.get(release, EOSType.MacOSUnknown)
-    return EOSType.Unknown
-
-
-def translate_error(result: EResult):
-    assert result != EResult.OK
-    data = {
-        "result": result
-    }
-    if result in (
-        EResult.InvalidPassword,
-        EResult.AccountNotFound,
-        EResult.InvalidSteamID,
-        EResult.InvalidLoginAuthCode,
-        EResult.AccountLogonDeniedNoMailSent,
-        EResult.AccountLoginDeniedNeedTwoFactor,
-        EResult.TwoFactorCodeMismatch,
-        EResult.TwoFactorActivationCodeMismatch
-    ):
-        return galaxy.api.errors.InvalidCredentials(data)
-    if result in (
-        EResult.ConnectFailed,
-        EResult.IOFailure,
-        EResult.RemoteDisconnect
-    ):
-        return galaxy.api.errors.NetworkError(data)
-    if result in (
-        EResult.Busy,
-        EResult.ServiceUnavailable,
-        EResult.Pending,
-        EResult.IPNotFound,
-        EResult.TryAnotherCM,
-        EResult.Cancelled
-    ):
-        return galaxy.api.errors.BackendNotAvailable(data)
-    if result == EResult.Timeout:
-        return galaxy.api.errors.BackendTimeout(data)
-    if result in (
-        EResult.RateLimitExceeded,
-        EResult.LimitExceeded,
-        EResult.Suspended,
-        EResult.AccountLocked,
-        EResult.AccountLogonDeniedVerifiedEmailRequired
-    ):
-        return galaxy.api.errors.TemporaryBlocked(data)
-    if result == EResult.Banned:
-        return galaxy.api.errors.Banned(data)
-    if result in (
-        EResult.AccessDenied,
-        EResult.InsufficientPrivilege,
-        EResult.LogonSessionReplaced,
-        EResult.Blocked,
-        EResult.Ignored,
-        EResult.AccountDisabled,
-        EResult.AccountNotFeatured
-    ):
-        return galaxy.api.errors.AccessDenied(data)
-    if result in (
-        EResult.DataCorruption,
-        EResult.DiskFull,
-        EResult.RemoteCallFailed,
-        EResult.RemoteFileConflict,
-        EResult.BadResponse
-    ):
-        return galaxy.api.errors.BackendError(data)
-
-    return galaxy.api.errors.UnknownError(data)
-
-
-class UserActionRequired(enum.IntEnum):
-    NoActionRequired = 0
-    EmailTwoFactorInputRequired = 1
-    PhoneTwoFactorInputRequired = 2
-    PasswordRequired = 3
-    InvalidAuthData = 4
-
 
 class ProtocolClient:
     _STATUS_FLAG = 1106
@@ -138,45 +44,56 @@ class ProtocolClient:
         socket,
         friends_cache: FriendsCache,
         games_cache: GamesCache,
-        translations_cache: dict,
+        translations_cache: Dict[int, str],
         stats_cache: StatsCache,
         times_cache: TimesCache,
+        authentication_cache: AuthenticationCache,
         user_info_cache: UserInfoCache,
         local_machine_cache: LocalMachineCache,
-        ownership_ticket_cache: OwnershipTicketCache,
-        used_server_cell_id,
+        used_server_cell_id : int,
     ):
-
+        #all of this is being refactored away (eventually), so i'm not bothering type hinting this shit. 
         self._protobuf_client = ProtobufClient(socket)
-        self._protobuf_client.log_on_handler = self._log_on_handler
+        #new auth
+        self._protobuf_client.rsa_handler = self._rsa_handler
+        self._protobuf_client.login_handler = self._login_handler
+        self._protobuf_client.two_factor_update_handler = self._two_factor_update_handler
+        self._protobuf_client.poll_status_handler = self._poll_handler
+        #old auth
+        self._protobuf_client.log_on_token_handler = self._login_token_handler
         self._protobuf_client.log_off_handler = self._log_off_handler
+        #retrieve data
         self._protobuf_client.relationship_handler = self._relationship_handler
         self._protobuf_client.user_info_handler = self._user_info_handler
         self._protobuf_client.user_nicknames_handler = self._user_nicknames_handler
         self._protobuf_client.app_info_handler = self._app_info_handler
         self._protobuf_client.package_info_handler = self._package_info_handler
-        self._protobuf_client.app_ownership_ticket_handler = self._app_ownership_ticket_handler
         self._protobuf_client.license_import_handler = self._license_import_handler
         self._protobuf_client.translations_handler = self._translations_handler
         self._protobuf_client.stats_handler = self._stats_handler
         self._protobuf_client.times_handler = self._times_handler
         self._protobuf_client.user_authentication_handler = self._user_authentication_handler
-        self._protobuf_client.sentry = self._get_sentry
         self._protobuf_client.times_import_finished_handler = self._times_import_finished_handler
-        self._friends_cache = friends_cache
-        self._games_cache = games_cache
-        self._translations_cache = translations_cache
-        self._stats_cache = stats_cache
-        self._user_info_cache = user_info_cache
-        self._times_cache = times_cache
-        self._ownership_ticket_cache = ownership_ticket_cache
+
+        self._friends_cache : FriendsCache = friends_cache
+        self._games_cache : GamesCache = games_cache
+        self._translations_cache : Dict[int, str] = translations_cache
+        self._stats_cache : StatsCache = stats_cache
+        self._authentication_cache : AuthenticationCache = authentication_cache
+        self._user_info_cache : UserInfoCache = user_info_cache
+        self._times_cache : TimesCache = times_cache
         self._auth_lost_handler = None
-        self._login_future = None
-        self._used_server_cell_id = used_server_cell_id
-        self._local_machine_cache = local_machine_cache
+        self._rsa_future: Optional[Future] = None
+        self._login_future: Optional[Future] = None
+        self._two_factor_future: Optional[Future] = None
+        self._poll_future: Optional[Future] = None
+        self._token_login_future: Optional[Future] = None
+
+        self._used_server_cell_id : int = used_server_cell_id
+        self._local_machine_cache : LocalMachineCache = local_machine_cache
         if not self._local_machine_cache.machine_id:
             self._local_machine_cache.machine_id = self._generate_machine_id()
-        self._machine_id = self._local_machine_cache.machine_id
+        self._machine_id : bytes = self._local_machine_cache.machine_id
 
     @staticmethod
     def _generate_machine_id():
@@ -191,73 +108,207 @@ class ProtocolClient:
     async def run(self):
         await self._protobuf_client.run()
 
-    async def get_steam_app_ownership_ticket(self):
-        await self._protobuf_client.get_app_ownership_ticket(STEAM_CLIENT_APP_ID)
-
     async def register_auth_ticket_with_cm(self, ticket: bytes):
         await self._protobuf_client.register_auth_ticket_with_cm(ticket)
 
-    async def authenticate_password(self, account_name, password, two_factor, two_factor_type, auth_lost_handler):
+    async def finish_handshake(self):
+        await self._protobuf_client.say_hello()
+
+    async def get_rsa_public_key(self, username:str, auth_lost_handler) -> Tuple[bool, SteamPublicKey]:
+        loop = asyncio.get_running_loop()
+        self._rsa_future = loop.create_future()
+        await self._protobuf_client.get_rsa_public_key(username)
+
+        key:Optional[SteamPublicKey]
+        result: EResult
+        (result, key) = await self._rsa_future
+        self._rsa_future = None
+        logger.info ("GOT RSA KEY IN PROTOCOL_CLIENT")
+        #If you provide a bad username, it still returns "OK" and gives you rsa key data. i have no idea why. it just does. so we have no way to determine bad login. 
+        if (result == EResult.OK):
+            self._auth_lost_handler = auth_lost_handler
+            return (True, key)
+        #the only way we get here afaik is if steam is down or busy or something network related. 
+        else: 
+        #    self._auth_lost_handler = auth_lost_handler
+            logger.warning(f"Received unknown error, code: {result}")
+            #at this point, hopefully key would be null, so the bool part of the tuple would be redundant. but i can't seem to reach this state so idk. 
+            return (False, key)
+
+    async def _rsa_handler(self, result: EResult, mod: int, exp: int, timestamp: int) -> Tuple[EResult, SteamPublicKey]:
+        logger.info("In Protocol_Client RSA Handler")
+        spk = None
+        if (result == EResult.OK):
+            spk = SteamPublicKey(PublicKey(mod, exp), timestamp)
+        else:
+            pass #probably should get the EResult for bad username separetely from the else, but for now this will work. 
+        if self._rsa_future is not None:
+            self._rsa_future.set_result((result, spk))
+        else:
+            logger.warning("NO RSA FUTURE SET")
+
+    async def authenticate_password(self, account_name :str, enciphered_password : bytes, timestamp: int, auth_lost_handler:Callable) ->  Optional[SteamPollingData]:
         loop = asyncio.get_running_loop()
         self._login_future = loop.create_future()
         os_value = get_os()
-        sentry = await self._get_sentry()
-        await self._protobuf_client.log_on_password(
-            account_name, password, two_factor, two_factor_type, self._machine_id, os_value, sentry
-        )
-        result = await self._login_future
-        logger.info(result)
+
+        await self._protobuf_client.log_on_password(account_name, enciphered_password, timestamp, os_value)
+        (result, data) = await self._login_future
+        self._login_future = None
         if result == EResult.OK:
             self._auth_lost_handler = auth_lost_handler
-        elif result == EResult.AccountLogonDenied:
-            self._auth_lost_handler = auth_lost_handler
-            return UserActionRequired.EmailTwoFactorInputRequired
-        elif result == EResult.AccountLoginDeniedNeedTwoFactor:
-            self._auth_lost_handler = auth_lost_handler
-            return UserActionRequired.PhoneTwoFactorInputRequired
         elif result in (EResult.InvalidPassword,
+                        EResult.InvalidParam,
                         EResult.InvalidSteamID,
                         EResult.AccountNotFound,
                         EResult.InvalidLoginAuthCode,
-                        EResult.TwoFactorCodeMismatch,
-                        EResult.TwoFactorActivationCodeMismatch
                         ):
             self._auth_lost_handler = auth_lost_handler
-            return UserActionRequired.InvalidAuthData
-        else:
+            #TODO: Determine if we need to do anything here
+        else: #ServiceUnavailable, RateLimitExceeded
             logger.warning(f"Received unknown error, code: {result}")
             raise translate_error(result)
 
-        await self._protobuf_client.account_info_retrieved.wait()
-        await self._protobuf_client.login_key_retrieved.wait()
-        return UserActionRequired.NoActionRequired
+        return data
 
-    async def authenticate_token(self, steam_id, account_name, token, auth_lost_handler):
+    async def _login_handler(self, result: EResult, message : CAuthentication_BeginAuthSessionViaCredentials_Response):
+        data : Optional[SteamPollingData] = None
+        if (result == EResult.OK):
+            if self._user_info_cache.steam_id != message.steamid:
+                self._user_info_cache.steam_id = message.steamid;
+
+            allowables_with_message : dict[TwoFactorMethod, str]= dict(map(to_TwoFactorWithMessage, message.allowed_confirmations))
+
+            data = SteamPollingData(message.client_id, message.steamid, message.request_id, message.interval, allowables_with_message, message.extended_error_message)
+
+        if self._login_future is not None:
+            self._login_future.set_result((result, data))
+        else:
+            logger.warning("NO LOGIN FUTURE SET")
+
+    async def update_two_factor(self, client_id: int, steam_id:int, code: str, method: TwoFactorMethod, auth_lost_handler:Callable) -> UserActionRequired:
         loop = asyncio.get_running_loop()
-        self._login_future = loop.create_future()
-        self._protobuf_client.steam_id = steam_id
+        self._two_factor_future = loop.create_future()
+        converted_meth = to_EAuthSessionGuardType(method)
+        await self._protobuf_client.update_steamguard_data(client_id, steam_id, code, converted_meth)
+        result = await self._two_factor_future
+        self._two_factor_future = None
+        logger.info ("GOT TWO FACTOR UPDATE RESULT IN PROTOCOL CLIENT")
+        # Observed results can be OK, InvalidLoginAuthCode, TwoFactorCodeMismatch, Expired, DuplicateRequest.
+        ret_code = UserActionRequired.InvalidAuthData
+        if (result == EResult.OK or result == EResult.DuplicateRequest):
+            ret_code = UserActionRequired.NoActionConfirmLogin
+            self._auth_lost_handler = auth_lost_handler
+        elif (result == EResult.Expired):
+            ret_code = UserActionRequired.TwoFactorExpired
+            self._auth_lost_handler = auth_lost_handler
+        elif (result == EResult.InvalidLoginAuthCode or result == EResult.TwoFactorCodeMismatch):
+            ret_code = UserActionRequired.InvalidAuthData
+            self._auth_lost_handler = auth_lost_handler
+        else:
+            raise translate_error(result)
+        return ret_code
+
+    async def _two_factor_update_handler(self, result: EResult, agreement_session_url:str):
+        if self._two_factor_future is not None:
+            self._two_factor_future.set_result(result)
+        else:
+            logger.warning("NO TWO FACTOR FUTURE SET")
+
+    async def check_auth_status(self, client_id:int, request_id:bytes, two_factor_is_confirm: bool, auth_lost_handler:Callable) -> Tuple[UserActionRequired, Optional[int]]:
+        loop = asyncio.get_running_loop()
+        self._poll_future = loop.create_future()
+
+        await self._protobuf_client.poll_auth_status(client_id, request_id)
+        result:EResult
+        data:CAuthentication_PollAuthSessionStatus_Response
+        (result, data) = await self._poll_future
+        self._poll_future = None #we may have to redo the poll so reset this value to null. 
+        # eresult can be OK, Expired, FileNotFound, Fail
+        if result == EResult.OK:
+            #ok just means the poll was successful. it doesn't tell us if we logged in. The only way i know of to check that is the refresh token having data. 
+            if (data.refresh_token):
+                self._auth_lost_handler = auth_lost_handler
+                #uint64 new_client_id = 1 [(description) = "if challenge is old, this is the new client id"];
+                #string new_challenge_url = 2 [(description) = "if challenge is old, this is the new challenge ID to re-render for mobile confirmation"];
+                #string refresh_token = 3 [(description) = "if login has been confirmed, this is the requestor's new refresh token"];
+                #string access_token = 4 [(description) = "if login has been confirmed, this is a new token subordinate to refresh_token"];
+                #bool had_remote_interaction = 5 [(description) = "whether or not the auth session appears to have had remote interaction from a potential confirmer"];
+                #string account_name = 6 [(description) = "account name of authenticating account, for use by UI layer"];
+                #string new_guard_data = 7 [(description) = "if login has been confirmed, may contain remembered machine ID for future login"];
+                #string agreement_session_url = 8 [(description) = "agreement the user needs to agree to"];
+
+                self._user_info_cache.refresh_token = data.refresh_token
+                self._user_info_cache.persona_name = data.account_name
+                self._user_info_cache.access_token = data.access_token
+                #self._user_info_cache.guard_data = data.new_guard_data #seems to not be required.
+                
+                return (UserActionRequired.NoActionConfirmToken, data.new_client_id)
+            else:
+                return (UserActionRequired.NoActionConfirmLogin, data.new_client_id)
+        elif result == EResult.Expired:
+            self._auth_lost_handler = auth_lost_handler
+            return (UserActionRequired.TwoFactorExpired, data.new_client_id)
+        elif result == EResult.FileNotFound: #confirmed occurs with mobile confirm if you don't confirm it. May occur elsewhere, but that is unknown/unexpected.
+            self._auth_lost_handler = auth_lost_handler
+            if (two_factor_is_confirm):
+                return (UserActionRequired.NoActionConfirmLogin, data.new_client_id)
+            else:
+                logger.warning("Received a file not found but were not using mobile confirm. This is unexpected, but seems to occur when you time out a 2FA code.")
+                return (UserActionRequired.TwoFactorExpired, data.new_client_id)
+        #TODO: This will likely error if the code is bad. Figure out what to do here. 
+        else:
+            raise translate_error(result)
+
+    async def _poll_handler(self, result: EResult, message : CAuthentication_PollAuthSessionStatus_Response):
+        if self._poll_future is not None:
+            self._poll_future.set_result((result, message))
+        else:
+            logger.warning("NO FUTURE SET")
+
+    #async def finalize_login(self, username:str, refresh_token:str, auth_lost_handler : Callable) -> UserActionRequired:
+    async def finalize_login(self, username:str, steam_id:int, refresh_token:str, auth_lost_handler : Callable) -> UserActionRequired:
+        loop = asyncio.get_running_loop()
+        self._token_login_future = loop.create_future()
+
         os_value = get_os()
-        sentry = await self._get_sentry()
-        await self._protobuf_client.log_on_token(
-            account_name, token, self._used_server_cell_id, self._machine_id, os_value, sentry
-        )
-        result = await self._login_future
+
+        #await self._protobuf_client.send_log_on_token_message(username, refresh_token, self._used_server_cell_id, self._machine_id, os_value)
+        await self._protobuf_client.send_log_on_token_message(username, steam_id, refresh_token, self._used_server_cell_id, self._machine_id, os_value)
+        (result, steam_id) = await self._token_login_future
+        self._token_login_future = None
+
+        if (steam_id is not None and self._user_info_cache.steam_id != steam_id):
+            self._user_info_cache.steam_id = steam_id
+
         if result == EResult.OK:
             self._auth_lost_handler = auth_lost_handler
+        elif result == EResult.AccessDenied:
+            return UserActionRequired.InvalidAuthData
+        elif result == EResult.Expired:
+            return UserActionRequired.InvalidAuthData
         else:
             logger.warning(f"authenticate_token failed with code: {result}")
             raise translate_error(result)
 
-        await self._protobuf_client.account_info_retrieved.wait()
         return UserActionRequired.NoActionRequired
+
+    async def _login_token_handler(self, result: EResult, steam_id : Optional[int], account_id: Optional[int]):
+        if self._token_login_future is not None:
+            self._token_login_future.set_result((result, steam_id))
+        else:
+            # sometimes Steam sends LogOnResponse message even if plugin didn't send LogOnRequest
+            # known example is LogOnResponse with result=EResult.TryAnotherCM
+            raise translate_error(result)
 
     async def import_game_stats(self, game_ids):
         for game_id in game_ids:
-            self._protobuf_client.job_list.append({"job_name": "import_game_stats",
-                                                   "game_id": game_id})
+            self._protobuf_client.job_list.append({"job_name": "import_game_stats", "game_id": game_id})
+        #pass
 
     async def import_game_times(self):
         self._protobuf_client.job_list.append({"job_name": "import_game_times"})
+        #pass
 
     async def retrieve_collections(self):
         self._protobuf_client.job_list.append({"job_name": "import_collections"})
@@ -266,14 +317,9 @@ class ProtocolClient:
         self._protobuf_client.collections['event'].clear()
         self._protobuf_client.collections['collections'] = dict()
         return collections
+        #return {}
 
-    async def _log_on_handler(self, result: EResult):
-        if self._login_future is not None:
-            self._login_future.set_result(result)
-        else:
-            # sometimes Steam sends LogOnResponse message even if plugin didn't send LogOnRequest
-            # known example is LogOnResponse with result=EResult.TryAnotherCM
-            raise translate_error(result)
+
 
     async def _log_off_handler(self, result):
         logger.warning("Logged off, result: %d", result)
@@ -354,13 +400,6 @@ class ProtocolClient:
     def _package_info_handler(self):
         self._games_cache.update_packages()
 
-    async def _app_ownership_ticket_handler(self, appid: int, ticket: bytes):
-        if appid == STEAM_CLIENT_APP_ID:
-            logger.info('Storing steam app ownership ticket')
-            self._ownership_ticket_cache.ticket = ticket
-        else:
-            logger.debug(f'Ignoring app_id {appid} in ownership ticket handler')
-
     async def _translations_handler(self, appid, translations=None):
         if appid and translations:
             self._translations_cache[appid] = translations[0]
@@ -370,8 +409,8 @@ class ProtocolClient:
 
     def _stats_handler(self,
         game_id: str,
-        stats: "steammessages_clientserver_pb2.CMsgClientGetUserStatsResponse.Stats",
-        achievement_blocks: "steammessages_clientserver_pb2.CMsgClientGetUserStatsResponse.AchievementBlocks",
+        stats: "CMsgClientGetUserStatsResponse.Stats",
+        achievement_blocks: "CMsgClientGetUserStatsResponse.AchievementBlocks",
         schema: dict
     ):
         def get_achievement_name(achievements_block_schema: dict, bit_no: int) -> str:

@@ -12,3 +12,12 @@ build/
 output/
 *.log
 *.log.[1-9]
+/.vs
+/env
+*.user
+/env1
+
+/protoc
+*.zip
+*.gz
+/.env

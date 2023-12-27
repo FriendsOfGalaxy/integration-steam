@@ -1,8 +1,10 @@
 -r app.txt
-invoke==1.2.0
+-r install.txt
+
+pip-tools==5.4.0
+
 pytest==5.2.0
 pytest-asyncio==0.10.0
 pytest-mock==1.10.3
 pytest-flakes==4.0.0
 pytest-pythonpath==0.7.3
-pip-tools==5.1.2

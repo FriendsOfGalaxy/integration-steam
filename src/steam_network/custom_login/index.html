@@ -2,304 +2,301 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="../../commonWeb/css/common.css">
-    <link rel="stylesheet" href="css/style.css">
-    <title>Connect with Steam</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="../../commonWeb/css/common.css">
+	<link rel="stylesheet" href="css/style.css">
+	<title>Connect with Steam</title>
 </head>
 
 <body>
-    <div class="container">
-        <header class="main-header">
-            <div class="main-header__container">
-                <img class="steam-logo-icon" src="../../commonWeb/img/icon-steam-logo.svg" alt="Steam logo">
-                <div class="main-header__title">
-                    <h1 class="title">Connect with Steam</h1>
-                    <p class="subtitle">To an existing Steam account</p>
-                </div>
-            </div>
-            <div class="main-header__container padlock-icon-container">
-                <svg class="padlock-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15">
-                    <g fill-rule="evenodd">
-                        <path d="M7.5 0c2 0 3.5 1.6 3.5 3.5V5h1a2 2 0 012 2v6a2 2 0 01-2 2H3a2 2 0 01-2-2V7c0-1.1.9-2 2-2h1V3.5C4 1.5 5.6 0 7.5 0zm0 8c-.2 0-.4.2-.5.4v3.1a.5.5 0 001 0v-3c0-.3-.2-.5-.5-.5zm0-7C6.2 1 5.1 2 5 3.3V5h5V3.5C10 2.2 9 1.1 7.7 1h-.2z"/>
-                    </g>
-                </svg>
-                <span class="tooltip padlock-tooltip">GOG Galaxy does not hold your data. Your login and password will be sent as encrypted data to Steam servers.</span>
-            </div>
-        </header>
-        <section class="main-content">
-            <form id="main-form" class="main-form" action="/" method="GET">
-                <fieldset id="loginFieldset" style="display: none;">
-                    <legend>Login with your Steam account below to access your Steam games and friends from GOG Galaxy.</legend>
-                    <div class="field-group">
-                        <label for="step-1-username">Steam username</label>
-                        <input class="basic-input login-input" type="text" id="step-1-username" name="username" disabled="disabled">
-                    </div>
-                    <div class="field-group">
-                        <label for="step-1-password">Password</label>
-                        <input class="basic-input login-input" type="password" id="step-1-password" name="password" disabled="disabled">
-                    </div>
-                    <div class="note">
-                        <p>In case of problems with authentication, we'll switch your Steam integration into Public Profiles mode to improve stability. <a href="https://github.com/FriendsOfGalaxy/galaxy-integration-steam#readme" target="_blank" class="read-more">Read more.</a></p>
-                    </div>
-                </fieldset>
-                <fieldset id="loginErrorFieldset" style="display: none;">
-                    <legend>Login with your Steam account below to access your Steam games and friends from GOG Galaxy.</legend>
-                    <div class="field-group">
-                        <label for="step-2-username">Steam username</label>
-                        <input class="basic-input login-input errored" type="text" id="step-2-username" name="username" disabled="disabled">
-                    </div>
-                    <div class="field-group relative">
-                        <label for="step-2-password-errored">Password</label>
-                        <input class="basic-input login-input errored" type="password" id="step-2-password-errored" name="password" disabled="disabled">
-                        <div class="show-password">
-                            <span class="tooltip password-tooltip">Show password</span>
-                        </div>
-                    </div>
-                    <p class="error-message error-message--start">
-                        <img src="../../commonWeb/img/icon-error.svg" alt="" class="error-icon error-icon--aligned-top"> You have entered your password or account name incorrectly. Please check your password and account name and try again.
-                    </p>
-                    <div class="note">
-                        <p>In case of losing connection we'll switch your Steam integration into Public Profile mode. <a href="https://support.steampowered.com/kb_article.php?ref=4113-YUDH-6401" target="_blank" class="read-more">Read more.</a></p>
-                    </div>
-                </fieldset>
-                <fieldset id="steamGuardFieldset" style="display: none;">
-                    <legend>Enter a special access code (Steam Guard) that was sent to your email address from Steam Support.</legend>
-                    <div class="field-group field-group--no-justify">
-                        <label for="step-1-code">Steam Guard code</label>
-                        <input class="basic-input steam-guard-input" type="text" id="step-1-code" name="code" disabled="disabled">
-                    </div>
-                    <p class="resend-code">Haven’t received the email from Steam Support?
-                        <a href="/two_factor_mail_finished?resend=True" class="resend-button">Resend it.</a>
-                    </p>
-                </fieldset>
-                <fieldset id="steamGuardErrorFieldset" style="display: none;">
-                    <legend>Enter a special access code (Steam Guard) that was sent to your email address from Steam Support.</legend>
-                    <div class="field-group field-group--no-justify">
-                        <label for="step-2-code">Steam Guard code</label>
-                        <input class="basic-input steam-guard-input errored" type="text" id="step-2-code" name="code" disabled="disabled">
-                    </div>
-                    <p class="resend-code">Haven’t received the email from Steam Support?
-                        <a href="/two_factor_mail_finished?resend=True" class="resend-button">Resend it.</a>
-                    </p>
-                    <p class="error-message error-message--centered">
-                        <img src="../../commonWeb/img/icon-error.svg" alt="" class="error-icon"> Invalid code
-                    </p>
-                </fieldset>
-                <fieldset id="steamAuthenticatorFieldset" style="display: none;">
-                    <legend>As an additional security mesasure, you’ll need to enter the current Steam Guard code from the Steam
-                        Mobile Authenticator on your phone.</legend>
-                    <div class="field-group field-group--no-justify">
-                        <label for="step-3-code">Steam Guard code</label>
-                        <input class="basic-input steam-guard-input" type="text" id="step-3-code" name="code" disabled="disabled">
-                    </div>
-                </fieldset>
-                <fieldset id="steamAuthenticatorErrorFieldset" style="display: none;">
-                    <legend>As an additional security mesasure, you’ll need to enter the current Steam Guard code from the Steam
-                        Mobile Authenticator on your phone.</legend>
-                    <div class="field-group field-group--no-justify">
-                        <label for="step-4-code">Steam Guard code</label>
-                        <input class="basic-input steam-guard-input errored" type="text" id="step-4-code" name="code" disabled="disabled">
-                    </div>
-                    <p class="error-message error-message--centered">
-                        <img src="../../commonWeb/img/icon-error.svg" alt="" class="error-icon"> Invalid code
-                    </p>
-                </fieldset>
-                <fieldset id="ppPromptProfileIsNotPublicFieldset" style="display: none;">
-                    <legend class="prompt-legend centered"><img src="../../commonWeb/img/icon-warning.svg" alt="" class="error-icon"> <span  class="warning">Your steam profile settings are set to private</span></legend>
-                    <p class="prompt-text">
-                        We're using public Steam profiles as a fallback to ensure that you keep your information about games and achievements in sync. Switch your profile to public to improve the stability of this integration. <a class="learn-how" href="https://support.steampowered.com/kb_article.php?ref=4113-YUDH-6401" target="_blank">See how.</a>
-                    </p>
-                </fieldset>
-                <fieldset id="ppPromptNotPublicGameDetailsOrUserHasNoGamesFieldset" style="display: none;">
-                    <legend class="prompt-legend centered"><img src="../../commonWeb/img/icon-warning.svg" alt="" class="error-icon"> <span  class="warning">We couldn't read the list of your games</span></legend>
-                    <p class="prompt-text">
-                        Make sure that the Game Details section in Privacy Settings is also set to public.
-                    </p>
-                    <p class="prompt-text">
-                        We're using public Steam profiles as a fallback to ensure that you keep your information about games and achievements in sync. Switch your profile to public to improve the stability of this integration. <a class="learn-how" href="https://support.steampowered.com/kb_article.php?ref=4113-YUDH-6401" target="_blank">See how.</a>
-                    </p>
-                </fieldset>
-                <fieldset id="ppPromptUnknownErrorFieldset" style="display: none;">
-                    <legend class="prompt-legend centered"><img src="../../commonWeb/img/icon-error.svg" alt="" class="error-icon"> <span  class="error-message">We couldn't fetch information from your profile</span></legend>
-                    <p class="prompt-text">
-                        An error has occurred when validating your profile privacy settings.
-                    </p>
-                    <p class="prompt-text">
-                        We're using public Steam profiles as a fallback to ensure that you keep your information about games and achievements in sync. Make sure your profile privacy is set to public to improve the stability of this integration. <a class="learn-how" href="https://support.steampowered.com/kb_article.php?ref=4113-YUDH-6401" target="_blank">See how.</a>
-                    </p>
-                </fieldset>
+	<div class="container">
+		<header class="main-header">
+			<div class="main-header__container">
+				<img class="steam-logo-icon" src="../../commonWeb/img/icon-steam-logo.svg" alt="Steam logo">
+				<div class="main-header__title">
+					<h1 class="title">Connect with Steam</h1>
+					<p class="subtitle">To an existing Steam account</p>
+				</div>
+			</div>
+			<div class="main-header__container padlock-icon-container">
+				<svg class="padlock-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15">
+					<g fill-rule="evenodd">
+						<path d="M7.5 0c2 0 3.5 1.6 3.5 3.5V5h1a2 2 0 012 2v6a2 2 0 01-2 2H3a2 2 0 01-2-2V7c0-1.1.9-2 2-2h1V3.5C4 1.5 5.6 0 7.5 0zm0 8c-.2 0-.4.2-.5.4v3.1a.5.5 0 001 0v-3c0-.3-.2-.5-.5-.5zm0-7C6.2 1 5.1 2 5 3.3V5h5V3.5C10 2.2 9 1.1 7.7 1h-.2z"/>
+					</g>
+				</svg>
+				<span class="tooltip padlock-tooltip">GOG Galaxy does not hold your data. Your login and password will be sent as encrypted data to Steam servers.</span>
+			</div>
+		</header>
+		<main class="main-content" style="display:flex; flex-direction:column">
+			<form id="main-form" class="main-form" action="/" method="GET">
+				<fieldset id="getLoginInfo" style="display: none;">
+					<legend>Login with your Steam account below to access your Steam games and friends from GOG Galaxy.</legend>
+					<div class="field-group">
+						<label for="step-1-username">Steam username</label>
+						<input class="basic-input login-input" type="text" id="step-1-username" name="username" disabled="disabled">
+					</div>
+					<div class="field-group">
+						<label for="step-1-password">Password</label>
+						<div class="password-forgot-holder">
+							<input class="basic-input login-input" type="password" id="step-1-password" name="password" disabled="disabled">
+							<div class="show-password">
+								<span class="tooltip password-tooltip">Show password</span>
+							</div>
+						</div>
+					</div>
+					<p class="error-message error-message--start no-error" id="bad-password">
+						<img src="../../commonWeb/img/icon-error.svg" alt="" class="error-icon error-icon--aligned-top" /> You have entered your username or password incorrectly. Please check your username and password and try again.
+					</p>
+					<p class="error-message error-message--start no-error" id="steamguard-expired">
+						<img src="../../commonWeb/img/icon-error.svg" alt="" class="error-icon error-icon--aligned-top" /> Steam Guard expired. Please log in again. 
+					</p>
+				</fieldset>
+				<fieldset id="steamGuardEmail" style="display:none;">
+					<legend>Enter a special access code (Steam Guard) that was sent to your email address from Steam Support.</legend>
+					<div class="field-group field-group--no-justify">
+						<label for="step-1-code">Steam Guard code</label>
+						<input class="basic-input steam-guard-input" type="text" id="step-1-code" name="code" disabled="disabled">
+					</div>
+					<p class="resend-code">
+						If you are logging in again after a time-out, the previous code may still be valid. If you do not receive a code within a minute or two, try that instead. 
+						Steam has also changed how Steam Guard works. You can no longer ask to resend a code. For more information,
+						<a href="https://help.steampowered.com/en/wizard/HelpWithSteamGuardCode" class="resend-button" target="_blank">see Steam's documentation</a>
+					</p>
+					<p class="error-message error-message--centered no-error">
+						<img src="../../commonWeb/img/icon-error.svg" alt="" class="error-icon"> Invalid code
+					</p>
+				</fieldset>
+				<fieldset id="steamGuardPhone" style="display:none;">
+					<legend>
+						As an additional security measure, you’ll need to enter the current Steam Guard code from the Steam
+						Mobile Authenticator on your phone.
+					</legend>
+					<div class="field-group field-group--no-justify">
+						<label for="step-4-code">Steam Guard code</label>
+						<input class="basic-input steam-guard-input errored" type="text" id="step-4-code" name="code" disabled="disabled">
+					</div>
+					<p class="error-message error-message--centered no-error">
+						<img src="../../commonWeb/img/icon-error.svg" alt="" class="error-icon"> Invalid code
+					</p>
+				</fieldset>
+				<fieldset id="steamGuardConfirm" style="display:none;">
+					<legend>
+						As an additional security measure, you’ll need to confirm the login attempt in the Steam
+						Mobile Authenticator on your phone. If you deny this request, this login attempt will fail.
+						If you allow a mobile or email code as a backup, you can choose to ignore this request and use that login method instead.
+						<br /><br />
+						Continue this dialog once you completed the authentication on your phone.
+					</legend>
+					<div class="fallback-helper no-fallback"><a id="fallback-tag" class="gog-link" href="#">placeholder</a></div>
+					<p class="error-message error-message--centered no-error">
+						<img src="../../commonWeb/img/icon-error.svg" alt="" class="error-icon"> Confirmation failed
+					</p>
+				</fieldset>
+			</form>
+			<p>This code is in beta. There are significant changes under the hood. Please report any errors you find!</p>
+		</main>
+		<footer class="main-footer">
+			<div class="main-footer__container">
+				<a class="forgot-password" href="https://help.steampowered.com/en/wizard/HelpWithLogin" target="_blank">Forgot your password?</a>
+			</div>
+			<div class="main-footer__container" id="actionButtons">
+				<button class="basic-button main-footer__button main-footer__button--primary" type="submit" form="main-form">Continue</button>
+			</div>
+		</footer>
+	</div>
+	<script>
+		// Determining user's system
 
-            </form>
-        </section>
-        <footer class="main-footer">
-            <div class="main-footer__container">
-                <a class="forgot-password" href="https://help.steampowered.com/en/wizard/HelpWithLogin" target="_blank">Forgot your password?</a>
-            </div>
-            <div class="main-footer__container" id="actionButtons">
-                <button class="basic-button main-footer__button main-footer__button--primary" type="submit" form="main-form">Continue</button>
-            </div>
-            <div class="main-footer__container" id="ppPromptProfileButtons" style="display: none;">
-                <button onclick="location.href='/public_prompt_finished?public_profile_fallback=false'" class="basic-button main-footer__button main-footer__button--secondary">Skip</button>
-                <button onclick="location.href='/public_prompt_finished?public_profile_fallback=true'" class="basic-button main-footer__button main-footer__button--primary">Retry</button>
-            </div>
-        </footer>
-    </div>
-    <script>
-        // Determining user's system
+		function getOs() 
+		{
+			let osClassName = "";
 
-        function getOs() {
-            let osClassName = "";
+			if (navigator.userAgent.toLowerCase().includes("win")) osClassName = "windows";
+			if (navigator.userAgent.toLowerCase().includes("osx")) osClassName = "macOs";
+			
+			document.querySelector("body").classList.add(osClassName);
+		}
 
-            if (navigator.userAgent.toLowerCase().includes("win")) osClassName = "windows";
-            if (navigator.userAgent.toLowerCase().includes("osx")) osClassName = "macOs";
-            
-            document.querySelector("body").classList.add(osClassName);
-        }
+		// Toggling password visibility
 
-        // Toggling password visibility
+		const toggleButton = document.querySelector(".show-password");
+		const actionButtonsSelector = document.querySelector("#actionButtons");
+		const input = document.getElementById("step-1-password");
 
-        const toggleButton = document.querySelector(".show-password");
-        const actionButtonsSelector = document.querySelector("#actionButtons");
-        const input = document.getElementById("step-2-password-errored");
+		function togglePasswordVisibility() 
+		{
+			if (input.type === "password") 
+			{
+				input.type = "text";
+			} 
+			else 
+			{
+				input.type = "password"
+			}
+		}
+		toggleButton.addEventListener("click", togglePasswordVisibility);
 
-        function togglePasswordVisibility() {
-            if (input.type === "password") {
-                input.type = "text";
-            } else {
-                input.type = "password"
-            }
-        }
-        toggleButton.addEventListener("click", togglePasswordVisibility);
+		// Handling urlParams, form actions and enabling inputs
 
-        // Handling urlParams, form actions and enabling inputs
+		const viewLookup = {
+			login: "login",
+			steamGuard: "steamguard",
+			steamAuthenticator: "steamauthenticator",
+			steamAuthenticatorConfirm: "steamauthenticator_confirm",
+		};
 
-        const urlParamsObj = {
-            login: "?view=login",
-            loginErrored: "?view=login&errored=true",
-            steamGuard: "?view=steamguard",
-            steamGuardResendCode: "?view=steamguard&resend=true",
-            steamGuardErrored: "?view=steamguard&errored=true",
-            steamGuardErroredResendCode: "?view=steamguard&errored=true&resend=true",
-            steamAuthenticator: "?view=steamauthenticator",
-            steamAuthenticatorErrored: "?view=steamauthenticator&errored=true",
-            ppPromptProfileIsNotPublic: "?view=pp_prompt__profile_is_not_public",
-            ppPromptNotPublicGameDetailsOrUserHasNoGames: "?view=pp_prompt__not_public_game_details_or_user_has_no_games",
-            ppPromptUnknownError: "?view=pp_prompt__unknown_error",
-        };
+		//HtmlElements that deal with errors are hidden by default, using the no-error class. Therefore, we can simply query the no-error class to get all our errors. 
+		//It may be smart to give errors a common class so we could differentiate between hidden errors and displayed ones, but as of this writing that's not necessary.
+		const fieldSetsObj = {
+			loginFieldSet: document.querySelector("#getLoginInfo"),
+			loginInputs: document.querySelectorAll("#getLoginInfo input"),
+			loginError: document.querySelectorAll("#getLoginInfo .no-error"),
 
-        const fieldSetsObj = {
+			steamGuardFieldSet: document.querySelector("#steamGuardEmail"),
+			steamGuardInputs: document.querySelectorAll("#steamGuardEmail input"),
+			steamGuardError: document.querySelectorAll("#steamGuardEmail .no-error"),
 
-            loginFieldSet: document.querySelector("#loginFieldset"),
-            loginInputs: document.querySelectorAll("#loginFieldset input"),
+			steamAuthenticatorFieldset: document.querySelector("#steamGuardPhone"),
+			steamAuthenticatorInputs: document.querySelectorAll("#steamGuardPhone input"),
+			steamAuthenticatorError: document.querySelectorAll("#steamGuardPhone .no-error"),
 
-            loginErrorFieldset: document.querySelector("#loginErrorFieldset"),
-            loginErroredInputs: document.querySelectorAll("#loginErrorFieldset input"),
+			steamAuthenticatorConfirmFieldset: document.querySelector("#steamGuardConfirm"),
+			steamAuthenticatorConfirmInputs: document.querySelectorAll("#steamGuardConfirm input"),
+			steamAuthenticatorConfirmError: document.querySelectorAll("#steamGuardConfirm .no-error"),
+		}
 
-            steamGuardFieldSet: document.querySelector("#steamGuardFieldset"),
-            steamGuardInputs: document.querySelectorAll("#steamGuardFieldset input"),
+		function handleEnablingInputs(inputs) 
+		{
+			for (let input of inputs) 
+			{
+				input.disabled = false;
+			}
+		}
 
-            steamGuardErrorFieldset: document.querySelector("#steamGuardErrorFieldset"),
-            steamGuardErrorInputs: document.querySelectorAll("#steamGuardErrorFieldset input"),
+		function handleParamsAndForms()
+		{
+			const urlParams = new URLSearchParams(window.location.search)
+			const formElement = document.querySelector("#main-form");
+			const forgotPasswordButtonElement = document.querySelector(".forgot-password");
 
-            steamAuthenticatorFieldset: document.querySelector("#steamAuthenticatorFieldset"),
-            steamAuthenticatorInputs: document.querySelectorAll("#steamAuthenticatorFieldset input"),
+			//display the proper form content
+			let view = urlParams.get("view");
+			let errored = urlParams.get("errored") == 'true';
+			let act, loc, inp, err = null;
 
-            steamAuthenticatorErrorFieldset: document.querySelector("#steamAuthenticatorErrorFieldset"),
-            steamAuthenticatorErrorInputs: document.querySelectorAll("#steamAuthenticatorErrorFieldset input"),
+			switch (view)
+			{
+				
+				case viewLookup.steamGuard:
+					loc = fieldSetsObj.steamGuardFieldSet;
+					inp = fieldSetsObj.steamGuardInputs;
+					act = "/two_factor_mail_finished";
+					err = errored ? fieldSetsObj.steamGuardError : null;
+					break;
+				case viewLookup.steamAuthenticator:
+					loc = fieldSetsObj.steamAuthenticatorFieldset;
+					inp = fieldSetsObj.steamAuthenticatorInputs;
+					act = "/two_factor_mobile_finished";
+					err = errored ? fieldSetsObj.steamAuthenticatorError : null;
+					break;
+				case viewLookup.steamAuthenticatorConfirm:
+					loc = fieldSetsObj.steamAuthenticatorConfirmFieldset;
+					inp = fieldSetsObj.steamAuthenticatorConfirmInputs;
+					act = "/two_factor_confirm_finished";
+					err = errored ? fieldSetsObj.steamAuthenticatorConfirmError : null;
+					break;
+				case viewLookup.login:
+				default:
+					loc = fieldSetsObj.loginFieldSet;
+					inp = fieldSetsObj.loginInputs;
+					act = "/login_finished";
+					err = errored ? fieldSetsObj.loginError : null;
+					forgotPasswordButtonElement.style.display = "block";
+					break;
+			}
 
-            ppPromptProfileButtons: document.querySelector("#ppPromptProfileButtons"),
-            ppPromptProfileIsNotPublicFieldset: document.querySelector("#ppPromptProfileIsNotPublicFieldset"),
-            ppPromptNotPublicGameDetailsOrUserHasNoGamesFieldset: document.querySelector("#ppPromptNotPublicGameDetailsOrUserHasNoGamesFieldset"),
-            ppPromptUnknownErrorFieldset: document.querySelector("#ppPromptUnknownErrorFieldset"),
+			if (view == viewLookup.login && errored)
+			{
+				document.querySelector(".main-footer").classList.add("not-sticky");
+			}
 
-        }
+			formElement.action = act;
+			handleEnablingInputs(inp);
 
-        function handleEnablingInputs(inputs) {
-            for (let i = 0; i < inputs.length; i++) {
-                inputs[i].disabled = false;   
-            }
-        }
+			//if we have set err, un-hide all the error members. 
+			if (err)
+			{
+				for (let k = 0; k < err.length; k++)
+				{
+					err[k].classList.remove("no-error");
+				}
+			}
 
-        function handleParamsAndForms() {
-            const url = window.location.search;
-            const formElement = document.querySelector("#main-form");
-            const forgotPasswordButtonElement = document.querySelector(".forgot-password");
+			loc.style.display = "block";
 
-            switch (url) {
-                case urlParamsObj.login:
-                    fieldSetsObj.loginFieldSet.style.display = "block";
-                    handleEnablingInputs(fieldSetsObj.loginInputs);
-                    forgotPasswordButtonElement.style.display = "block";
-                    formElement.action = "/login_finished";
-                    break;
-                case urlParamsObj.loginErrored:
-                    fieldSetsObj.loginErrorFieldset.style.display = "block";
-                    handleEnablingInputs(fieldSetsObj.loginErroredInputs);
-                    forgotPasswordButtonElement.style.display = "block";
-                    formElement.action = "/login_finished";
-                    document.querySelector(".main-footer").classList.add("not-sticky");
-                    break;
-                case urlParamsObj.steamGuard:
-                    fieldSetsObj.steamGuardFieldSet.style.display = "block";
-                    handleEnablingInputs(fieldSetsObj.steamGuardInputs);
-                    formElement.action = "/two_factor_mail_finished";
-                    break;
-                case urlParamsObj.steamGuardErrored:
-                    fieldSetsObj.steamGuardErrorFieldset.style.display = "block";
-                    handleEnablingInputs(fieldSetsObj.steamGuardErrorInputs);
-                    formElement.action = "/two_factor_mail_finished";
-                    break;
-                case urlParamsObj.steamGuardResendCode:
-                    fieldSetsObj.steamGuardFieldSet.style.display = "block";
-                    handleEnablingInputs(fieldSetsObj.steamGuardInputs);
-                    formElement.action = "/two_factor_mail_finished";
-                    break;
-                case urlParamsObj.steamGuardErroredResendCode:
-                    fieldSetsObj.steamGuardErrorFieldset.style.display = "block";
-                    handleEnablingInputs(fieldSetsObj.steamGuardErrorInputs);
-                    formElement.action = "/two_factor_mail_finished";
-                    break;
-                case urlParamsObj.steamAuthenticator:
-                    fieldSetsObj.steamAuthenticatorFieldset.style.display = "block";
-                    handleEnablingInputs(fieldSetsObj.steamAuthenticatorInputs);
-                    formElement.action = "/two_factor_mobile_finished";
-                    break;
-                case urlParamsObj.steamAuthenticatorErrored:
-                    fieldSetsObj.steamAuthenticatorErrorFieldset.style.display = "block";
-                    handleEnablingInputs(fieldSetsObj.steamAuthenticatorErrorInputs);
-                    formElement.action = "/two_factor_mobile_finished";
-                    break;
-                case urlParamsObj.ppPromptProfileIsNotPublic:
-                    fieldSetsObj.ppPromptProfileIsNotPublicFieldset.style.display = "block";
-                    ppPromptProfileButtons.style.display = "block";
-                    actionButtonsSelector.style.display = "none";
-                    formElement.action = "/public_prompt_finished";
-                    break;
-                case urlParamsObj.ppPromptNotPublicGameDetailsOrUserHasNoGames:
-                    fieldSetsObj.ppPromptNotPublicGameDetailsOrUserHasNoGamesFieldset.style.display = "block";
-                    ppPromptProfileButtons.style.display = "block";
-                    actionButtonsSelector.style.display = "none";
-                    formElement.action = "/public_prompt_finished";
-                    break;
-                case urlParamsObj.ppPromptUnknownError:
-                    fieldSetsObj.ppPromptUnknownErrorFieldset.style.display = "block";
-                    ppPromptProfileButtons.style.display = "block";
-                    actionButtonsSelector.style.display = "none";
-                    formElement.action = "/public_prompt_finished";
-                    break;
-                default:
-                    fieldSetsObj.loginFieldSet.style.display = "block";
-                    handleEnablingInputs(fieldSetsObj.loginInputs);
-                    forgotPasswordButtonElement.style.display = "block";
-                    formElement.action = "/login_finished";
-            }
-        }
-        window.addEventListener("load", handleParamsAndForms);
-        window.addEventListener("load", getOs);
-    </script>
+			if (view == viewLookup.steamAuthenticatorConfirm)
+			{
+				let fallbackMeth = urlParams.get("fallbackMethod");
+				let fallbackStr = urlParams.get("fallbackMsg");
+				if (fallbackMeth) 
+				{
+					let fallbackTag = document.getElementById("fallback-tag");
+					let fallbackHolder = document.getElementsByClassName("fallback-helper no-fallback");
+
+					let curr_href = new URL(window.location.href);
+
+					curr_href.searchParams.set('view', fallbackMeth);
+					curr_href.searchParams.set('view-msg', fallbackStr);
+					console.log(curr_href.href)
+					fallbackTag.href = curr_href.href;
+
+					let niceText = "Use a fallback (unknown). Well, this is unexpected.";
+					if (fallbackMeth == viewLookup.steamGuard)
+					{
+						niceText = "Enter a Steam Guard code using email instead";
+					}
+					else if (fallbackMeth = viewLookup.steamAuthenticator)
+					{
+						niceText = "Enter a Steam Guard mobile code instead";
+					}
+					fallbackTag.innerHTML = niceText
+
+					for (let x = 0; x < fallbackHolder.length; x++)
+					{
+						fallbackHolder[x].classList.remove("no-fallback");
+					}
+				}
+			}
+
+			if (view == viewLookup.login && err)
+			{
+				let badPass = document.getElementById("bad-password");
+				let expiredError = document.getElementById("steamguard-expired");
+				let expired = urlParams.get("expired");
+				if (expired == "true")
+				{
+					expiredError.classList.remove("no-error");
+					if (!badPass.classList.contains("no-error"))
+					{
+						badPass.classList.add("no-error");
+					}
+				}
+				else
+				{
+					badPass.classList.remove("no-error");
+					if (!expiredError.classList.contains("no-error"))
+					{
+						expiredError.classList.add("no-error");
+					}
+				}
+			}
+		}
+
+		window.addEventListener("load", handleParamsAndForms);
+		window.addEventListener("load", getOs);
+	</script>
 </body>
 
 </html>

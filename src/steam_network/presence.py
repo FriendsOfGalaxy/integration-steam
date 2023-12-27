@@ -2,7 +2,7 @@ from galaxy.api.consts import PresenceState
 from galaxy.api.types import UserPresence
 
 from .protocol.consts import EPersonaState
-from .protocol.types import ProtoUserInfo
+from .protocol.steam_types import ProtoUserInfo
 
 import re
 import logging
@@ -17,7 +17,7 @@ def _translate_string(game_id, string, translations_cache):
             return token.value
 
 
-async def _translate_presence(user_info, status, token_list):
+async def _translate_presence(user_info, status : str , token_list):
                     replaced = True
                     max_depth = 10
                     current_depth = 0

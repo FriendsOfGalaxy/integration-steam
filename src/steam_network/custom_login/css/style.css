@@ -1,4 +1,7 @@
 /* WINDOWS SCROLLBARS */
+.no-error, .no-fallback {
+	display: none;
+}
 
 body.windows::-webkit-scrollbar {
     width: 12px;
@@ -73,36 +76,38 @@ body.windows::-webkit-resizer {
     visibility: visible;
 }
 
+#step-1-username {
+	margin-right: 27px; /*19+4+4. We need to match the show password button*/
+}
+
+.password-forgot-holder {
+	display:flex; 
+	flex-direction:row;
+}
+
 .password-tooltip {
-    left: -47px;
-    top: -30px;
-    height: 35px;
-    width: 118px;
+	left: -100px;
+	top: 25px;
+	height: 35px;
+	width: 118px;
+	position: relative;
 }
 
 .show-password {
-    position: absolute;
-    width: 40px;
-    height: calc(100% - 4px);
-    right: 2px;
-    background: #2a282c;
-    cursor: pointer;
-}
-
-.show-password:after {
-    position: absolute;
-    content: '';
-    width: 19px;
-    left: 10px;
-    height: 11px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: url('../../../commonWeb/img/icon-show.svg');
-    cursor: pointer;
+	background: url('../../../commonWeb/img/icon-show.svg');
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 19px;
+	margin: 0px 4px;
+	cursor: pointer;
 }
 
 .show-password:hover .password-tooltip {
     visibility: visible;
+}
+
+.gog-link, .gog-link:visited, .gog-link:active {
+	color: #a380d1;
 }
 
 .note {

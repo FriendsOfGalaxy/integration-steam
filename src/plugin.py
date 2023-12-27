@@ -8,7 +8,9 @@ import webbrowser
 import time
 from functools import partial
 from contextlib import suppress
-from typing import List, Optional, NewType, Dict, AsyncGenerator, Any, Callable
+from typing import List, Optional, NewType, Dict, AsyncGenerator, Any, Callable, Type
+
+import traceback
 
 import certifi
 from galaxy.api.plugin import Plugin, create_and_run_plugin
@@ -33,9 +35,7 @@ from galaxy.api.errors import (
 from galaxy.api.consts import Platform
 
 from backend_interface import BackendInterface
-from backend_public_profiles import PublicProfilesBackend
 from backend_steam_network import SteamNetworkBackend
-from backend_configuration import BackendMode, BackendConfiguration, USER_CONFIG_LOCATION
 from http_client import HttpClient
 from client import (
     StateFlags,
@@ -50,7 +50,6 @@ from client import (
 from persistent_cache_state import PersistentCacheState
 from registry_monitor import get_steam_registry_monitor
 from uri_scheme_handler import is_uri_handler_installed
-from user_profile import UserProfileChecker
 from version import __version__
 
 
@@ -60,11 +59,6 @@ Timestamp = NewType("Timestamp", int)
 
 COOLDOWN_TIME = 5
 AUTH_SETUP_ON_VERSION__CACHE_KEY = "auth_setup_on_version"
-
-BACKEND_MAP = {
-    BackendMode.PublicProfiles: PublicProfilesBackend,
-    BackendMode.SteamNetwork: SteamNetworkBackend,
-}
 
 
 def is_windows():
@@ -85,23 +79,19 @@ class SteamPlugin(Plugin):
         self._ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
         self._ssl_context.load_verify_locations(certifi.where())
         self._http_client = HttpClient()
-        self._user_profile_checker = UserProfileChecker(self._http_client)
 
         # cache management
         self._persistent_storage_state = PersistentCacheState()
         self._pushing_cache_task = asyncio.create_task(asyncio.sleep(0))
 
         # backend client
-        self._backend_config = BackendConfiguration()
-        self._backend_config.read_strict(USER_CONFIG_LOCATION)
-        self.__backend_mode = self._backend_config.initial_mode
         self.__backend: Optional[BackendInterface] = None
+        self.__backend_mode : Type[BackendInterface] = SteamNetworkBackend
 
     @property
     def features(self):
-        curr_backend_cls = BACKEND_MAP[self.__backend_mode]
         non_backend_features = set(super().features) - set(BackendInterface.POSSIBLE_FEATURES)
-        return list(non_backend_features | curr_backend_cls.features())
+        return list(non_backend_features | self.__backend_mode.features())
 
     @property
     def _backend(self) -> BackendInterface:
@@ -110,38 +100,19 @@ class SteamPlugin(Plugin):
         return self.__backend
     
     def handshake_complete(self):
-        self._load_backend(self.__backend_mode)
-        with suppress(OSError):
-            self._backend_config.regenerate_user_config(USER_CONFIG_LOCATION)
+        self.__backend = self._load_steam_network_backend()
+        logger.info("Handshake complete")
 
-    def _switch_backend(self, backend: Optional[BackendMode]):
-        logger.info(f"Requested backend switch from {self.__backend_mode} to {backend}")
-        if backend is None:
-            raise ValueError("Backend switch stopped as requested.")
-        if backend == self.__backend_mode:
-            raise ValueError(f"Backend switch refused: alredy on {backend}.")
-        self._load_backend(backend)
+    def _load_steam_network_backend(self):
+        http_client : HttpClient = self._http_client
+        persistent_storage_state=self._persistent_storage_state
+        persistent_cache=self.persistent_cache
+        store_credentials=self.store_credentials
+        ssl_context=self._ssl_context
+        update_user_presence=self.update_user_presence
+        add_game=self.add_game
 
-    def _load_backend(self, backend_mode: BackendMode):
-        backend_specification = dict(
-            http_client=self._http_client,
-            user_profile_checker=self._user_profile_checker,
-            persistent_storage_state=self._persistent_storage_state,
-            persistent_cache=self.persistent_cache,
-            store_credentials=self.store_credentials,
-        )
-        if backend_mode == BackendMode.SteamNetwork:
-            backend_specification.update(
-                ssl_context=self._ssl_context,
-                update_user_presence=self.update_user_presence,
-                add_game=self.add_game,
-            )
-
-        try:
-            self.__backend = BACKEND_MAP[backend_mode](**backend_specification)
-        except KeyError:
-            raise ValueError(f"Unknown backend mode: {backend_mode}")
-        self.__backend_mode = backend_mode
+        return SteamNetworkBackend(http_client, ssl_context, persistent_storage_state, persistent_cache, update_user_presence, store_credentials, add_game)
     
     async def pass_login_credentials(self, step, credentials, cookies):
         result = await self._backend.pass_login_credentials(step, credentials, cookies)
@@ -154,21 +125,6 @@ class SteamPlugin(Plugin):
             self.push_cache()
         
     async def authenticate(self, stored_credentials=None):
-
-        def credentials_problem_handler(fallback: Callable = self.lost_authentication):
-            try:
-                self._switch_backend(self._backend_config.fallback_mode) 
-            except ValueError:
-                fallback()
-            except Exception as e:
-                logger.error(f"Unexpected problem during backend switch: {e!r}")
-                fallback()
-            else:
-                self._backend.register_auth_lost_callback(credentials_problem_handler)
-
-        def raise_exception(exc):
-            raise exc
-
         try:
             auth = await self._backend.authenticate(stored_credentials)
         except NetworkError:  # casuses "Offline. Retry"
@@ -177,11 +133,10 @@ class SteamPlugin(Plugin):
             InvalidCredentials, AccessDenied,  # re-raised would cause "Connection Lost"
             Exception  # re-raised would cause "Offline. Retry"
         ) as e:
+            logger.error(traceback.format_exc())
             logger.warning(f"Authentication for initial backend failed with {e!r}")
-            credentials_problem_handler(partial(raise_exception, e))
-            auth = await self._backend.authenticate(stored_credentials)
-        else:
-            self._backend.register_auth_lost_callback(credentials_problem_handler)
+            raise e
+
         return auth
 
     async def shutdown(self):

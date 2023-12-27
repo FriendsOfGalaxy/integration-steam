@@ -4,6 +4,7 @@
 """Generated protocol buffer code."""
 from google.protobuf.internal import enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
+from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
@@ -15,1483 +16,118 @@ _sym_db = _symbol_database.Default()
 import enums_pb2 as enums__pb2
 
 
-DESCRIPTOR = _descriptor.FileDescriptor(
-  name='steammessages_client_objects.proto',
-  package='',
-  syntax='proto2',
-  serialized_options=b'H\001\220\001\000',
-  create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\"steammessages_client_objects.proto\x1a\x0b\x65nums.proto\"\x8d\x02\n0SteamMessagesClientIClientForcedEnumDependencies\x12?\n\x01\x61\x18\x01 \x01(\x0e\x32\x15.EBluetoothDeviceType:\x1dk_BluetoothDeviceType_Invalid\x12H\n\x01\x62\x18\x02 \x01(\x0e\x32\x19.EStorageBlockContentType:\"k_EStorageBlockContentType_Invalid\x12N\n\x01\x63\x18\x03 \x01(\x0e\x32\x1c.EStorageBlockFileSystemType:%k_EStorageBlockFileSystemType_Invalid\"=\n\x1b\x43MsgNetworkDeviceIP4Address\x12\r\n\x02ip\x18\x01 \x01(\x05:\x01\x30\x12\x0f\n\x07netmask\x18\x02 \x01(\x05\"\xbf\x01\n\x1a\x43MsgNetworkDeviceIP4Config\x12/\n\taddresses\x18\x01 \x03(\x0b\x32\x1c.CMsgNetworkDeviceIP4Address\x12\x0e\n\x06\x64ns_ip\x18\x02 \x03(\x05\x12\x12\n\ngateway_ip\x18\x03 \x01(\x05\x12\x17\n\x0fis_dhcp_enabled\x18\x04 \x01(\x08\x12\x18\n\x10is_default_route\x18\x05 \x01(\x08\x12\x19\n\nis_enabled\x18\x06 \x01(\x08:\x05\x66\x61lse\")\n\x1b\x43MsgNetworkDeviceIP6Address\x12\n\n\x02ip\x18\x01 \x01(\t\"\xbf\x01\n\x1a\x43MsgNetworkDeviceIP6Config\x12/\n\taddresses\x18\x01 \x03(\x0b\x32\x1c.CMsgNetworkDeviceIP6Address\x12\x0e\n\x06\x64ns_ip\x18\x02 \x03(\t\x12\x12\n\ngateway_ip\x18\x03 \x01(\t\x12\x17\n\x0fis_dhcp_enabled\x18\x04 \x01(\x08\x12\x18\n\x10is_default_route\x18\x05 \x01(\x08\x12\x19\n\nis_enabled\x18\x06 \x01(\x08:\x05\x66\x61lse\"\x97\x06\n\x16\x43MsgNetworkDevicesData\x12/\n\x07\x64\x65vices\x18\x01 \x03(\x0b\x32\x1e.CMsgNetworkDevicesData.Device\x12\x17\n\x0fis_wifi_enabled\x18\x02 \x01(\x08\x12 \n\x18is_wifi_scanning_enabled\x18\x03 \x01(\x08\x1a\x90\x05\n\x06\x44\x65vice\x12\r\n\x02id\x18\x01 \x01(\r:\x01\x30\x12\r\n\x05\x65type\x18\x02 \x01(\x05\x12\x0e\n\x06\x65state\x18\x03 \x01(\x05\x12\x0b\n\x03mac\x18\x04 \x01(\t\x12\x0e\n\x06vendor\x18\x05 \x01(\t\x12\x0f\n\x07product\x18\x06 \x01(\t\x12(\n\x03ip4\x18\x07 \x01(\x0b\x32\x1b.CMsgNetworkDeviceIP4Config\x12(\n\x03ip6\x18\x08 \x01(\x0b\x32\x1b.CMsgNetworkDeviceIP6Config\x12\x33\n\x05wired\x18\t \x01(\x0b\x32$.CMsgNetworkDevicesData.Device.Wired\x12\x39\n\x08wireless\x18\n \x01(\x0b\x32\'.CMsgNetworkDevicesData.Device.Wireless\x1aS\n\x05Wired\x12\x1f\n\x10is_cable_present\x18\x01 \x01(\x08:\x05\x66\x61lse\x12\x12\n\nspeed_mbit\x18\x02 \x01(\r\x12\x15\n\rfriendly_name\x18\x03 \x01(\t\x1a\x90\x02\n\x08Wireless\x12\x37\n\x03\x61ps\x18\x01 \x03(\x0b\x32*.CMsgNetworkDevicesData.Device.Wireless.AP\x12\x1b\n\x13\x65security_supported\x18\x02 \x01(\x05\x1a\xad\x01\n\x02\x41P\x12\r\n\x02id\x18\x01 \x01(\r:\x01\x30\x12\x11\n\testrength\x18\x02 \x01(\x05\x12\x0c\n\x04ssid\x18\x03 \x01(\t\x12\x11\n\tis_active\x18\x04 \x01(\x08\x12\x16\n\x0eis_autoconnect\x18\x05 \x01(\x08\x12\x11\n\tesecurity\x18\x06 \x01(\x05\x12\x11\n\tuser_name\x18\x07 \x01(\t\x12\x10\n\x08password\x18\x08 \x01(\t\x12\x14\n\x0cstrength_raw\x18\t \x01(\x05\"\xb5\x03\n\x18\x43MsgNetworkDeviceConnect\x12\x14\n\tdevice_id\x18\x01 \x01(\r:\x01\x30\x12:\n\x0b\x63redentials\x18\x04 \x01(\x0b\x32%.CMsgNetworkDeviceConnect.Credentials\x12(\n\x03ip4\x18\x05 \x01(\x0b\x32\x1b.CMsgNetworkDeviceIP4Config\x12(\n\x03ip6\x18\x06 \x01(\x0b\x32\x1b.CMsgNetworkDeviceIP6Config\x12\x35\n\x08\x61p_known\x18\x02 \x01(\x0b\x32!.CMsgNetworkDeviceConnect.KnownAPH\x00\x12\x37\n\tap_custom\x18\x03 \x01(\x0b\x32\".CMsgNetworkDeviceConnect.CustomAPH\x00\x1a\x18\n\x07KnownAP\x12\r\n\x05\x61p_id\x18\x01 \x01(\r\x1a+\n\x08\x43ustomAP\x12\x0c\n\x04ssid\x18\x01 \x01(\t\x12\x11\n\tesecurity\x18\x02 \x01(\x05\x1a\x31\n\x0b\x43redentials\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\tB\t\n\x07\x61p_info\"\xfd\x04\n\x16\x43MsgStorageDevicesData\x12-\n\x06\x64rives\x18\x01 \x03(\x0b\x32\x1d.CMsgStorageDevicesData.Drive\x12:\n\rblock_devices\x18\x02 \x03(\x0b\x32#.CMsgStorageDevicesData.BlockDevice\x1ao\n\x05\x44rive\x12\r\n\x02id\x18\x01 \x01(\r:\x01\x30\x12\r\n\x05model\x18\x02 \x01(\t\x12\x0e\n\x06vendor\x18\x03 \x01(\t\x12\x0e\n\x06serial\x18\x04 \x01(\t\x12\x14\n\x0cis_ejectable\x18\x05 \x01(\x08\x12\x12\n\nsize_bytes\x18\x06 \x01(\x04\x1a\x86\x03\n\x0b\x42lockDevice\x12\r\n\x02id\x18\x01 \x01(\r:\x01\x30\x12\x13\n\x08\x64rive_id\x18\x02 \x01(\r:\x01\x30\x12\x0c\n\x04path\x18\x03 \x01(\t\x12\x15\n\rfriendly_path\x18\x04 \x01(\t\x12\r\n\x05label\x18\x05 \x01(\t\x12\x12\n\nsize_bytes\x18\x06 \x01(\x04\x12\x16\n\x0eis_formattable\x18\x07 \x01(\x08\x12\x14\n\x0cis_read_only\x18\x08 \x01(\x08\x12\x16\n\x0eis_root_device\x18\t \x01(\x08\x12S\n\x0c\x63ontent_type\x18\n \x01(\x0e\x32\x19.EStorageBlockContentType:\"k_EStorageBlockContentType_Invalid\x12\\\n\x0f\x66ilesystem_type\x18\x0b \x01(\x0e\x32\x1c.EStorageBlockFileSystemType:%k_EStorageBlockFileSystemType_Invalid\x12\x12\n\nmount_path\x18\x0c \x01(\t\"\xb9\x01\n\x1d\x43\x43loud_PendingRemoteOperation\x12T\n\toperation\x18\x01 \x01(\x0e\x32\x1d.ECloudPendingRemoteOperation:\"k_ECloudPendingRemoteOperationNone\x12\x14\n\x0cmachine_name\x18\x02 \x01(\t\x12\x11\n\tclient_id\x18\x03 \x01(\x04\x12\x19\n\x11time_last_updated\x18\x04 \x01(\r\"V\n CMsgCloudPendingRemoteOperations\x12\x32\n\noperations\x18\x01 \x03(\x0b\x32\x1e.CCloud_PendingRemoteOperation\"\xb3\x03\n\x18\x43MsgBluetoothDevicesData\x12\x33\n\x08\x61\x64\x61pters\x18\x01 \x03(\x0b\x32!.CMsgBluetoothDevicesData.Adapter\x12\x31\n\x07\x64\x65vices\x18\x02 \x03(\x0b\x32 .CMsgBluetoothDevicesData.Device\x1a_\n\x07\x41\x64\x61pter\x12\r\n\x02id\x18\x01 \x01(\r:\x01\x30\x12\x0b\n\x03mac\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x12\n\nis_enabled\x18\x04 \x01(\x08\x12\x16\n\x0eis_discovering\x18\x05 \x01(\x08\x1a\xcd\x01\n\x06\x44\x65vice\x12\r\n\x02id\x18\x01 \x01(\r:\x01\x30\x12\x15\n\nadapter_id\x18\x02 \x01(\r:\x01\x30\x12\x43\n\x05\x65type\x18\x03 \x01(\x0e\x32\x15.EBluetoothDeviceType:\x1dk_BluetoothDeviceType_Invalid\x12\x0b\n\x03mac\x18\x04 \x01(\t\x12\x0c\n\x04name\x18\x05 \x01(\t\x12\x14\n\x0cis_connected\x18\x06 \x01(\x08\x12\x11\n\tis_paired\x18\x07 \x01(\x08\x12\x14\n\x0cstrength_raw\x18\x08 \x01(\x05\"+\n\x15\x43MsgBluetoothSettings\x12\x12\n\nis_enabled\x18\x01 \x01(\x08\"<\n\x1d\x43MsgSystemPerfDiagnosticEntry\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\"O\n\x1c\x43MsgSystemPerfDiagnosticInfo\x12/\n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x1e.CMsgSystemPerfDiagnosticEntry\"O\n\x16\x43MsgSystemPerfSettings\x12\x1e\n\x16\x64iagnostic_update_rate\x18\x01 \x01(\x02\x12\x15\n\ris_shark_mode\x18\x02 \x01(\x08*\x96\x02\n\x1c\x45\x43loudPendingRemoteOperation\x12&\n\"k_ECloudPendingRemoteOperationNone\x10\x00\x12\x32\n.k_ECloudPendingRemoteOperationAppSessionActive\x10\x01\x12\x32\n.k_ECloudPendingRemoteOperationUploadInProgress\x10\x02\x12/\n+k_ECloudPendingRemoteOperationUploadPending\x10\x03\x12\x35\n1k_ECloudPendingRemoteOperationAppSessionSuspended\x10\x04\x42\x05H\x01\x90\x01\x00'
-  ,
-  dependencies=[enums__pb2.DESCRIPTOR,])
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\"steammessages_client_objects.proto\x1a\x0b\x65nums.proto\"\xcb\x02\n0SteamMessagesClientIClientForcedEnumDependencies\x12?\n\x01\x61\x18\x01 \x01(\x0e\x32\x15.EBluetoothDeviceType:\x1dk_BluetoothDeviceType_Invalid\x12H\n\x01\x62\x18\x02 \x01(\x0e\x32\x19.EStorageBlockContentType:\"k_EStorageBlockContentType_Invalid\x12N\n\x01\x63\x18\x03 \x01(\x0e\x32\x1c.EStorageBlockFileSystemType:%k_EStorageBlockFileSystemType_Invalid\x12<\n\x01\x64\x18\x04 \x01(\x0e\x32\x13.ESDCardFormatStage:\x1ck_ESDCardFormatStage_Invalid\"=\n\x1b\x43MsgNetworkDeviceIP4Address\x12\r\n\x02ip\x18\x01 \x01(\x05:\x01\x30\x12\x0f\n\x07netmask\x18\x02 \x01(\x05\"\xbf\x01\n\x1a\x43MsgNetworkDeviceIP4Config\x12/\n\taddresses\x18\x01 \x03(\x0b\x32\x1c.CMsgNetworkDeviceIP4Address\x12\x0e\n\x06\x64ns_ip\x18\x02 \x03(\x05\x12\x12\n\ngateway_ip\x18\x03 \x01(\x05\x12\x17\n\x0fis_dhcp_enabled\x18\x04 \x01(\x08\x12\x18\n\x10is_default_route\x18\x05 \x01(\x08\x12\x19\n\nis_enabled\x18\x06 \x01(\x08:\x05\x66\x61lse\")\n\x1b\x43MsgNetworkDeviceIP6Address\x12\n\n\x02ip\x18\x01 \x01(\t\"\xbf\x01\n\x1a\x43MsgNetworkDeviceIP6Config\x12/\n\taddresses\x18\x01 \x03(\x0b\x32\x1c.CMsgNetworkDeviceIP6Address\x12\x0e\n\x06\x64ns_ip\x18\x02 \x03(\t\x12\x12\n\ngateway_ip\x18\x03 \x01(\t\x12\x17\n\x0fis_dhcp_enabled\x18\x04 \x01(\x08\x12\x18\n\x10is_default_route\x18\x05 \x01(\x08\x12\x19\n\nis_enabled\x18\x06 \x01(\x08:\x05\x66\x61lse\"\x97\x06\n\x16\x43MsgNetworkDevicesData\x12/\n\x07\x64\x65vices\x18\x01 \x03(\x0b\x32\x1e.CMsgNetworkDevicesData.Device\x12\x17\n\x0fis_wifi_enabled\x18\x02 \x01(\x08\x12 \n\x18is_wifi_scanning_enabled\x18\x03 \x01(\x08\x1a\x90\x05\n\x06\x44\x65vice\x12\r\n\x02id\x18\x01 \x01(\r:\x01\x30\x12\r\n\x05\x65type\x18\x02 \x01(\x05\x12\x0e\n\x06\x65state\x18\x03 \x01(\x05\x12\x0b\n\x03mac\x18\x04 \x01(\t\x12\x0e\n\x06vendor\x18\x05 \x01(\t\x12\x0f\n\x07product\x18\x06 \x01(\t\x12(\n\x03ip4\x18\x07 \x01(\x0b\x32\x1b.CMsgNetworkDeviceIP4Config\x12(\n\x03ip6\x18\x08 \x01(\x0b\x32\x1b.CMsgNetworkDeviceIP6Config\x12\x33\n\x05wired\x18\t \x01(\x0b\x32$.CMsgNetworkDevicesData.Device.Wired\x12\x39\n\x08wireless\x18\n \x01(\x0b\x32\'.CMsgNetworkDevicesData.Device.Wireless\x1aS\n\x05Wired\x12\x1f\n\x10is_cable_present\x18\x01 \x01(\x08:\x05\x66\x61lse\x12\x12\n\nspeed_mbit\x18\x02 \x01(\r\x12\x15\n\rfriendly_name\x18\x03 \x01(\t\x1a\x90\x02\n\x08Wireless\x12\x37\n\x03\x61ps\x18\x01 \x03(\x0b\x32*.CMsgNetworkDevicesData.Device.Wireless.AP\x12\x1b\n\x13\x65security_supported\x18\x02 \x01(\x05\x1a\xad\x01\n\x02\x41P\x12\r\n\x02id\x18\x01 \x01(\r:\x01\x30\x12\x11\n\testrength\x18\x02 \x01(\x05\x12\x0c\n\x04ssid\x18\x03 \x01(\t\x12\x11\n\tis_active\x18\x04 \x01(\x08\x12\x16\n\x0eis_autoconnect\x18\x05 \x01(\x08\x12\x11\n\tesecurity\x18\x06 \x01(\x05\x12\x11\n\tuser_name\x18\x07 \x01(\t\x12\x10\n\x08password\x18\x08 \x01(\t\x12\x14\n\x0cstrength_raw\x18\t \x01(\x05\"\xb5\x03\n\x18\x43MsgNetworkDeviceConnect\x12\x14\n\tdevice_id\x18\x01 \x01(\r:\x01\x30\x12:\n\x0b\x63redentials\x18\x04 \x01(\x0b\x32%.CMsgNetworkDeviceConnect.Credentials\x12(\n\x03ip4\x18\x05 \x01(\x0b\x32\x1b.CMsgNetworkDeviceIP4Config\x12(\n\x03ip6\x18\x06 \x01(\x0b\x32\x1b.CMsgNetworkDeviceIP6Config\x12\x35\n\x08\x61p_known\x18\x02 \x01(\x0b\x32!.CMsgNetworkDeviceConnect.KnownAPH\x00\x12\x37\n\tap_custom\x18\x03 \x01(\x0b\x32\".CMsgNetworkDeviceConnect.CustomAPH\x00\x1a\x18\n\x07KnownAP\x12\r\n\x05\x61p_id\x18\x01 \x01(\r\x1a+\n\x08\x43ustomAP\x12\x0c\n\x04ssid\x18\x01 \x01(\t\x12\x11\n\tesecurity\x18\x02 \x01(\x05\x1a\x31\n\x0b\x43redentials\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\tB\t\n\x07\x61p_info\"\x9f\x06\n\x16\x43MsgStorageDevicesData\x12-\n\x06\x64rives\x18\x01 \x03(\x0b\x32\x1d.CMsgStorageDevicesData.Drive\x12:\n\rblock_devices\x18\x02 \x03(\x0b\x32#.CMsgStorageDevicesData.BlockDevice\x12\x1c\n\x14is_unmount_supported\x18\x03 \x01(\x08\x12\x19\n\x11is_trim_supported\x18\x04 \x01(\x08\x12\x17\n\x0fis_trim_running\x18\x05 \x01(\x08\x1a\xbe\x01\n\x05\x44rive\x12\r\n\x02id\x18\x01 \x01(\r:\x01\x30\x12\r\n\x05model\x18\x02 \x01(\t\x12\x0e\n\x06vendor\x18\x03 \x01(\t\x12\x0e\n\x06serial\x18\x04 \x01(\t\x12\x14\n\x0cis_ejectable\x18\x05 \x01(\x08\x12\x12\n\nsize_bytes\x18\x06 \x01(\x04\x12M\n\nmedia_type\x18\x07 \x01(\x0e\x32\x17.EStorageDriveMediaType: k_EStorageDriveMediaType_Invalid\x1a\x86\x03\n\x0b\x42lockDevice\x12\r\n\x02id\x18\x01 \x01(\r:\x01\x30\x12\x13\n\x08\x64rive_id\x18\x02 \x01(\r:\x01\x30\x12\x0c\n\x04path\x18\x03 \x01(\t\x12\x15\n\rfriendly_path\x18\x04 \x01(\t\x12\r\n\x05label\x18\x05 \x01(\t\x12\x12\n\nsize_bytes\x18\x06 \x01(\x04\x12\x16\n\x0eis_formattable\x18\x07 \x01(\x08\x12\x14\n\x0cis_read_only\x18\x08 \x01(\x08\x12\x16\n\x0eis_root_device\x18\t \x01(\x08\x12S\n\x0c\x63ontent_type\x18\n \x01(\x0e\x32\x19.EStorageBlockContentType:\"k_EStorageBlockContentType_Invalid\x12\\\n\x0f\x66ilesystem_type\x18\x0b \x01(\x0e\x32\x1c.EStorageBlockFileSystemType:%k_EStorageBlockFileSystemType_Invalid\x12\x12\n\nmount_path\x18\x0c \x01(\t\"\xb9\x01\n\x1d\x43\x43loud_PendingRemoteOperation\x12T\n\toperation\x18\x01 \x01(\x0e\x32\x1d.ECloudPendingRemoteOperation:\"k_ECloudPendingRemoteOperationNone\x12\x14\n\x0cmachine_name\x18\x02 \x01(\t\x12\x11\n\tclient_id\x18\x03 \x01(\x04\x12\x19\n\x11time_last_updated\x18\x04 \x01(\r\"V\n CMsgCloudPendingRemoteOperations\x12\x32\n\noperations\x18\x01 \x03(\x0b\x32\x1e.CCloud_PendingRemoteOperation\"\x90\x04\n\x18\x43MsgBluetoothDevicesData\x12\x33\n\x08\x61\x64\x61pters\x18\x01 \x03(\x0b\x32!.CMsgBluetoothDevicesData.Adapter\x12\x31\n\x07\x64\x65vices\x18\x02 \x03(\x0b\x32 .CMsgBluetoothDevicesData.Device\x12\x32\n\x07manager\x18\x03 \x01(\x0b\x32!.CMsgBluetoothDevicesData.Manager\x1a_\n\x07\x41\x64\x61pter\x12\r\n\x02id\x18\x01 \x01(\r:\x01\x30\x12\x0b\n\x03mac\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x12\n\nis_enabled\x18\x04 \x01(\x08\x12\x16\n\x0eis_discovering\x18\x05 \x01(\x08\x1a\xcd\x01\n\x06\x44\x65vice\x12\r\n\x02id\x18\x01 \x01(\r:\x01\x30\x12\x15\n\nadapter_id\x18\x02 \x01(\r:\x01\x30\x12\x43\n\x05\x65type\x18\x03 \x01(\x0e\x32\x15.EBluetoothDeviceType:\x1dk_BluetoothDeviceType_Invalid\x12\x0b\n\x03mac\x18\x04 \x01(\t\x12\x0c\n\x04name\x18\x05 \x01(\t\x12\x14\n\x0cis_connected\x18\x06 \x01(\x08\x12\x11\n\tis_paired\x18\x07 \x01(\x08\x12\x14\n\x0cstrength_raw\x18\x08 \x01(\x05\x1a\'\n\x07Manager\x12\x1c\n\x14is_bluetooth_enabled\x18\x01 \x01(\x08\"<\n\x1d\x43MsgSystemPerfDiagnosticEntry\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\"\xa5\x01\n\x1e\x43MsgSystemPerfNetworkInterface\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\ttimestamp\x18\x02 \x01(\x01\x12\x16\n\x0etx_bytes_total\x18\x03 \x01(\x03\x12\x16\n\x0erx_bytes_total\x18\x04 \x01(\x03\x12\x18\n\x10tx_bytes_per_sec\x18\x05 \x01(\x05\x12\x18\n\x10rx_bytes_per_sec\x18\x06 \x01(\x05\"\x9c\x01\n\x1c\x43MsgSystemPerfDiagnosticInfo\x12/\n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x1e.CMsgSystemPerfDiagnosticEntry\x12\x33\n\ninterfaces\x18\x02 \x03(\x0b\x32\x1f.CMsgSystemPerfNetworkInterface\x12\x16\n\x0e\x62\x61ttery_temp_c\x18\x03 \x01(\x02\"\xea\x08\n\x14\x43MsgSystemPerfLimits\x12#\n\x1b\x63pu_governor_manual_min_mhz\x18\x01 \x01(\x05\x12#\n\x1b\x63pu_governor_manual_max_mhz\x18\x02 \x01(\x05\x12\x19\n\x11\x66sr_sharpness_min\x18\x03 \x01(\x05\x12\x19\n\x11\x66sr_sharpness_max\x18\x04 \x01(\x05\x12&\n\x1egpu_performance_manual_min_mhz\x18\x05 \x01(\x05\x12&\n\x1egpu_performance_manual_max_mhz\x18\x06 \x01(\x05\x12\"\n\x1aperf_overlay_is_standalone\x18\x07 \x01(\x08\x12 \n\x18is_dynamic_vrs_available\x18\x08 \x01(\x08\x12\x30\n(is_manual_display_refresh_rate_available\x18\t \x01(\x08\x12?\n gpu_performance_levels_available\x18\n \x03(\x0e\x32\x15.EGPUPerformanceLevel\x12%\n\x1d\x64isplay_refresh_manual_hz_min\x18\x0b \x01(\x05\x12%\n\x1d\x64isplay_refresh_manual_hz_max\x18\x0c \x01(\x05\x12\x19\n\x11\x66ps_limit_options\x18\r \x03(\x05\x12\x15\n\rtdp_limit_min\x18\x0e \x01(\x05\x12\x15\n\rtdp_limit_max\x18\x0f \x01(\x05\x12\x18\n\x10is_nis_supported\x18\x10 \x01(\x08\x12\x19\n\x11nis_sharpness_min\x18\x11 \x01(\x05\x12\x19\n\x11nis_sharpness_max\x18\x12 \x01(\x05\x12.\n&display_external_refresh_manual_hz_min\x18\x13 \x01(\x05\x12.\n&display_external_refresh_manual_hz_max\x18\x14 \x01(\x05\x12\"\n\x1a\x66ps_limit_options_external\x18\x15 \x03(\x05\x12\x1c\n\x14is_tearing_supported\x18\x16 \x01(\x08\x12\x18\n\x10is_vrr_supported\x18\x17 \x01(\x08\x12\x32\n*is_dynamic_refresh_rate_in_steam_supported\x18\x18 \x01(\x08\x12\x30\n(is_split_scaling_and_filtering_supported\x18\x19 \x01(\x08\x12=\n\x1fsplit_scaling_filters_available\x18\x1a \x03(\x0e\x32\x14.ESplitScalingFilter\x12=\n\x1fsplit_scaling_scalers_available\x18\x1b \x03(\x0e\x32\x14.ESplitScalingScaler\x12\x18\n\x10is_hdr_supported\x18\x1c \x01(\x08\x12(\n display_refresh_manual_hz_oc_max\x18\x1d \x01(\x05\"\xa7\x07\n\x1c\x43MsgSystemPerfSettingsGlobal\x12\x1e\n\x16\x64iagnostic_update_rate\x18\x01 \x01(\x02\x12[\n\x1asystem_trace_service_state\x18\x02 \x01(\x0e\x32\x14.ESystemServiceState:!k_ESystemServiceState_Unavailable\x12\x61\n graphics_profiling_service_state\x18\x03 \x01(\x0e\x32\x14.ESystemServiceState:!k_ESystemServiceState_Unavailable\x12[\n\x1aperf_overlay_service_state\x18\x04 \x01(\x0e\x32\x14.ESystemServiceState:!k_ESystemServiceState_Unavailable\x12Z\n\x12perf_overlay_level\x18\x05 \x01(\x0e\x32\x1a.EGraphicsPerfOverlayLevel:\"k_EGraphicsPerfOverlayLevel_Hidden\x12/\n\'is_show_perf_overlay_over_steam_enabled\x18\x06 \x01(\x08\x12$\n\x1cis_advanced_settings_enabled\x18\x07 \x01(\x08\x12.\n&allow_external_display_refresh_control\x18\x08 \x01(\x08\x12\x16\n\x0eis_hdr_enabled\x18\t \x01(\x08\x12X\n\x1bhdr_on_sdr_tonemap_operator\x18\x0c \x01(\x0e\x32\x14.EHDRToneMapOperator:\x1dk_EHDRToneMapOperator_Invalid\x12$\n\x1cis_hdr_debug_heatmap_enabled\x18\r \x01(\x08\x12+\n\x1d\x66orce_hdr_wide_gammut_for_sdr\x18\x0f \x01(\x08:\x04true\x12\x1e\n\x16\x61llow_experimental_hdr\x18\x10 \x01(\x08\x12\x1d\n\x15sdr_to_hdr_brightness\x18\x11 \x01(\x02\x12\x1f\n\x17\x64\x65\x62ug_force_hdr_support\x18\x12 \x01(\x08\x12#\n\x1b\x66orce_hdr_10pq_output_debug\x18\x13 \x01(\x08\x12\x1d\n\x15is_display_oc_enabled\x18\x14 \x01(\x08\"\xe7\x07\n\x1c\x43MsgSystemPerfSettingsPerApp\x12\"\n\x1agpu_performance_manual_mhz\x18\x01 \x01(\x05\x12\x11\n\tfps_limit\x18\x02 \x01(\x05\x12&\n\x1eis_variable_resolution_enabled\x18\x03 \x01(\x08\x12\'\n\x1fis_dynamic_refresh_rate_enabled\x18\x04 \x01(\x08\x12\x11\n\ttdp_limit\x18\x05 \x01(\x05\x12;\n\x0c\x63pu_governor\x18\x06 \x01(\x0e\x32\r.ECPUGovernor:\x16k_ECPUGovernor_Invalid\x12\x1f\n\x17\x63pu_governor_manual_mhz\x18\x07 \x01(\x05\x12\x16\n\x0escaling_filter\x18\x08 \x01(\x05\x12\x15\n\rfsr_sharpness\x18\t \x01(\x05\x12\x1c\n\x14is_fps_limit_enabled\x18\n \x01(\x08\x12\x1c\n\x14is_tdp_limit_enabled\x18\x0b \x01(\x08\x12#\n\x1bis_low_latency_mode_enabled\x18\x0c \x01(\x08\x12!\n\x19\x64isplay_refresh_manual_hz\x18\r \x01(\x05\x12$\n\x1cis_game_perf_profile_enabled\x18\x0e \x01(\x08\x12T\n\x15gpu_performance_level\x18\x0f \x01(\x0e\x32\x15.EGPUPerformanceLevel:\x1ek_EGPUPerformanceLevel_Invalid\x12\x15\n\rnis_sharpness\x18\x10 \x01(\x05\x12*\n\"display_external_refresh_manual_hz\x18\x11 \x01(\x05\x12\x1a\n\x12\x66ps_limit_external\x18\x12 \x01(\x05\x12\x1a\n\x12is_tearing_enabled\x18\x13 \x01(\x08\x12\x16\n\x0eis_vrr_enabled\x18\x14 \x01(\x08\x12\"\n\x1ais_composite_debug_enabled\x18\x15 \x01(\x08\x12\x17\n\x0f\x66orce_composite\x18\x16 \x01(\x08\x12)\n!use_dynamic_refresh_rate_in_steam\x18\x17 \x01(\x08\x12Q\n\x14split_scaling_filter\x18\x18 \x01(\x0e\x32\x14.ESplitScalingFilter:\x1dk_ESplitScalingFilter_Invalid\x12Q\n\x14split_scaling_scaler\x18\x19 \x01(\x0e\x32\x14.ESplitScalingScaler:\x1dk_ESplitScalingScaler_Invalid\"w\n\x16\x43MsgSystemPerfSettings\x12-\n\x06global\x18\x01 \x01(\x0b\x32\x1d.CMsgSystemPerfSettingsGlobal\x12.\n\x07per_app\x18\x02 \x01(\x0b\x32\x1d.CMsgSystemPerfSettingsPerApp\"\x8c\x08\n\x18\x43MsgSystemPerfSettingsV1\x12\x1e\n\x16\x64iagnostic_update_rate\x18\x01 \x01(\x02\x12[\n\x1asystem_trace_service_state\x18\x02 \x01(\x0e\x32\x14.ESystemServiceState:!k_ESystemServiceState_Unavailable\x12\x61\n graphics_profiling_service_state\x18\x03 \x01(\x0e\x32\x14.ESystemServiceState:!k_ESystemServiceState_Unavailable\x12[\n\x1aperf_overlay_service_state\x18\x04 \x01(\x0e\x32\x14.ESystemServiceState:!k_ESystemServiceState_Unavailable\x12Z\n\x12perf_overlay_level\x18\x05 \x01(\x0e\x32\x1a.EGraphicsPerfOverlayLevel:\"k_EGraphicsPerfOverlayLevel_Hidden\x12T\n\x15gpu_performance_level\x18\x06 \x01(\x0e\x32\x15.EGPUPerformanceLevel:\x1ek_EGPUPerformanceLevel_Invalid\x12\"\n\x1agpu_performance_manual_mhz\x18\x07 \x01(\x05\x12\x11\n\tfps_limit\x18\x08 \x01(\x05\x12&\n\x1eis_variable_resolution_enabled\x18\t \x01(\x08\x12\'\n\x1fis_dynamic_refresh_rate_enabled\x18\n \x01(\x08\x12\x11\n\ttdp_limit\x18\x0b \x01(\x05\x12;\n\x0c\x63pu_governor\x18\x0c \x01(\x0e\x32\r.ECPUGovernor:\x16k_ECPUGovernor_Invalid\x12\x1f\n\x17\x63pu_governor_manual_mhz\x18\r \x01(\x05\x12\x16\n\x0escaling_filter\x18\x0e \x01(\x05\x12\x15\n\rfsr_sharpness\x18\x0f \x01(\x05\x12\x1c\n\x14is_fps_limit_enabled\x18\x10 \x01(\x08\x12\x1c\n\x14is_tdp_limit_enabled\x18\x11 \x01(\x08\x12/\n\'is_show_perf_overlay_over_steam_enabled\x18\x12 \x01(\x08\x12#\n\x1bis_low_latency_mode_enabled\x18\x13 \x01(\x08\x12!\n\x19\x64isplay_refresh_manual_hz\x18\x14 \x01(\x05\x12$\n\x1cis_game_perf_profile_enabled\x18\x15 \x01(\x08\"\xa0\x01\n\x13\x43MsgSystemPerfState\x12%\n\x06limits\x18\x01 \x01(\x0b\x32\x15.CMsgSystemPerfLimits\x12)\n\x08settings\x18\x02 \x01(\x0b\x32\x17.CMsgSystemPerfSettings\x12\x17\n\x0f\x63urrent_game_id\x18\x03 \x01(\x04\x12\x1e\n\x16\x61\x63tive_profile_game_id\x18\x04 \x01(\x04\"\xa4\x01\n\x1c\x43MsgSystemPerfUpdateSettings\x12\x0e\n\x06gameid\x18\x01 \x01(\x04\x12\x1b\n\x13skip_storage_update\x18\x04 \x01(\x08\x12\x1a\n\x10reset_to_default\x18\x02 \x01(\x08H\x00\x12\x31\n\x0esettings_delta\x18\x03 \x01(\x0b\x32\x17.CMsgSystemPerfSettingsH\x00\x42\x08\n\x06update\"\xfa\x01\n\x19\x43MsgSystemDockUpdateState\x12\x36\n\x05state\x18\x01 \x01(\x0e\x32\x0e.EUpdaterState:\x17k_EUpdaterState_Invalid\x12\x1a\n\x12rtime_last_checked\x18\x02 \x01(\x07\x12\x17\n\x0fversion_current\x18\x03 \x01(\t\x12\x19\n\x11version_available\x18\x04 \x01(\t\x12\x16\n\x0estage_progress\x18\x05 \x01(\x02\x12\"\n\x1artime_estimated_completion\x18\x06 \x01(\x07\x12\x19\n\x11old_fw_workaround\x18\x07 \x01(\x05\"G\n\x13\x43MsgSystemDockState\x12\x30\n\x0cupdate_state\x18\x01 \x01(\x0b\x32\x1a.CMsgSystemDockUpdateState\"2\n\x1c\x43MsgSystemDockUpdateFirmware\x12\x12\n\ncheck_only\x18\x01 \x01(\x08\"\xc5\x01\n\x15\x43MsgSystemAudioVolume\x12\x34\n\x07\x65ntries\x18\x01 \x03(\x0b\x32#.CMsgSystemAudioVolume.ChannelEntry\x12\x10\n\x08is_muted\x18\x02 \x01(\x08\x1a\x64\n\x0c\x43hannelEntry\x12\x44\n\x08\x65\x63hannel\x18\x01 \x01(\x0e\x32\x14.ESystemAudioChannel:\x1ck_SystemAudioChannel_Invalid\x12\x0e\n\x06volume\x18\x02 \x01(\x02\"E\n\x1c\x43MsgSystemAudioManagerObject\x12\n\n\x02id\x18\x01 \x01(\r\x12\x19\n\x11rtime_last_update\x18\x02 \x01(\x07\"\x89\x01\n\x1c\x43MsgSystemAudioManagerDevice\x12+\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x1d.CMsgSystemAudioManagerObject\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0c\n\x04nick\x18\x03 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x04 \x01(\t\x12\x0b\n\x03\x61pi\x18\x05 \x01(\t\"\x81\x02\n\x1a\x43MsgSystemAudioManagerNode\x12+\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x1d.CMsgSystemAudioManagerObject\x12\x11\n\tdevice_id\x18\x02 \x01(\r\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x0c\n\x04nick\x18\x04 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x05 \x01(\t\x12J\n\nedirection\x18\x06 \x01(\x0e\x32\x16.ESystemAudioDirection:\x1ek_SystemAudioDirection_Invalid\x12&\n\x06volume\x18\x07 \x01(\x0b\x32\x16.CMsgSystemAudioVolume\"\xe2\x02\n\x1a\x43MsgSystemAudioManagerPort\x12+\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x1d.CMsgSystemAudioManagerObject\x12\x0f\n\x07node_id\x18\x03 \x01(\r\x12\x0c\n\x04name\x18\x04 \x01(\t\x12\r\n\x05\x61lias\x18\x05 \x01(\t\x12\x43\n\x05\x65type\x18\x06 \x01(\x0e\x32\x15.ESystemAudioPortType:\x1dk_SystemAudioPortType_Invalid\x12R\n\nedirection\x18\x07 \x01(\x0e\x32\x1a.ESystemAudioPortDirection:\"k_SystemAudioPortDirection_Invalid\x12\x13\n\x0bis_physical\x18\x08 \x01(\x08\x12\x13\n\x0bis_terminal\x18\t \x01(\x08\x12\x12\n\nis_control\x18\n \x01(\x08\x12\x12\n\nis_monitor\x18\x0b \x01(\x08\"\xa7\x01\n\x1a\x43MsgSystemAudioManagerLink\x12+\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x1d.CMsgSystemAudioManagerObject\x12\x16\n\x0eoutput_node_id\x18\x02 \x01(\r\x12\x16\n\x0eoutput_port_id\x18\x03 \x01(\r\x12\x15\n\rinput_node_id\x18\x04 \x01(\r\x12\x15\n\rinput_port_id\x18\x05 \x01(\r\"\xd3\x01\n\x1d\x43MsgSystemAudioManagerStateHW\x12.\n\x07\x64\x65vices\x18\x01 \x03(\x0b\x32\x1d.CMsgSystemAudioManagerDevice\x12*\n\x05nodes\x18\x02 \x03(\x0b\x32\x1b.CMsgSystemAudioManagerNode\x12*\n\x05ports\x18\x03 \x03(\x0b\x32\x1b.CMsgSystemAudioManagerPort\x12*\n\x05links\x18\x04 \x03(\x0b\x32\x1b.CMsgSystemAudioManagerLink\"p\n\x1b\x43MsgSystemAudioManagerState\x12\x14\n\x0crtime_filter\x18\x01 \x01(\x07\x12\x0f\n\x07\x63ounter\x18\x02 \x01(\x05\x12*\n\x02hw\x18\x03 \x01(\x0b\x32\x1e.CMsgSystemAudioManagerStateHW\"8\n%CMsgSystemAudioManagerUpdateSomething\x12\x0f\n\x07\x63ounter\x18\x01 \x01(\x05\"V\n\x15\x43MsgSystemDisplayMode\x12\n\n\x02id\x18\x01 \x01(\x05\x12\r\n\x05width\x18\x02 \x01(\x05\x12\x0e\n\x06height\x18\x03 \x01(\x05\x12\x12\n\nrefresh_hz\x18\x04 \x01(\x05\"\x93\x03\n\x11\x43MsgSystemDisplay\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x12\n\nis_primary\x18\x04 \x01(\x08\x12\x12\n\nis_enabled\x18\x05 \x01(\x08\x12\x13\n\x0bis_internal\x18\x06 \x01(\x08\x12\x19\n\x11has_mode_override\x18\x07 \x01(\x08\x12\x10\n\x08width_mm\x18\x08 \x01(\x05\x12\x11\n\theight_mm\x18\t \x01(\x05\x12\x17\n\x0f\x63urrent_mode_id\x18\n \x01(\x05\x12%\n\x05modes\x18\x0b \x03(\x0b\x32\x16.CMsgSystemDisplayMode\x12\x18\n\x10refresh_rate_min\x18\x0c \x01(\x05\x12\x18\n\x10refresh_rate_max\x18\r \x01(\x05\x12\x16\n\x0eis_vrr_capable\x18\x0e \x01(\x08\x12\x16\n\x0eis_vrr_enabled\x18\x0f \x01(\x08\x12\x16\n\x0eis_hdr_capable\x18\x10 \x01(\x08\x12\x16\n\x0eis_hdr_enabled\x18\x11 \x01(\x08\"\xd3\x01\n\x1d\x43MsgSystemDisplayManagerState\x12$\n\x08\x64isplays\x18\x01 \x03(\x0b\x32\x12.CMsgSystemDisplay\x12#\n\x1bis_mode_switching_supported\x18\x02 \x01(\x08\x12g\n\x12\x63ompatibility_mode\x18\x03 \x01(\x0e\x32 .ESystemDisplayCompatibilityMode:)k_ESystemDisplayCompatibilityMode_Invalid\"F\n\x1f\x43MsgSystemDisplayManagerSetMode\x12\x12\n\ndisplay_id\x18\x01 \x01(\x05\x12\x0f\n\x07mode_id\x18\x02 \x01(\x05\"\xf2\x08\n\x19\x43MsgSystemManagerSettings\x12*\n\"idle_backlight_dim_battery_seconds\x18\x01 \x01(\x02\x12%\n\x1didle_backlight_dim_ac_seconds\x18\x02 \x01(\x02\x12$\n\x1cidle_suspend_battery_seconds\x18\x03 \x01(\x02\x12\x1f\n\x17idle_suspend_ac_seconds\x18\x04 \x01(\x02\x12\x1e\n\x16idle_suspend_supressed\x18\x05 \x01(\x08\x12(\n is_adaptive_brightness_available\x18\x06 \x01(\x08\x12+\n#display_adaptive_brightness_enabled\x18\x07 \x01(\x08\x12!\n\x19\x64isplay_nightmode_enabled\x18\n \x01(\x08\x12&\n\x1e\x64isplay_nightmode_tintstrength\x18\x0b \x01(\x02\x12 \n\x18\x64isplay_nightmode_maxhue\x18\x0c \x01(\x02\x12 \n\x18\x64isplay_nightmode_maxsat\x18\r \x01(\x02\x12\x1f\n\x17\x64isplay_nightmode_uiexp\x18\x0e \x01(\x02\x12\x1f\n\x17\x64isplay_nightmode_blend\x18\x0f \x01(\x02\x12\x1f\n\x17\x64isplay_nightmode_reset\x18\x10 \x01(\x08\x12*\n\"display_nightmode_schedule_enabled\x18\x11 \x01(\x08\x12,\n$display_nightmode_schedule_starttime\x18\x12 \x01(\x02\x12*\n\"display_nightmode_schedule_endtime\x18\x13 \x01(\x02\x12#\n\x1b\x64isplay_diagnostics_enabled\x18\x14 \x01(\x08\x12\x16\n\x0e\x61ls_lux_latest\x18\x15 \x01(\x02\x12\x16\n\x0e\x61ls_lux_median\x18\x16 \x01(\x02\x12\x1d\n\x15\x64isplay_backlight_raw\x18\x17 \x01(\x02\x12&\n\x1e\x64isplay_brightness_adaptivemin\x18\x18 \x01(\x02\x12&\n\x1e\x64isplay_brightness_adaptivemax\x18\x19 \x01(\x02\x12!\n\x19is_wifi_powersave_enabled\x18\x1a \x01(\x08\x12 \n\x18is_fan_control_available\x18\x1b \x01(\x08\x12P\n\x10\x66\x61n_control_mode\x18\x1c \x01(\x0e\x32\x16.ESystemFanControlMode:\x1ek_SystemFanControlMode_Invalid\x12\'\n\x1fis_display_brightness_available\x18\x1d \x01(\x08\x12,\n$is_display_colormanagement_available\x18\x1f \x01(\x08\x12\x1a\n\x12\x64isplay_colorgamut\x18  \x01(\x02\"b\n\x18\x43MsgSelectOSBranchParams\x12/\n\x06\x62ranch\x18\x01 \x01(\x0e\x32\n.EOSBranch:\x13k_EOSBranch_Unknown\x12\x15\n\rcustom_branch\x18\x02 \x01(\t\"p\n\x18\x43MsgSystemUpdateProgress\x12\x16\n\x0estage_progress\x18\x01 \x01(\x02\x12\x18\n\x10stage_size_bytes\x18\x02 \x01(\x03\x12\"\n\x1artime_estimated_completion\x18\x03 \x01(\x07\"\xb7\x01\n\x1b\x43MsgSystemUpdateCheckResult\x12\x33\n\x04type\x18\x01 \x01(\x0e\x32\r.EUpdaterType:\x16k_EUpdaterType_Invalid\x12\x12\n\x07\x65result\x18\x02 \x01(\r:\x01\x32\x12\x15\n\rrtime_checked\x18\x03 \x01(\x07\x12\x11\n\tavailable\x18\x04 \x01(\x08\x12\x0f\n\x07version\x18\x05 \x01(\t\x12\x14\n\x0c\x61uto_message\x18\x06 \x01(\t\"A\n\x1b\x43MsgSystemUpdateApplyParams\x12\"\n\x0b\x61pply_types\x18\x01 \x03(\x0e\x32\r.EUpdaterType\"\xb6\x01\n\x1b\x43MsgSystemUpdateApplyResult\x12\x33\n\x04type\x18\x01 \x01(\x0e\x32\r.EUpdaterType:\x16k_EUpdaterType_Invalid\x12\x12\n\x07\x65result\x18\x02 \x01(\r:\x01\x32\x12&\n\x17requires_client_restart\x18\x03 \x01(\x08:\x05\x66\x61lse\x12&\n\x17requires_system_restart\x18\x04 \x01(\x08:\x05\x66\x61lse\"\x91\x02\n\x15\x43MsgSystemUpdateState\x12\x36\n\x05state\x18\x01 \x01(\x0e\x32\x0e.EUpdaterState:\x17k_EUpdaterState_Invalid\x12+\n\x08progress\x18\x02 \x01(\x0b\x32\x19.CMsgSystemUpdateProgress\x12:\n\x14update_check_results\x18\x03 \x03(\x0b\x32\x1c.CMsgSystemUpdateCheckResult\x12:\n\x14update_apply_results\x18\x04 \x03(\x0b\x32\x1c.CMsgSystemUpdateApplyResult\x12\x1b\n\x13supports_os_updates\x18\x05 \x01(\x08\"&\n\x15\x43MsgAchievementChange\x12\r\n\x05\x61ppid\x18\x01 \x01(\r\"\\\n\x0c\x43MsgCellList\x12!\n\x05\x63\x65lls\x18\x01 \x03(\x0b\x32\x12.CMsgCellList.Cell\x1a)\n\x04\x43\x65ll\x12\x0f\n\x07\x63\x65ll_id\x18\x01 \x01(\r\x12\x10\n\x08loc_name\x18\x02 \x01(\t\"\x8e\x03\n\x10\x43MsgShortcutInfo\x12\r\n\x05\x61ppid\x18\x01 \x01(\r\x12\x0b\n\x03\x65xe\x18\x02 \x01(\t\x12\x11\n\tstart_dir\x18\x03 \x01(\t\x12\x0c\n\x04icon\x18\x04 \x01(\t\x12\x0c\n\x04path\x18\x05 \x01(\t\x12\x0c\n\x04\x61rgs\x18\x06 \x01(\t\x12\x10\n\x08\x61pp_name\x18\x07 \x01(\t\x12\x16\n\x0eoverride_appid\x18\x08 \x01(\r\x12\x15\n\rflatpak_appid\x18\t \x01(\t\x12\x0c\n\x04tags\x18\n \x03(\t\x12\x11\n\tis_remote\x18\x0b \x01(\x08\x12\x11\n\tis_hidden\x18\x0c \x01(\x08\x12\x14\n\x0cis_temporary\x18\r \x01(\x08\x12\x11\n\tis_openvr\x18\x0e \x01(\x08\x12\x1c\n\x14\x61llow_desktop_config\x18\x0f \x01(\x08\x12\x15\n\rallow_overlay\x18\x10 \x01(\x08\x12\x1b\n\x13rt_last_played_time\x18\x11 \x01(\r\x12\x1a\n\x12is_devkit_shortcut\x18\x12 \x01(\x08\x12\x15\n\rdevkit_gameid\x18\x13 \x01(\t\"$\n\x12\x43MsgShortcutAppIds\x12\x0e\n\x06\x61ppids\x18\x01 \x03(\r\"\xaa\x01\n\x0f\x43MsgMonitorInfo\x12\x1d\n\x15selected_display_name\x18\x01 \x02(\t\x12.\n\x08monitors\x18\x02 \x03(\x0b\x32\x1c.CMsgMonitorInfo.MonitorInfo\x1aH\n\x0bMonitorInfo\x12\x1b\n\x13monitor_device_name\x18\x01 \x02(\t\x12\x1c\n\x14monitor_display_name\x18\x02 \x02(\t*\x96\x02\n\x1c\x45\x43loudPendingRemoteOperation\x12&\n\"k_ECloudPendingRemoteOperationNone\x10\x00\x12\x32\n.k_ECloudPendingRemoteOperationAppSessionActive\x10\x01\x12\x32\n.k_ECloudPendingRemoteOperationUploadInProgress\x10\x02\x12/\n+k_ECloudPendingRemoteOperationUploadPending\x10\x03\x12\x35\n1k_ECloudPendingRemoteOperationAppSessionSuspended\x10\x04*\x9f\x0c\n\x18\x45SteamDeckKeyboardLayout\x12%\n!k_ESteamDeckKeyboardLayout_QWERTY\x10\x00\x12(\n$k_ESteamDeckKeyboardLayout_Bulgarian\x10\x01\x12\x31\n-k_ESteamDeckKeyboardLayout_Chinese_Simplified\x10\x02\x12\x32\n.k_ESteamDeckKeyboardLayout_Chinese_Traditional\x10\x03\x12$\n k_ESteamDeckKeyboardLayout_Czech\x10\x04\x12%\n!k_ESteamDeckKeyboardLayout_Danish\x10\x05\x12&\n\"k_ESteamDeckKeyboardLayout_Finnish\x10\x06\x12%\n!k_ESteamDeckKeyboardLayout_French\x10\x07\x12%\n!k_ESteamDeckKeyboardLayout_German\x10\x08\x12$\n k_ESteamDeckKeyboardLayout_Greek\x10\t\x12(\n$k_ESteamDeckKeyboardLayout_Hungarian\x10\n\x12&\n\"k_ESteamDeckKeyboardLayout_Italian\x10\x0b\x12\'\n#k_ESteamDeckKeyboardLayout_Japanese\x10\x0c\x12%\n!k_ESteamDeckKeyboardLayout_Korean\x10\r\x12(\n$k_ESteamDeckKeyboardLayout_Norwegian\x10\x0e\x12%\n!k_ESteamDeckKeyboardLayout_Polish\x10\x0f\x12)\n%k_ESteamDeckKeyboardLayout_Portuguese\x10\x10\x12\'\n#k_ESteamDeckKeyboardLayout_Romanian\x10\x11\x12&\n\"k_ESteamDeckKeyboardLayout_Russian\x10\x12\x12&\n\"k_ESteamDeckKeyboardLayout_Spanish\x10\x13\x12&\n\"k_ESteamDeckKeyboardLayout_Swedish\x10\x14\x12#\n\x1fk_ESteamDeckKeyboardLayout_Thai\x10\x15\x12(\n$k_ESteamDeckKeyboardLayout_Turkish_F\x10\x16\x12(\n$k_ESteamDeckKeyboardLayout_Turkish_Q\x10\x17\x12(\n$k_ESteamDeckKeyboardLayout_Ukrainian\x10\x18\x12)\n%k_ESteamDeckKeyboardLayout_Vietnamese\x10\x19\x12\x33\n/k_ESteamDeckKeyboardLayout_QWERTY_International\x10\x1a\x12%\n!k_ESteamDeckKeyboardLayout_Dvorak\x10\x1b\x12&\n\"k_ESteamDeckKeyboardLayout_Colemak\x10\x1c\x12=\n9k_ESteamDeckKeyboardLayout_Bulgarian_Phonetic_Traditional\x10\x1d\x12\x31\n-k_ESteamDeckKeyboardLayout_Bulgarian_Phonetic\x10\x1e\x12;\n7k_ESteamDeckKeyboardLayout_Chinese_Traditional_Bopomofo\x10\x1f\x12:\n6k_ESteamDeckKeyboardLayout_Chinese_Traditional_Cangjie\x10 \x12,\n(k_ESteamDeckKeyboardLayout_Japanese_Kana\x10!\x12\x38\n4k_ESteamDeckKeyboardLayout_Chinese_Traditional_Quick\x10\"B\x05H\x01\x90\x01\x00')
 
-_ECLOUDPENDINGREMOTEOPERATION = _descriptor.EnumDescriptor(
-  name='ECloudPendingRemoteOperation',
-  full_name='ECloudPendingRemoteOperation',
-  filename=None,
-  file=DESCRIPTOR,
-  create_key=_descriptor._internal_create_key,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='k_ECloudPendingRemoteOperationNone', index=0, number=0,
-      serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
-    _descriptor.EnumValueDescriptor(
-      name='k_ECloudPendingRemoteOperationAppSessionActive', index=1, number=1,
-      serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
-    _descriptor.EnumValueDescriptor(
-      name='k_ECloudPendingRemoteOperationUploadInProgress', index=2, number=2,
-      serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
-    _descriptor.EnumValueDescriptor(
-      name='k_ECloudPendingRemoteOperationUploadPending', index=3, number=3,
-      serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
-    _descriptor.EnumValueDescriptor(
-      name='k_ECloudPendingRemoteOperationAppSessionSuspended', index=4, number=4,
-      serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=3675,
-  serialized_end=3953,
-)
-_sym_db.RegisterEnumDescriptor(_ECLOUDPENDINGREMOTEOPERATION)
-
+_ECLOUDPENDINGREMOTEOPERATION = DESCRIPTOR.enum_types_by_name['ECloudPendingRemoteOperation']
 ECloudPendingRemoteOperation = enum_type_wrapper.EnumTypeWrapper(_ECLOUDPENDINGREMOTEOPERATION)
+_ESTEAMDECKKEYBOARDLAYOUT = DESCRIPTOR.enum_types_by_name['ESteamDeckKeyboardLayout']
+ESteamDeckKeyboardLayout = enum_type_wrapper.EnumTypeWrapper(_ESTEAMDECKKEYBOARDLAYOUT)
 k_ECloudPendingRemoteOperationNone = 0
 k_ECloudPendingRemoteOperationAppSessionActive = 1
 k_ECloudPendingRemoteOperationUploadInProgress = 2
 k_ECloudPendingRemoteOperationUploadPending = 3
 k_ECloudPendingRemoteOperationAppSessionSuspended = 4
+k_ESteamDeckKeyboardLayout_QWERTY = 0
+k_ESteamDeckKeyboardLayout_Bulgarian = 1
+k_ESteamDeckKeyboardLayout_Chinese_Simplified = 2
+k_ESteamDeckKeyboardLayout_Chinese_Traditional = 3
+k_ESteamDeckKeyboardLayout_Czech = 4
+k_ESteamDeckKeyboardLayout_Danish = 5
+k_ESteamDeckKeyboardLayout_Finnish = 6
+k_ESteamDeckKeyboardLayout_French = 7
+k_ESteamDeckKeyboardLayout_German = 8
+k_ESteamDeckKeyboardLayout_Greek = 9
+k_ESteamDeckKeyboardLayout_Hungarian = 10
+k_ESteamDeckKeyboardLayout_Italian = 11
+k_ESteamDeckKeyboardLayout_Japanese = 12
+k_ESteamDeckKeyboardLayout_Korean = 13
+k_ESteamDeckKeyboardLayout_Norwegian = 14
+k_ESteamDeckKeyboardLayout_Polish = 15
+k_ESteamDeckKeyboardLayout_Portuguese = 16
+k_ESteamDeckKeyboardLayout_Romanian = 17
+k_ESteamDeckKeyboardLayout_Russian = 18
+k_ESteamDeckKeyboardLayout_Spanish = 19
+k_ESteamDeckKeyboardLayout_Swedish = 20
+k_ESteamDeckKeyboardLayout_Thai = 21
+k_ESteamDeckKeyboardLayout_Turkish_F = 22
+k_ESteamDeckKeyboardLayout_Turkish_Q = 23
+k_ESteamDeckKeyboardLayout_Ukrainian = 24
+k_ESteamDeckKeyboardLayout_Vietnamese = 25
+k_ESteamDeckKeyboardLayout_QWERTY_International = 26
+k_ESteamDeckKeyboardLayout_Dvorak = 27
+k_ESteamDeckKeyboardLayout_Colemak = 28
+k_ESteamDeckKeyboardLayout_Bulgarian_Phonetic_Traditional = 29
+k_ESteamDeckKeyboardLayout_Bulgarian_Phonetic = 30
+k_ESteamDeckKeyboardLayout_Chinese_Traditional_Bopomofo = 31
+k_ESteamDeckKeyboardLayout_Chinese_Traditional_Cangjie = 32
+k_ESteamDeckKeyboardLayout_Japanese_Kana = 33
+k_ESteamDeckKeyboardLayout_Chinese_Traditional_Quick = 34
 
 
-
-_STEAMMESSAGESCLIENTICLIENTFORCEDENUMDEPENDENCIES = _descriptor.Descriptor(
-  name='SteamMessagesClientIClientForcedEnumDependencies',
-  full_name='SteamMessagesClientIClientForcedEnumDependencies',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='a', full_name='SteamMessagesClientIClientForcedEnumDependencies.a', index=0,
-      number=1, type=14, cpp_type=8, label=1,
-      has_default_value=True, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='b', full_name='SteamMessagesClientIClientForcedEnumDependencies.b', index=1,
-      number=2, type=14, cpp_type=8, label=1,
-      has_default_value=True, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='c', full_name='SteamMessagesClientIClientForcedEnumDependencies.c', index=2,
-      number=3, type=14, cpp_type=8, label=1,
-      has_default_value=True, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=52,
-  serialized_end=321,
-)
-
-
-_CMSGNETWORKDEVICEIP4ADDRESS = _descriptor.Descriptor(
-  name='CMsgNetworkDeviceIP4Address',
-  full_name='CMsgNetworkDeviceIP4Address',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='ip', full_name='CMsgNetworkDeviceIP4Address.ip', index=0,
-      number=1, type=5, cpp_type=1, label=1,
-      has_default_value=True, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='netmask', full_name='CMsgNetworkDeviceIP4Address.netmask', index=1,
-      number=2, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=323,
-  serialized_end=384,
-)
-
-
-_CMSGNETWORKDEVICEIP4CONFIG = _descriptor.Descriptor(
-  name='CMsgNetworkDeviceIP4Config',
-  full_name='CMsgNetworkDeviceIP4Config',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='addresses', full_name='CMsgNetworkDeviceIP4Config.addresses', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='dns_ip', full_name='CMsgNetworkDeviceIP4Config.dns_ip', index=1,
-      number=2, type=5, cpp_type=1, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='gateway_ip', full_name='CMsgNetworkDeviceIP4Config.gateway_ip', index=2,
-      number=3, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='is_dhcp_enabled', full_name='CMsgNetworkDeviceIP4Config.is_dhcp_enabled', index=3,
-      number=4, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='is_default_route', full_name='CMsgNetworkDeviceIP4Config.is_default_route', index=4,
-      number=5, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='is_enabled', full_name='CMsgNetworkDeviceIP4Config.is_enabled', index=5,
-      number=6, type=8, cpp_type=7, label=1,
-      has_default_value=True, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=387,
-  serialized_end=578,
-)
-
-
-_CMSGNETWORKDEVICEIP6ADDRESS = _descriptor.Descriptor(
-  name='CMsgNetworkDeviceIP6Address',
-  full_name='CMsgNetworkDeviceIP6Address',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='ip', full_name='CMsgNetworkDeviceIP6Address.ip', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=580,
-  serialized_end=621,
-)
-
-
-_CMSGNETWORKDEVICEIP6CONFIG = _descriptor.Descriptor(
-  name='CMsgNetworkDeviceIP6Config',
-  full_name='CMsgNetworkDeviceIP6Config',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='addresses', full_name='CMsgNetworkDeviceIP6Config.addresses', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='dns_ip', full_name='CMsgNetworkDeviceIP6Config.dns_ip', index=1,
-      number=2, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='gateway_ip', full_name='CMsgNetworkDeviceIP6Config.gateway_ip', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='is_dhcp_enabled', full_name='CMsgNetworkDeviceIP6Config.is_dhcp_enabled', index=3,
-      number=4, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='is_default_route', full_name='CMsgNetworkDeviceIP6Config.is_default_route', index=4,
-      number=5, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='is_enabled', full_name='CMsgNetworkDeviceIP6Config.is_enabled', index=5,
-      number=6, type=8, cpp_type=7, label=1,
-      has_default_value=True, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=624,
-  serialized_end=815,
-)
-
-
-_CMSGNETWORKDEVICESDATA_DEVICE_WIRED = _descriptor.Descriptor(
-  name='Wired',
-  full_name='CMsgNetworkDevicesData.Device.Wired',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='is_cable_present', full_name='CMsgNetworkDevicesData.Device.Wired.is_cable_present', index=0,
-      number=1, type=8, cpp_type=7, label=1,
-      has_default_value=True, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='speed_mbit', full_name='CMsgNetworkDevicesData.Device.Wired.speed_mbit', index=1,
-      number=2, type=13, cpp_type=3, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='friendly_name', full_name='CMsgNetworkDevicesData.Device.Wired.friendly_name', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1251,
-  serialized_end=1334,
-)
-
-_CMSGNETWORKDEVICESDATA_DEVICE_WIRELESS_AP = _descriptor.Descriptor(
-  name='AP',
-  full_name='CMsgNetworkDevicesData.Device.Wireless.AP',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='id', full_name='CMsgNetworkDevicesData.Device.Wireless.AP.id', index=0,
-      number=1, type=13, cpp_type=3, label=1,
-      has_default_value=True, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='estrength', full_name='CMsgNetworkDevicesData.Device.Wireless.AP.estrength', index=1,
-      number=2, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='ssid', full_name='CMsgNetworkDevicesData.Device.Wireless.AP.ssid', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='is_active', full_name='CMsgNetworkDevicesData.Device.Wireless.AP.is_active', index=3,
-      number=4, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='is_autoconnect', full_name='CMsgNetworkDevicesData.Device.Wireless.AP.is_autoconnect', index=4,
-      number=5, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='esecurity', full_name='CMsgNetworkDevicesData.Device.Wireless.AP.esecurity', index=5,
-      number=6, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='user_name', full_name='CMsgNetworkDevicesData.Device.Wireless.AP.user_name', index=6,
-      number=7, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='password', full_name='CMsgNetworkDevicesData.Device.Wireless.AP.password', index=7,
-      number=8, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='strength_raw', full_name='CMsgNetworkDevicesData.Device.Wireless.AP.strength_raw', index=8,
-      number=9, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1436,
-  serialized_end=1609,
-)
-
-_CMSGNETWORKDEVICESDATA_DEVICE_WIRELESS = _descriptor.Descriptor(
-  name='Wireless',
-  full_name='CMsgNetworkDevicesData.Device.Wireless',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='aps', full_name='CMsgNetworkDevicesData.Device.Wireless.aps', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='esecurity_supported', full_name='CMsgNetworkDevicesData.Device.Wireless.esecurity_supported', index=1,
-      number=2, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[_CMSGNETWORKDEVICESDATA_DEVICE_WIRELESS_AP, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1337,
-  serialized_end=1609,
-)
-
-_CMSGNETWORKDEVICESDATA_DEVICE = _descriptor.Descriptor(
-  name='Device',
-  full_name='CMsgNetworkDevicesData.Device',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='id', full_name='CMsgNetworkDevicesData.Device.id', index=0,
-      number=1, type=13, cpp_type=3, label=1,
-      has_default_value=True, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='etype', full_name='CMsgNetworkDevicesData.Device.etype', index=1,
-      number=2, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='estate', full_name='CMsgNetworkDevicesData.Device.estate', index=2,
-      number=3, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='mac', full_name='CMsgNetworkDevicesData.Device.mac', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='vendor', full_name='CMsgNetworkDevicesData.Device.vendor', index=4,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='product', full_name='CMsgNetworkDevicesData.Device.product', index=5,
-      number=6, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='ip4', full_name='CMsgNetworkDevicesData.Device.ip4', index=6,
-      number=7, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='ip6', full_name='CMsgNetworkDevicesData.Device.ip6', index=7,
-      number=8, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='wired', full_name='CMsgNetworkDevicesData.Device.wired', index=8,
-      number=9, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='wireless', full_name='CMsgNetworkDevicesData.Device.wireless', index=9,
-      number=10, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[_CMSGNETWORKDEVICESDATA_DEVICE_WIRED, _CMSGNETWORKDEVICESDATA_DEVICE_WIRELESS, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=953,
-  serialized_end=1609,
-)
-
-_CMSGNETWORKDEVICESDATA = _descriptor.Descriptor(
-  name='CMsgNetworkDevicesData',
-  full_name='CMsgNetworkDevicesData',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='devices', full_name='CMsgNetworkDevicesData.devices', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='is_wifi_enabled', full_name='CMsgNetworkDevicesData.is_wifi_enabled', index=1,
-      number=2, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='is_wifi_scanning_enabled', full_name='CMsgNetworkDevicesData.is_wifi_scanning_enabled', index=2,
-      number=3, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[_CMSGNETWORKDEVICESDATA_DEVICE, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=818,
-  serialized_end=1609,
-)
-
-
-_CMSGNETWORKDEVICECONNECT_KNOWNAP = _descriptor.Descriptor(
-  name='KnownAP',
-  full_name='CMsgNetworkDeviceConnect.KnownAP',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='ap_id', full_name='CMsgNetworkDeviceConnect.KnownAP.ap_id', index=0,
-      number=1, type=13, cpp_type=3, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1918,
-  serialized_end=1942,
-)
-
-_CMSGNETWORKDEVICECONNECT_CUSTOMAP = _descriptor.Descriptor(
-  name='CustomAP',
-  full_name='CMsgNetworkDeviceConnect.CustomAP',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='ssid', full_name='CMsgNetworkDeviceConnect.CustomAP.ssid', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='esecurity', full_name='CMsgNetworkDeviceConnect.CustomAP.esecurity', index=1,
-      number=2, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1944,
-  serialized_end=1987,
-)
-
-_CMSGNETWORKDEVICECONNECT_CREDENTIALS = _descriptor.Descriptor(
-  name='Credentials',
-  full_name='CMsgNetworkDeviceConnect.Credentials',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='username', full_name='CMsgNetworkDeviceConnect.Credentials.username', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='password', full_name='CMsgNetworkDeviceConnect.Credentials.password', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1989,
-  serialized_end=2038,
-)
-
-_CMSGNETWORKDEVICECONNECT = _descriptor.Descriptor(
-  name='CMsgNetworkDeviceConnect',
-  full_name='CMsgNetworkDeviceConnect',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='device_id', full_name='CMsgNetworkDeviceConnect.device_id', index=0,
-      number=1, type=13, cpp_type=3, label=1,
-      has_default_value=True, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='credentials', full_name='CMsgNetworkDeviceConnect.credentials', index=1,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='ip4', full_name='CMsgNetworkDeviceConnect.ip4', index=2,
-      number=5, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='ip6', full_name='CMsgNetworkDeviceConnect.ip6', index=3,
-      number=6, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='ap_known', full_name='CMsgNetworkDeviceConnect.ap_known', index=4,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='ap_custom', full_name='CMsgNetworkDeviceConnect.ap_custom', index=5,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[_CMSGNETWORKDEVICECONNECT_KNOWNAP, _CMSGNETWORKDEVICECONNECT_CUSTOMAP, _CMSGNETWORKDEVICECONNECT_CREDENTIALS, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='ap_info', full_name='CMsgNetworkDeviceConnect.ap_info',
-      index=0, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
-  ],
-  serialized_start=1612,
-  serialized_end=2049,
-)
-
-
-_CMSGSTORAGEDEVICESDATA_DRIVE = _descriptor.Descriptor(
-  name='Drive',
-  full_name='CMsgStorageDevicesData.Drive',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='id', full_name='CMsgStorageDevicesData.Drive.id', index=0,
-      number=1, type=13, cpp_type=3, label=1,
-      has_default_value=True, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='model', full_name='CMsgStorageDevicesData.Drive.model', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='vendor', full_name='CMsgStorageDevicesData.Drive.vendor', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='serial', full_name='CMsgStorageDevicesData.Drive.serial', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='is_ejectable', full_name='CMsgStorageDevicesData.Drive.is_ejectable', index=4,
-      number=5, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='size_bytes', full_name='CMsgStorageDevicesData.Drive.size_bytes', index=5,
-      number=6, type=4, cpp_type=4, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2185,
-  serialized_end=2296,
-)
-
-_CMSGSTORAGEDEVICESDATA_BLOCKDEVICE = _descriptor.Descriptor(
-  name='BlockDevice',
-  full_name='CMsgStorageDevicesData.BlockDevice',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='id', full_name='CMsgStorageDevicesData.BlockDevice.id', index=0,
-      number=1, type=13, cpp_type=3, label=1,
-      has_default_value=True, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='drive_id', full_name='CMsgStorageDevicesData.BlockDevice.drive_id', index=1,
-      number=2, type=13, cpp_type=3, label=1,
-      has_default_value=True, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='path', full_name='CMsgStorageDevicesData.BlockDevice.path', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='friendly_path', full_name='CMsgStorageDevicesData.BlockDevice.friendly_path', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='label', full_name='CMsgStorageDevicesData.BlockDevice.label', index=4,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='size_bytes', full_name='CMsgStorageDevicesData.BlockDevice.size_bytes', index=5,
-      number=6, type=4, cpp_type=4, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='is_formattable', full_name='CMsgStorageDevicesData.BlockDevice.is_formattable', index=6,
-      number=7, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='is_read_only', full_name='CMsgStorageDevicesData.BlockDevice.is_read_only', index=7,
-      number=8, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='is_root_device', full_name='CMsgStorageDevicesData.BlockDevice.is_root_device', index=8,
-      number=9, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='content_type', full_name='CMsgStorageDevicesData.BlockDevice.content_type', index=9,
-      number=10, type=14, cpp_type=8, label=1,
-      has_default_value=True, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='filesystem_type', full_name='CMsgStorageDevicesData.BlockDevice.filesystem_type', index=10,
-      number=11, type=14, cpp_type=8, label=1,
-      has_default_value=True, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='mount_path', full_name='CMsgStorageDevicesData.BlockDevice.mount_path', index=11,
-      number=12, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2299,
-  serialized_end=2689,
-)
-
-_CMSGSTORAGEDEVICESDATA = _descriptor.Descriptor(
-  name='CMsgStorageDevicesData',
-  full_name='CMsgStorageDevicesData',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='drives', full_name='CMsgStorageDevicesData.drives', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='block_devices', full_name='CMsgStorageDevicesData.block_devices', index=1,
-      number=2, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[_CMSGSTORAGEDEVICESDATA_DRIVE, _CMSGSTORAGEDEVICESDATA_BLOCKDEVICE, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2052,
-  serialized_end=2689,
-)
-
-
-_CCLOUD_PENDINGREMOTEOPERATION = _descriptor.Descriptor(
-  name='CCloud_PendingRemoteOperation',
-  full_name='CCloud_PendingRemoteOperation',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='operation', full_name='CCloud_PendingRemoteOperation.operation', index=0,
-      number=1, type=14, cpp_type=8, label=1,
-      has_default_value=True, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='machine_name', full_name='CCloud_PendingRemoteOperation.machine_name', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='client_id', full_name='CCloud_PendingRemoteOperation.client_id', index=2,
-      number=3, type=4, cpp_type=4, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='time_last_updated', full_name='CCloud_PendingRemoteOperation.time_last_updated', index=3,
-      number=4, type=13, cpp_type=3, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2692,
-  serialized_end=2877,
-)
-
-
-_CMSGCLOUDPENDINGREMOTEOPERATIONS = _descriptor.Descriptor(
-  name='CMsgCloudPendingRemoteOperations',
-  full_name='CMsgCloudPendingRemoteOperations',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='operations', full_name='CMsgCloudPendingRemoteOperations.operations', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2879,
-  serialized_end=2965,
-)
-
-
-_CMSGBLUETOOTHDEVICESDATA_ADAPTER = _descriptor.Descriptor(
-  name='Adapter',
-  full_name='CMsgBluetoothDevicesData.Adapter',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='id', full_name='CMsgBluetoothDevicesData.Adapter.id', index=0,
-      number=1, type=13, cpp_type=3, label=1,
-      has_default_value=True, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='mac', full_name='CMsgBluetoothDevicesData.Adapter.mac', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='name', full_name='CMsgBluetoothDevicesData.Adapter.name', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='is_enabled', full_name='CMsgBluetoothDevicesData.Adapter.is_enabled', index=3,
-      number=4, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='is_discovering', full_name='CMsgBluetoothDevicesData.Adapter.is_discovering', index=4,
-      number=5, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3100,
-  serialized_end=3195,
-)
-
-_CMSGBLUETOOTHDEVICESDATA_DEVICE = _descriptor.Descriptor(
-  name='Device',
-  full_name='CMsgBluetoothDevicesData.Device',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='id', full_name='CMsgBluetoothDevicesData.Device.id', index=0,
-      number=1, type=13, cpp_type=3, label=1,
-      has_default_value=True, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='adapter_id', full_name='CMsgBluetoothDevicesData.Device.adapter_id', index=1,
-      number=2, type=13, cpp_type=3, label=1,
-      has_default_value=True, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='etype', full_name='CMsgBluetoothDevicesData.Device.etype', index=2,
-      number=3, type=14, cpp_type=8, label=1,
-      has_default_value=True, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='mac', full_name='CMsgBluetoothDevicesData.Device.mac', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='name', full_name='CMsgBluetoothDevicesData.Device.name', index=4,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='is_connected', full_name='CMsgBluetoothDevicesData.Device.is_connected', index=5,
-      number=6, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='is_paired', full_name='CMsgBluetoothDevicesData.Device.is_paired', index=6,
-      number=7, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='strength_raw', full_name='CMsgBluetoothDevicesData.Device.strength_raw', index=7,
-      number=8, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3198,
-  serialized_end=3403,
-)
-
-_CMSGBLUETOOTHDEVICESDATA = _descriptor.Descriptor(
-  name='CMsgBluetoothDevicesData',
-  full_name='CMsgBluetoothDevicesData',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='adapters', full_name='CMsgBluetoothDevicesData.adapters', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='devices', full_name='CMsgBluetoothDevicesData.devices', index=1,
-      number=2, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[_CMSGBLUETOOTHDEVICESDATA_ADAPTER, _CMSGBLUETOOTHDEVICESDATA_DEVICE, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2968,
-  serialized_end=3403,
-)
-
-
-_CMSGBLUETOOTHSETTINGS = _descriptor.Descriptor(
-  name='CMsgBluetoothSettings',
-  full_name='CMsgBluetoothSettings',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='is_enabled', full_name='CMsgBluetoothSettings.is_enabled', index=0,
-      number=1, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3405,
-  serialized_end=3448,
-)
-
-
-_CMSGSYSTEMPERFDIAGNOSTICENTRY = _descriptor.Descriptor(
-  name='CMsgSystemPerfDiagnosticEntry',
-  full_name='CMsgSystemPerfDiagnosticEntry',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='CMsgSystemPerfDiagnosticEntry.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='value', full_name='CMsgSystemPerfDiagnosticEntry.value', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3450,
-  serialized_end=3510,
-)
-
-
-_CMSGSYSTEMPERFDIAGNOSTICINFO = _descriptor.Descriptor(
-  name='CMsgSystemPerfDiagnosticInfo',
-  full_name='CMsgSystemPerfDiagnosticInfo',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='entries', full_name='CMsgSystemPerfDiagnosticInfo.entries', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3512,
-  serialized_end=3591,
-)
-
-
-_CMSGSYSTEMPERFSETTINGS = _descriptor.Descriptor(
-  name='CMsgSystemPerfSettings',
-  full_name='CMsgSystemPerfSettings',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='diagnostic_update_rate', full_name='CMsgSystemPerfSettings.diagnostic_update_rate', index=0,
-      number=1, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='is_shark_mode', full_name='CMsgSystemPerfSettings.is_shark_mode', index=1,
-      number=2, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3593,
-  serialized_end=3672,
-)
-
-_STEAMMESSAGESCLIENTICLIENTFORCEDENUMDEPENDENCIES.fields_by_name['a'].enum_type = enums__pb2._EBLUETOOTHDEVICETYPE
-_STEAMMESSAGESCLIENTICLIENTFORCEDENUMDEPENDENCIES.fields_by_name['b'].enum_type = enums__pb2._ESTORAGEBLOCKCONTENTTYPE
-_STEAMMESSAGESCLIENTICLIENTFORCEDENUMDEPENDENCIES.fields_by_name['c'].enum_type = enums__pb2._ESTORAGEBLOCKFILESYSTEMTYPE
-_CMSGNETWORKDEVICEIP4CONFIG.fields_by_name['addresses'].message_type = _CMSGNETWORKDEVICEIP4ADDRESS
-_CMSGNETWORKDEVICEIP6CONFIG.fields_by_name['addresses'].message_type = _CMSGNETWORKDEVICEIP6ADDRESS
-_CMSGNETWORKDEVICESDATA_DEVICE_WIRED.containing_type = _CMSGNETWORKDEVICESDATA_DEVICE
-_CMSGNETWORKDEVICESDATA_DEVICE_WIRELESS_AP.containing_type = _CMSGNETWORKDEVICESDATA_DEVICE_WIRELESS
-_CMSGNETWORKDEVICESDATA_DEVICE_WIRELESS.fields_by_name['aps'].message_type = _CMSGNETWORKDEVICESDATA_DEVICE_WIRELESS_AP
-_CMSGNETWORKDEVICESDATA_DEVICE_WIRELESS.containing_type = _CMSGNETWORKDEVICESDATA_DEVICE
-_CMSGNETWORKDEVICESDATA_DEVICE.fields_by_name['ip4'].message_type = _CMSGNETWORKDEVICEIP4CONFIG
-_CMSGNETWORKDEVICESDATA_DEVICE.fields_by_name['ip6'].message_type = _CMSGNETWORKDEVICEIP6CONFIG
-_CMSGNETWORKDEVICESDATA_DEVICE.fields_by_name['wired'].message_type = _CMSGNETWORKDEVICESDATA_DEVICE_WIRED
-_CMSGNETWORKDEVICESDATA_DEVICE.fields_by_name['wireless'].message_type = _CMSGNETWORKDEVICESDATA_DEVICE_WIRELESS
-_CMSGNETWORKDEVICESDATA_DEVICE.containing_type = _CMSGNETWORKDEVICESDATA
-_CMSGNETWORKDEVICESDATA.fields_by_name['devices'].message_type = _CMSGNETWORKDEVICESDATA_DEVICE
-_CMSGNETWORKDEVICECONNECT_KNOWNAP.containing_type = _CMSGNETWORKDEVICECONNECT
-_CMSGNETWORKDEVICECONNECT_CUSTOMAP.containing_type = _CMSGNETWORKDEVICECONNECT
-_CMSGNETWORKDEVICECONNECT_CREDENTIALS.containing_type = _CMSGNETWORKDEVICECONNECT
-_CMSGNETWORKDEVICECONNECT.fields_by_name['credentials'].message_type = _CMSGNETWORKDEVICECONNECT_CREDENTIALS
-_CMSGNETWORKDEVICECONNECT.fields_by_name['ip4'].message_type = _CMSGNETWORKDEVICEIP4CONFIG
-_CMSGNETWORKDEVICECONNECT.fields_by_name['ip6'].message_type = _CMSGNETWORKDEVICEIP6CONFIG
-_CMSGNETWORKDEVICECONNECT.fields_by_name['ap_known'].message_type = _CMSGNETWORKDEVICECONNECT_KNOWNAP
-_CMSGNETWORKDEVICECONNECT.fields_by_name['ap_custom'].message_type = _CMSGNETWORKDEVICECONNECT_CUSTOMAP
-_CMSGNETWORKDEVICECONNECT.oneofs_by_name['ap_info'].fields.append(
-  _CMSGNETWORKDEVICECONNECT.fields_by_name['ap_known'])
-_CMSGNETWORKDEVICECONNECT.fields_by_name['ap_known'].containing_oneof = _CMSGNETWORKDEVICECONNECT.oneofs_by_name['ap_info']
-_CMSGNETWORKDEVICECONNECT.oneofs_by_name['ap_info'].fields.append(
-  _CMSGNETWORKDEVICECONNECT.fields_by_name['ap_custom'])
-_CMSGNETWORKDEVICECONNECT.fields_by_name['ap_custom'].containing_oneof = _CMSGNETWORKDEVICECONNECT.oneofs_by_name['ap_info']
-_CMSGSTORAGEDEVICESDATA_DRIVE.containing_type = _CMSGSTORAGEDEVICESDATA
-_CMSGSTORAGEDEVICESDATA_BLOCKDEVICE.fields_by_name['content_type'].enum_type = enums__pb2._ESTORAGEBLOCKCONTENTTYPE
-_CMSGSTORAGEDEVICESDATA_BLOCKDEVICE.fields_by_name['filesystem_type'].enum_type = enums__pb2._ESTORAGEBLOCKFILESYSTEMTYPE
-_CMSGSTORAGEDEVICESDATA_BLOCKDEVICE.containing_type = _CMSGSTORAGEDEVICESDATA
-_CMSGSTORAGEDEVICESDATA.fields_by_name['drives'].message_type = _CMSGSTORAGEDEVICESDATA_DRIVE
-_CMSGSTORAGEDEVICESDATA.fields_by_name['block_devices'].message_type = _CMSGSTORAGEDEVICESDATA_BLOCKDEVICE
-_CCLOUD_PENDINGREMOTEOPERATION.fields_by_name['operation'].enum_type = _ECLOUDPENDINGREMOTEOPERATION
-_CMSGCLOUDPENDINGREMOTEOPERATIONS.fields_by_name['operations'].message_type = _CCLOUD_PENDINGREMOTEOPERATION
-_CMSGBLUETOOTHDEVICESDATA_ADAPTER.containing_type = _CMSGBLUETOOTHDEVICESDATA
-_CMSGBLUETOOTHDEVICESDATA_DEVICE.fields_by_name['etype'].enum_type = enums__pb2._EBLUETOOTHDEVICETYPE
-_CMSGBLUETOOTHDEVICESDATA_DEVICE.containing_type = _CMSGBLUETOOTHDEVICESDATA
-_CMSGBLUETOOTHDEVICESDATA.fields_by_name['adapters'].message_type = _CMSGBLUETOOTHDEVICESDATA_ADAPTER
-_CMSGBLUETOOTHDEVICESDATA.fields_by_name['devices'].message_type = _CMSGBLUETOOTHDEVICESDATA_DEVICE
-_CMSGSYSTEMPERFDIAGNOSTICINFO.fields_by_name['entries'].message_type = _CMSGSYSTEMPERFDIAGNOSTICENTRY
-DESCRIPTOR.message_types_by_name['SteamMessagesClientIClientForcedEnumDependencies'] = _STEAMMESSAGESCLIENTICLIENTFORCEDENUMDEPENDENCIES
-DESCRIPTOR.message_types_by_name['CMsgNetworkDeviceIP4Address'] = _CMSGNETWORKDEVICEIP4ADDRESS
-DESCRIPTOR.message_types_by_name['CMsgNetworkDeviceIP4Config'] = _CMSGNETWORKDEVICEIP4CONFIG
-DESCRIPTOR.message_types_by_name['CMsgNetworkDeviceIP6Address'] = _CMSGNETWORKDEVICEIP6ADDRESS
-DESCRIPTOR.message_types_by_name['CMsgNetworkDeviceIP6Config'] = _CMSGNETWORKDEVICEIP6CONFIG
-DESCRIPTOR.message_types_by_name['CMsgNetworkDevicesData'] = _CMSGNETWORKDEVICESDATA
-DESCRIPTOR.message_types_by_name['CMsgNetworkDeviceConnect'] = _CMSGNETWORKDEVICECONNECT
-DESCRIPTOR.message_types_by_name['CMsgStorageDevicesData'] = _CMSGSTORAGEDEVICESDATA
-DESCRIPTOR.message_types_by_name['CCloud_PendingRemoteOperation'] = _CCLOUD_PENDINGREMOTEOPERATION
-DESCRIPTOR.message_types_by_name['CMsgCloudPendingRemoteOperations'] = _CMSGCLOUDPENDINGREMOTEOPERATIONS
-DESCRIPTOR.message_types_by_name['CMsgBluetoothDevicesData'] = _CMSGBLUETOOTHDEVICESDATA
-DESCRIPTOR.message_types_by_name['CMsgBluetoothSettings'] = _CMSGBLUETOOTHSETTINGS
-DESCRIPTOR.message_types_by_name['CMsgSystemPerfDiagnosticEntry'] = _CMSGSYSTEMPERFDIAGNOSTICENTRY
-DESCRIPTOR.message_types_by_name['CMsgSystemPerfDiagnosticInfo'] = _CMSGSYSTEMPERFDIAGNOSTICINFO
-DESCRIPTOR.message_types_by_name['CMsgSystemPerfSettings'] = _CMSGSYSTEMPERFSETTINGS
-DESCRIPTOR.enum_types_by_name['ECloudPendingRemoteOperation'] = _ECLOUDPENDINGREMOTEOPERATION
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
-
+_STEAMMESSAGESCLIENTICLIENTFORCEDENUMDEPENDENCIES = DESCRIPTOR.message_types_by_name['SteamMessagesClientIClientForcedEnumDependencies']
+_CMSGNETWORKDEVICEIP4ADDRESS = DESCRIPTOR.message_types_by_name['CMsgNetworkDeviceIP4Address']
+_CMSGNETWORKDEVICEIP4CONFIG = DESCRIPTOR.message_types_by_name['CMsgNetworkDeviceIP4Config']
+_CMSGNETWORKDEVICEIP6ADDRESS = DESCRIPTOR.message_types_by_name['CMsgNetworkDeviceIP6Address']
+_CMSGNETWORKDEVICEIP6CONFIG = DESCRIPTOR.message_types_by_name['CMsgNetworkDeviceIP6Config']
+_CMSGNETWORKDEVICESDATA = DESCRIPTOR.message_types_by_name['CMsgNetworkDevicesData']
+_CMSGNETWORKDEVICESDATA_DEVICE = _CMSGNETWORKDEVICESDATA.nested_types_by_name['Device']
+_CMSGNETWORKDEVICESDATA_DEVICE_WIRED = _CMSGNETWORKDEVICESDATA_DEVICE.nested_types_by_name['Wired']
+_CMSGNETWORKDEVICESDATA_DEVICE_WIRELESS = _CMSGNETWORKDEVICESDATA_DEVICE.nested_types_by_name['Wireless']
+_CMSGNETWORKDEVICESDATA_DEVICE_WIRELESS_AP = _CMSGNETWORKDEVICESDATA_DEVICE_WIRELESS.nested_types_by_name['AP']
+_CMSGNETWORKDEVICECONNECT = DESCRIPTOR.message_types_by_name['CMsgNetworkDeviceConnect']
+_CMSGNETWORKDEVICECONNECT_KNOWNAP = _CMSGNETWORKDEVICECONNECT.nested_types_by_name['KnownAP']
+_CMSGNETWORKDEVICECONNECT_CUSTOMAP = _CMSGNETWORKDEVICECONNECT.nested_types_by_name['CustomAP']
+_CMSGNETWORKDEVICECONNECT_CREDENTIALS = _CMSGNETWORKDEVICECONNECT.nested_types_by_name['Credentials']
+_CMSGSTORAGEDEVICESDATA = DESCRIPTOR.message_types_by_name['CMsgStorageDevicesData']
+_CMSGSTORAGEDEVICESDATA_DRIVE = _CMSGSTORAGEDEVICESDATA.nested_types_by_name['Drive']
+_CMSGSTORAGEDEVICESDATA_BLOCKDEVICE = _CMSGSTORAGEDEVICESDATA.nested_types_by_name['BlockDevice']
+_CCLOUD_PENDINGREMOTEOPERATION = DESCRIPTOR.message_types_by_name['CCloud_PendingRemoteOperation']
+_CMSGCLOUDPENDINGREMOTEOPERATIONS = DESCRIPTOR.message_types_by_name['CMsgCloudPendingRemoteOperations']
+_CMSGBLUETOOTHDEVICESDATA = DESCRIPTOR.message_types_by_name['CMsgBluetoothDevicesData']
+_CMSGBLUETOOTHDEVICESDATA_ADAPTER = _CMSGBLUETOOTHDEVICESDATA.nested_types_by_name['Adapter']
+_CMSGBLUETOOTHDEVICESDATA_DEVICE = _CMSGBLUETOOTHDEVICESDATA.nested_types_by_name['Device']
+_CMSGBLUETOOTHDEVICESDATA_MANAGER = _CMSGBLUETOOTHDEVICESDATA.nested_types_by_name['Manager']
+_CMSGSYSTEMPERFDIAGNOSTICENTRY = DESCRIPTOR.message_types_by_name['CMsgSystemPerfDiagnosticEntry']
+_CMSGSYSTEMPERFNETWORKINTERFACE = DESCRIPTOR.message_types_by_name['CMsgSystemPerfNetworkInterface']
+_CMSGSYSTEMPERFDIAGNOSTICINFO = DESCRIPTOR.message_types_by_name['CMsgSystemPerfDiagnosticInfo']
+_CMSGSYSTEMPERFLIMITS = DESCRIPTOR.message_types_by_name['CMsgSystemPerfLimits']
+_CMSGSYSTEMPERFSETTINGSGLOBAL = DESCRIPTOR.message_types_by_name['CMsgSystemPerfSettingsGlobal']
+_CMSGSYSTEMPERFSETTINGSPERAPP = DESCRIPTOR.message_types_by_name['CMsgSystemPerfSettingsPerApp']
+_CMSGSYSTEMPERFSETTINGS = DESCRIPTOR.message_types_by_name['CMsgSystemPerfSettings']
+_CMSGSYSTEMPERFSETTINGSV1 = DESCRIPTOR.message_types_by_name['CMsgSystemPerfSettingsV1']
+_CMSGSYSTEMPERFSTATE = DESCRIPTOR.message_types_by_name['CMsgSystemPerfState']
+_CMSGSYSTEMPERFUPDATESETTINGS = DESCRIPTOR.message_types_by_name['CMsgSystemPerfUpdateSettings']
+_CMSGSYSTEMDOCKUPDATESTATE = DESCRIPTOR.message_types_by_name['CMsgSystemDockUpdateState']
+_CMSGSYSTEMDOCKSTATE = DESCRIPTOR.message_types_by_name['CMsgSystemDockState']
+_CMSGSYSTEMDOCKUPDATEFIRMWARE = DESCRIPTOR.message_types_by_name['CMsgSystemDockUpdateFirmware']
+_CMSGSYSTEMAUDIOVOLUME = DESCRIPTOR.message_types_by_name['CMsgSystemAudioVolume']
+_CMSGSYSTEMAUDIOVOLUME_CHANNELENTRY = _CMSGSYSTEMAUDIOVOLUME.nested_types_by_name['ChannelEntry']
+_CMSGSYSTEMAUDIOMANAGEROBJECT = DESCRIPTOR.message_types_by_name['CMsgSystemAudioManagerObject']
+_CMSGSYSTEMAUDIOMANAGERDEVICE = DESCRIPTOR.message_types_by_name['CMsgSystemAudioManagerDevice']
+_CMSGSYSTEMAUDIOMANAGERNODE = DESCRIPTOR.message_types_by_name['CMsgSystemAudioManagerNode']
+_CMSGSYSTEMAUDIOMANAGERPORT = DESCRIPTOR.message_types_by_name['CMsgSystemAudioManagerPort']
+_CMSGSYSTEMAUDIOMANAGERLINK = DESCRIPTOR.message_types_by_name['CMsgSystemAudioManagerLink']
+_CMSGSYSTEMAUDIOMANAGERSTATEHW = DESCRIPTOR.message_types_by_name['CMsgSystemAudioManagerStateHW']
+_CMSGSYSTEMAUDIOMANAGERSTATE = DESCRIPTOR.message_types_by_name['CMsgSystemAudioManagerState']
+_CMSGSYSTEMAUDIOMANAGERUPDATESOMETHING = DESCRIPTOR.message_types_by_name['CMsgSystemAudioManagerUpdateSomething']
+_CMSGSYSTEMDISPLAYMODE = DESCRIPTOR.message_types_by_name['CMsgSystemDisplayMode']
+_CMSGSYSTEMDISPLAY = DESCRIPTOR.message_types_by_name['CMsgSystemDisplay']
+_CMSGSYSTEMDISPLAYMANAGERSTATE = DESCRIPTOR.message_types_by_name['CMsgSystemDisplayManagerState']
+_CMSGSYSTEMDISPLAYMANAGERSETMODE = DESCRIPTOR.message_types_by_name['CMsgSystemDisplayManagerSetMode']
+_CMSGSYSTEMMANAGERSETTINGS = DESCRIPTOR.message_types_by_name['CMsgSystemManagerSettings']
+_CMSGSELECTOSBRANCHPARAMS = DESCRIPTOR.message_types_by_name['CMsgSelectOSBranchParams']
+_CMSGSYSTEMUPDATEPROGRESS = DESCRIPTOR.message_types_by_name['CMsgSystemUpdateProgress']
+_CMSGSYSTEMUPDATECHECKRESULT = DESCRIPTOR.message_types_by_name['CMsgSystemUpdateCheckResult']
+_CMSGSYSTEMUPDATEAPPLYPARAMS = DESCRIPTOR.message_types_by_name['CMsgSystemUpdateApplyParams']
+_CMSGSYSTEMUPDATEAPPLYRESULT = DESCRIPTOR.message_types_by_name['CMsgSystemUpdateApplyResult']
+_CMSGSYSTEMUPDATESTATE = DESCRIPTOR.message_types_by_name['CMsgSystemUpdateState']
+_CMSGACHIEVEMENTCHANGE = DESCRIPTOR.message_types_by_name['CMsgAchievementChange']
+_CMSGCELLLIST = DESCRIPTOR.message_types_by_name['CMsgCellList']
+_CMSGCELLLIST_CELL = _CMSGCELLLIST.nested_types_by_name['Cell']
+_CMSGSHORTCUTINFO = DESCRIPTOR.message_types_by_name['CMsgShortcutInfo']
+_CMSGSHORTCUTAPPIDS = DESCRIPTOR.message_types_by_name['CMsgShortcutAppIds']
+_CMSGMONITORINFO = DESCRIPTOR.message_types_by_name['CMsgMonitorInfo']
+_CMSGMONITORINFO_MONITORINFO = _CMSGMONITORINFO.nested_types_by_name['MonitorInfo']
 SteamMessagesClientIClientForcedEnumDependencies = _reflection.GeneratedProtocolMessageType('SteamMessagesClientIClientForcedEnumDependencies', (_message.Message,), {
   'DESCRIPTOR' : _STEAMMESSAGESCLIENTICLIENTFORCEDENUMDEPENDENCIES,
   '__module__' : 'steammessages_client_objects_pb2'
@@ -1649,6 +285,13 @@ CMsgBluetoothDevicesData = _reflection.GeneratedProtocolMessageType('CMsgBluetoo
     # @@protoc_insertion_point(class_scope:CMsgBluetoothDevicesData.Device)
     })
   ,
+
+  'Manager' : _reflection.GeneratedProtocolMessageType('Manager', (_message.Message,), {
+    'DESCRIPTOR' : _CMSGBLUETOOTHDEVICESDATA_MANAGER,
+    '__module__' : 'steammessages_client_objects_pb2'
+    # @@protoc_insertion_point(class_scope:CMsgBluetoothDevicesData.Manager)
+    })
+  ,
   'DESCRIPTOR' : _CMSGBLUETOOTHDEVICESDATA,
   '__module__' : 'steammessages_client_objects_pb2'
   # @@protoc_insertion_point(class_scope:CMsgBluetoothDevicesData)
@@ -1656,13 +299,7 @@ CMsgBluetoothDevicesData = _reflection.GeneratedProtocolMessageType('CMsgBluetoo
 _sym_db.RegisterMessage(CMsgBluetoothDevicesData)
 _sym_db.RegisterMessage(CMsgBluetoothDevicesData.Adapter)
 _sym_db.RegisterMessage(CMsgBluetoothDevicesData.Device)
-
-CMsgBluetoothSettings = _reflection.GeneratedProtocolMessageType('CMsgBluetoothSettings', (_message.Message,), {
-  'DESCRIPTOR' : _CMSGBLUETOOTHSETTINGS,
-  '__module__' : 'steammessages_client_objects_pb2'
-  # @@protoc_insertion_point(class_scope:CMsgBluetoothSettings)
-  })
-_sym_db.RegisterMessage(CMsgBluetoothSettings)
+_sym_db.RegisterMessage(CMsgBluetoothDevicesData.Manager)
 
 CMsgSystemPerfDiagnosticEntry = _reflection.GeneratedProtocolMessageType('CMsgSystemPerfDiagnosticEntry', (_message.Message,), {
   'DESCRIPTOR' : _CMSGSYSTEMPERFDIAGNOSTICENTRY,
@@ -1671,12 +308,40 @@ CMsgSystemPerfDiagnosticEntry = _reflection.GeneratedProtocolMessageType('CMsgSy
   })
 _sym_db.RegisterMessage(CMsgSystemPerfDiagnosticEntry)
 
+CMsgSystemPerfNetworkInterface = _reflection.GeneratedProtocolMessageType('CMsgSystemPerfNetworkInterface', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSYSTEMPERFNETWORKINTERFACE,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSystemPerfNetworkInterface)
+  })
+_sym_db.RegisterMessage(CMsgSystemPerfNetworkInterface)
+
 CMsgSystemPerfDiagnosticInfo = _reflection.GeneratedProtocolMessageType('CMsgSystemPerfDiagnosticInfo', (_message.Message,), {
   'DESCRIPTOR' : _CMSGSYSTEMPERFDIAGNOSTICINFO,
   '__module__' : 'steammessages_client_objects_pb2'
   # @@protoc_insertion_point(class_scope:CMsgSystemPerfDiagnosticInfo)
   })
 _sym_db.RegisterMessage(CMsgSystemPerfDiagnosticInfo)
+
+CMsgSystemPerfLimits = _reflection.GeneratedProtocolMessageType('CMsgSystemPerfLimits', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSYSTEMPERFLIMITS,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSystemPerfLimits)
+  })
+_sym_db.RegisterMessage(CMsgSystemPerfLimits)
+
+CMsgSystemPerfSettingsGlobal = _reflection.GeneratedProtocolMessageType('CMsgSystemPerfSettingsGlobal', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSYSTEMPERFSETTINGSGLOBAL,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSystemPerfSettingsGlobal)
+  })
+_sym_db.RegisterMessage(CMsgSystemPerfSettingsGlobal)
+
+CMsgSystemPerfSettingsPerApp = _reflection.GeneratedProtocolMessageType('CMsgSystemPerfSettingsPerApp', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSYSTEMPERFSETTINGSPERAPP,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSystemPerfSettingsPerApp)
+  })
+_sym_db.RegisterMessage(CMsgSystemPerfSettingsPerApp)
 
 CMsgSystemPerfSettings = _reflection.GeneratedProtocolMessageType('CMsgSystemPerfSettings', (_message.Message,), {
   'DESCRIPTOR' : _CMSGSYSTEMPERFSETTINGS,
@@ -1685,6 +350,381 @@ CMsgSystemPerfSettings = _reflection.GeneratedProtocolMessageType('CMsgSystemPer
   })
 _sym_db.RegisterMessage(CMsgSystemPerfSettings)
 
+CMsgSystemPerfSettingsV1 = _reflection.GeneratedProtocolMessageType('CMsgSystemPerfSettingsV1', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSYSTEMPERFSETTINGSV1,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSystemPerfSettingsV1)
+  })
+_sym_db.RegisterMessage(CMsgSystemPerfSettingsV1)
 
-DESCRIPTOR._options = None
+CMsgSystemPerfState = _reflection.GeneratedProtocolMessageType('CMsgSystemPerfState', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSYSTEMPERFSTATE,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSystemPerfState)
+  })
+_sym_db.RegisterMessage(CMsgSystemPerfState)
+
+CMsgSystemPerfUpdateSettings = _reflection.GeneratedProtocolMessageType('CMsgSystemPerfUpdateSettings', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSYSTEMPERFUPDATESETTINGS,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSystemPerfUpdateSettings)
+  })
+_sym_db.RegisterMessage(CMsgSystemPerfUpdateSettings)
+
+CMsgSystemDockUpdateState = _reflection.GeneratedProtocolMessageType('CMsgSystemDockUpdateState', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSYSTEMDOCKUPDATESTATE,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSystemDockUpdateState)
+  })
+_sym_db.RegisterMessage(CMsgSystemDockUpdateState)
+
+CMsgSystemDockState = _reflection.GeneratedProtocolMessageType('CMsgSystemDockState', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSYSTEMDOCKSTATE,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSystemDockState)
+  })
+_sym_db.RegisterMessage(CMsgSystemDockState)
+
+CMsgSystemDockUpdateFirmware = _reflection.GeneratedProtocolMessageType('CMsgSystemDockUpdateFirmware', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSYSTEMDOCKUPDATEFIRMWARE,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSystemDockUpdateFirmware)
+  })
+_sym_db.RegisterMessage(CMsgSystemDockUpdateFirmware)
+
+CMsgSystemAudioVolume = _reflection.GeneratedProtocolMessageType('CMsgSystemAudioVolume', (_message.Message,), {
+
+  'ChannelEntry' : _reflection.GeneratedProtocolMessageType('ChannelEntry', (_message.Message,), {
+    'DESCRIPTOR' : _CMSGSYSTEMAUDIOVOLUME_CHANNELENTRY,
+    '__module__' : 'steammessages_client_objects_pb2'
+    # @@protoc_insertion_point(class_scope:CMsgSystemAudioVolume.ChannelEntry)
+    })
+  ,
+  'DESCRIPTOR' : _CMSGSYSTEMAUDIOVOLUME,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSystemAudioVolume)
+  })
+_sym_db.RegisterMessage(CMsgSystemAudioVolume)
+_sym_db.RegisterMessage(CMsgSystemAudioVolume.ChannelEntry)
+
+CMsgSystemAudioManagerObject = _reflection.GeneratedProtocolMessageType('CMsgSystemAudioManagerObject', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSYSTEMAUDIOMANAGEROBJECT,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSystemAudioManagerObject)
+  })
+_sym_db.RegisterMessage(CMsgSystemAudioManagerObject)
+
+CMsgSystemAudioManagerDevice = _reflection.GeneratedProtocolMessageType('CMsgSystemAudioManagerDevice', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSYSTEMAUDIOMANAGERDEVICE,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSystemAudioManagerDevice)
+  })
+_sym_db.RegisterMessage(CMsgSystemAudioManagerDevice)
+
+CMsgSystemAudioManagerNode = _reflection.GeneratedProtocolMessageType('CMsgSystemAudioManagerNode', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSYSTEMAUDIOMANAGERNODE,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSystemAudioManagerNode)
+  })
+_sym_db.RegisterMessage(CMsgSystemAudioManagerNode)
+
+CMsgSystemAudioManagerPort = _reflection.GeneratedProtocolMessageType('CMsgSystemAudioManagerPort', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSYSTEMAUDIOMANAGERPORT,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSystemAudioManagerPort)
+  })
+_sym_db.RegisterMessage(CMsgSystemAudioManagerPort)
+
+CMsgSystemAudioManagerLink = _reflection.GeneratedProtocolMessageType('CMsgSystemAudioManagerLink', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSYSTEMAUDIOMANAGERLINK,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSystemAudioManagerLink)
+  })
+_sym_db.RegisterMessage(CMsgSystemAudioManagerLink)
+
+CMsgSystemAudioManagerStateHW = _reflection.GeneratedProtocolMessageType('CMsgSystemAudioManagerStateHW', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSYSTEMAUDIOMANAGERSTATEHW,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSystemAudioManagerStateHW)
+  })
+_sym_db.RegisterMessage(CMsgSystemAudioManagerStateHW)
+
+CMsgSystemAudioManagerState = _reflection.GeneratedProtocolMessageType('CMsgSystemAudioManagerState', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSYSTEMAUDIOMANAGERSTATE,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSystemAudioManagerState)
+  })
+_sym_db.RegisterMessage(CMsgSystemAudioManagerState)
+
+CMsgSystemAudioManagerUpdateSomething = _reflection.GeneratedProtocolMessageType('CMsgSystemAudioManagerUpdateSomething', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSYSTEMAUDIOMANAGERUPDATESOMETHING,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSystemAudioManagerUpdateSomething)
+  })
+_sym_db.RegisterMessage(CMsgSystemAudioManagerUpdateSomething)
+
+CMsgSystemDisplayMode = _reflection.GeneratedProtocolMessageType('CMsgSystemDisplayMode', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSYSTEMDISPLAYMODE,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSystemDisplayMode)
+  })
+_sym_db.RegisterMessage(CMsgSystemDisplayMode)
+
+CMsgSystemDisplay = _reflection.GeneratedProtocolMessageType('CMsgSystemDisplay', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSYSTEMDISPLAY,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSystemDisplay)
+  })
+_sym_db.RegisterMessage(CMsgSystemDisplay)
+
+CMsgSystemDisplayManagerState = _reflection.GeneratedProtocolMessageType('CMsgSystemDisplayManagerState', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSYSTEMDISPLAYMANAGERSTATE,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSystemDisplayManagerState)
+  })
+_sym_db.RegisterMessage(CMsgSystemDisplayManagerState)
+
+CMsgSystemDisplayManagerSetMode = _reflection.GeneratedProtocolMessageType('CMsgSystemDisplayManagerSetMode', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSYSTEMDISPLAYMANAGERSETMODE,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSystemDisplayManagerSetMode)
+  })
+_sym_db.RegisterMessage(CMsgSystemDisplayManagerSetMode)
+
+CMsgSystemManagerSettings = _reflection.GeneratedProtocolMessageType('CMsgSystemManagerSettings', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSYSTEMMANAGERSETTINGS,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSystemManagerSettings)
+  })
+_sym_db.RegisterMessage(CMsgSystemManagerSettings)
+
+CMsgSelectOSBranchParams = _reflection.GeneratedProtocolMessageType('CMsgSelectOSBranchParams', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSELECTOSBRANCHPARAMS,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSelectOSBranchParams)
+  })
+_sym_db.RegisterMessage(CMsgSelectOSBranchParams)
+
+CMsgSystemUpdateProgress = _reflection.GeneratedProtocolMessageType('CMsgSystemUpdateProgress', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSYSTEMUPDATEPROGRESS,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSystemUpdateProgress)
+  })
+_sym_db.RegisterMessage(CMsgSystemUpdateProgress)
+
+CMsgSystemUpdateCheckResult = _reflection.GeneratedProtocolMessageType('CMsgSystemUpdateCheckResult', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSYSTEMUPDATECHECKRESULT,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSystemUpdateCheckResult)
+  })
+_sym_db.RegisterMessage(CMsgSystemUpdateCheckResult)
+
+CMsgSystemUpdateApplyParams = _reflection.GeneratedProtocolMessageType('CMsgSystemUpdateApplyParams', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSYSTEMUPDATEAPPLYPARAMS,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSystemUpdateApplyParams)
+  })
+_sym_db.RegisterMessage(CMsgSystemUpdateApplyParams)
+
+CMsgSystemUpdateApplyResult = _reflection.GeneratedProtocolMessageType('CMsgSystemUpdateApplyResult', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSYSTEMUPDATEAPPLYRESULT,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSystemUpdateApplyResult)
+  })
+_sym_db.RegisterMessage(CMsgSystemUpdateApplyResult)
+
+CMsgSystemUpdateState = _reflection.GeneratedProtocolMessageType('CMsgSystemUpdateState', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSYSTEMUPDATESTATE,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgSystemUpdateState)
+  })
+_sym_db.RegisterMessage(CMsgSystemUpdateState)
+
+CMsgAchievementChange = _reflection.GeneratedProtocolMessageType('CMsgAchievementChange', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGACHIEVEMENTCHANGE,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgAchievementChange)
+  })
+_sym_db.RegisterMessage(CMsgAchievementChange)
+
+CMsgCellList = _reflection.GeneratedProtocolMessageType('CMsgCellList', (_message.Message,), {
+
+  'Cell' : _reflection.GeneratedProtocolMessageType('Cell', (_message.Message,), {
+    'DESCRIPTOR' : _CMSGCELLLIST_CELL,
+    '__module__' : 'steammessages_client_objects_pb2'
+    # @@protoc_insertion_point(class_scope:CMsgCellList.Cell)
+    })
+  ,
+  'DESCRIPTOR' : _CMSGCELLLIST,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgCellList)
+  })
+_sym_db.RegisterMessage(CMsgCellList)
+_sym_db.RegisterMessage(CMsgCellList.Cell)
+
+CMsgShortcutInfo = _reflection.GeneratedProtocolMessageType('CMsgShortcutInfo', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSHORTCUTINFO,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgShortcutInfo)
+  })
+_sym_db.RegisterMessage(CMsgShortcutInfo)
+
+CMsgShortcutAppIds = _reflection.GeneratedProtocolMessageType('CMsgShortcutAppIds', (_message.Message,), {
+  'DESCRIPTOR' : _CMSGSHORTCUTAPPIDS,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgShortcutAppIds)
+  })
+_sym_db.RegisterMessage(CMsgShortcutAppIds)
+
+CMsgMonitorInfo = _reflection.GeneratedProtocolMessageType('CMsgMonitorInfo', (_message.Message,), {
+
+  'MonitorInfo' : _reflection.GeneratedProtocolMessageType('MonitorInfo', (_message.Message,), {
+    'DESCRIPTOR' : _CMSGMONITORINFO_MONITORINFO,
+    '__module__' : 'steammessages_client_objects_pb2'
+    # @@protoc_insertion_point(class_scope:CMsgMonitorInfo.MonitorInfo)
+    })
+  ,
+  'DESCRIPTOR' : _CMSGMONITORINFO,
+  '__module__' : 'steammessages_client_objects_pb2'
+  # @@protoc_insertion_point(class_scope:CMsgMonitorInfo)
+  })
+_sym_db.RegisterMessage(CMsgMonitorInfo)
+_sym_db.RegisterMessage(CMsgMonitorInfo.MonitorInfo)
+
+if _descriptor._USE_C_DESCRIPTORS == False:
+
+  DESCRIPTOR._options = None
+  DESCRIPTOR._serialized_options = b'H\001\220\001\000'
+  _ECLOUDPENDINGREMOTEOPERATION._serialized_start=14232
+  _ECLOUDPENDINGREMOTEOPERATION._serialized_end=14510
+  _ESTEAMDECKKEYBOARDLAYOUT._serialized_start=14513
+  _ESTEAMDECKKEYBOARDLAYOUT._serialized_end=16080
+  _STEAMMESSAGESCLIENTICLIENTFORCEDENUMDEPENDENCIES._serialized_start=52
+  _STEAMMESSAGESCLIENTICLIENTFORCEDENUMDEPENDENCIES._serialized_end=383
+  _CMSGNETWORKDEVICEIP4ADDRESS._serialized_start=385
+  _CMSGNETWORKDEVICEIP4ADDRESS._serialized_end=446
+  _CMSGNETWORKDEVICEIP4CONFIG._serialized_start=449
+  _CMSGNETWORKDEVICEIP4CONFIG._serialized_end=640
+  _CMSGNETWORKDEVICEIP6ADDRESS._serialized_start=642
+  _CMSGNETWORKDEVICEIP6ADDRESS._serialized_end=683
+  _CMSGNETWORKDEVICEIP6CONFIG._serialized_start=686
+  _CMSGNETWORKDEVICEIP6CONFIG._serialized_end=877
+  _CMSGNETWORKDEVICESDATA._serialized_start=880
+  _CMSGNETWORKDEVICESDATA._serialized_end=1671
+  _CMSGNETWORKDEVICESDATA_DEVICE._serialized_start=1015
+  _CMSGNETWORKDEVICESDATA_DEVICE._serialized_end=1671
+  _CMSGNETWORKDEVICESDATA_DEVICE_WIRED._serialized_start=1313
+  _CMSGNETWORKDEVICESDATA_DEVICE_WIRED._serialized_end=1396
+  _CMSGNETWORKDEVICESDATA_DEVICE_WIRELESS._serialized_start=1399
+  _CMSGNETWORKDEVICESDATA_DEVICE_WIRELESS._serialized_end=1671
+  _CMSGNETWORKDEVICESDATA_DEVICE_WIRELESS_AP._serialized_start=1498
+  _CMSGNETWORKDEVICESDATA_DEVICE_WIRELESS_AP._serialized_end=1671
+  _CMSGNETWORKDEVICECONNECT._serialized_start=1674
+  _CMSGNETWORKDEVICECONNECT._serialized_end=2111
+  _CMSGNETWORKDEVICECONNECT_KNOWNAP._serialized_start=1980
+  _CMSGNETWORKDEVICECONNECT_KNOWNAP._serialized_end=2004
+  _CMSGNETWORKDEVICECONNECT_CUSTOMAP._serialized_start=2006
+  _CMSGNETWORKDEVICECONNECT_CUSTOMAP._serialized_end=2049
+  _CMSGNETWORKDEVICECONNECT_CREDENTIALS._serialized_start=2051
+  _CMSGNETWORKDEVICECONNECT_CREDENTIALS._serialized_end=2100
+  _CMSGSTORAGEDEVICESDATA._serialized_start=2114
+  _CMSGSTORAGEDEVICESDATA._serialized_end=2913
+  _CMSGSTORAGEDEVICESDATA_DRIVE._serialized_start=2330
+  _CMSGSTORAGEDEVICESDATA_DRIVE._serialized_end=2520
+  _CMSGSTORAGEDEVICESDATA_BLOCKDEVICE._serialized_start=2523
+  _CMSGSTORAGEDEVICESDATA_BLOCKDEVICE._serialized_end=2913
+  _CCLOUD_PENDINGREMOTEOPERATION._serialized_start=2916
+  _CCLOUD_PENDINGREMOTEOPERATION._serialized_end=3101
+  _CMSGCLOUDPENDINGREMOTEOPERATIONS._serialized_start=3103
+  _CMSGCLOUDPENDINGREMOTEOPERATIONS._serialized_end=3189
+  _CMSGBLUETOOTHDEVICESDATA._serialized_start=3192
+  _CMSGBLUETOOTHDEVICESDATA._serialized_end=3720
+  _CMSGBLUETOOTHDEVICESDATA_ADAPTER._serialized_start=3376
+  _CMSGBLUETOOTHDEVICESDATA_ADAPTER._serialized_end=3471
+  _CMSGBLUETOOTHDEVICESDATA_DEVICE._serialized_start=3474
+  _CMSGBLUETOOTHDEVICESDATA_DEVICE._serialized_end=3679
+  _CMSGBLUETOOTHDEVICESDATA_MANAGER._serialized_start=3681
+  _CMSGBLUETOOTHDEVICESDATA_MANAGER._serialized_end=3720
+  _CMSGSYSTEMPERFDIAGNOSTICENTRY._serialized_start=3722
+  _CMSGSYSTEMPERFDIAGNOSTICENTRY._serialized_end=3782
+  _CMSGSYSTEMPERFNETWORKINTERFACE._serialized_start=3785
+  _CMSGSYSTEMPERFNETWORKINTERFACE._serialized_end=3950
+  _CMSGSYSTEMPERFDIAGNOSTICINFO._serialized_start=3953
+  _CMSGSYSTEMPERFDIAGNOSTICINFO._serialized_end=4109
+  _CMSGSYSTEMPERFLIMITS._serialized_start=4112
+  _CMSGSYSTEMPERFLIMITS._serialized_end=5242
+  _CMSGSYSTEMPERFSETTINGSGLOBAL._serialized_start=5245
+  _CMSGSYSTEMPERFSETTINGSGLOBAL._serialized_end=6180
+  _CMSGSYSTEMPERFSETTINGSPERAPP._serialized_start=6183
+  _CMSGSYSTEMPERFSETTINGSPERAPP._serialized_end=7182
+  _CMSGSYSTEMPERFSETTINGS._serialized_start=7184
+  _CMSGSYSTEMPERFSETTINGS._serialized_end=7303
+  _CMSGSYSTEMPERFSETTINGSV1._serialized_start=7306
+  _CMSGSYSTEMPERFSETTINGSV1._serialized_end=8342
+  _CMSGSYSTEMPERFSTATE._serialized_start=8345
+  _CMSGSYSTEMPERFSTATE._serialized_end=8505
+  _CMSGSYSTEMPERFUPDATESETTINGS._serialized_start=8508
+  _CMSGSYSTEMPERFUPDATESETTINGS._serialized_end=8672
+  _CMSGSYSTEMDOCKUPDATESTATE._serialized_start=8675
+  _CMSGSYSTEMDOCKUPDATESTATE._serialized_end=8925
+  _CMSGSYSTEMDOCKSTATE._serialized_start=8927
+  _CMSGSYSTEMDOCKSTATE._serialized_end=8998
+  _CMSGSYSTEMDOCKUPDATEFIRMWARE._serialized_start=9000
+  _CMSGSYSTEMDOCKUPDATEFIRMWARE._serialized_end=9050
+  _CMSGSYSTEMAUDIOVOLUME._serialized_start=9053
+  _CMSGSYSTEMAUDIOVOLUME._serialized_end=9250
+  _CMSGSYSTEMAUDIOVOLUME_CHANNELENTRY._serialized_start=9150
+  _CMSGSYSTEMAUDIOVOLUME_CHANNELENTRY._serialized_end=9250
+  _CMSGSYSTEMAUDIOMANAGEROBJECT._serialized_start=9252
+  _CMSGSYSTEMAUDIOMANAGEROBJECT._serialized_end=9321
+  _CMSGSYSTEMAUDIOMANAGERDEVICE._serialized_start=9324
+  _CMSGSYSTEMAUDIOMANAGERDEVICE._serialized_end=9461
+  _CMSGSYSTEMAUDIOMANAGERNODE._serialized_start=9464
+  _CMSGSYSTEMAUDIOMANAGERNODE._serialized_end=9721
+  _CMSGSYSTEMAUDIOMANAGERPORT._serialized_start=9724
+  _CMSGSYSTEMAUDIOMANAGERPORT._serialized_end=10078
+  _CMSGSYSTEMAUDIOMANAGERLINK._serialized_start=10081
+  _CMSGSYSTEMAUDIOMANAGERLINK._serialized_end=10248
+  _CMSGSYSTEMAUDIOMANAGERSTATEHW._serialized_start=10251
+  _CMSGSYSTEMAUDIOMANAGERSTATEHW._serialized_end=10462
+  _CMSGSYSTEMAUDIOMANAGERSTATE._serialized_start=10464
+  _CMSGSYSTEMAUDIOMANAGERSTATE._serialized_end=10576
+  _CMSGSYSTEMAUDIOMANAGERUPDATESOMETHING._serialized_start=10578
+  _CMSGSYSTEMAUDIOMANAGERUPDATESOMETHING._serialized_end=10634
+  _CMSGSYSTEMDISPLAYMODE._serialized_start=10636
+  _CMSGSYSTEMDISPLAYMODE._serialized_end=10722
+  _CMSGSYSTEMDISPLAY._serialized_start=10725
+  _CMSGSYSTEMDISPLAY._serialized_end=11128
+  _CMSGSYSTEMDISPLAYMANAGERSTATE._serialized_start=11131
+  _CMSGSYSTEMDISPLAYMANAGERSTATE._serialized_end=11342
+  _CMSGSYSTEMDISPLAYMANAGERSETMODE._serialized_start=11344
+  _CMSGSYSTEMDISPLAYMANAGERSETMODE._serialized_end=11414
+  _CMSGSYSTEMMANAGERSETTINGS._serialized_start=11417
+  _CMSGSYSTEMMANAGERSETTINGS._serialized_end=12555
+  _CMSGSELECTOSBRANCHPARAMS._serialized_start=12557
+  _CMSGSELECTOSBRANCHPARAMS._serialized_end=12655
+  _CMSGSYSTEMUPDATEPROGRESS._serialized_start=12657
+  _CMSGSYSTEMUPDATEPROGRESS._serialized_end=12769
+  _CMSGSYSTEMUPDATECHECKRESULT._serialized_start=12772
+  _CMSGSYSTEMUPDATECHECKRESULT._serialized_end=12955
+  _CMSGSYSTEMUPDATEAPPLYPARAMS._serialized_start=12957
+  _CMSGSYSTEMUPDATEAPPLYPARAMS._serialized_end=13022
+  _CMSGSYSTEMUPDATEAPPLYRESULT._serialized_start=13025
+  _CMSGSYSTEMUPDATEAPPLYRESULT._serialized_end=13207
+  _CMSGSYSTEMUPDATESTATE._serialized_start=13210
+  _CMSGSYSTEMUPDATESTATE._serialized_end=13483
+  _CMSGACHIEVEMENTCHANGE._serialized_start=13485
+  _CMSGACHIEVEMENTCHANGE._serialized_end=13523
+  _CMSGCELLLIST._serialized_start=13525
+  _CMSGCELLLIST._serialized_end=13617
+  _CMSGCELLLIST_CELL._serialized_start=13576
+  _CMSGCELLLIST_CELL._serialized_end=13617
+  _CMSGSHORTCUTINFO._serialized_start=13620
+  _CMSGSHORTCUTINFO._serialized_end=14018
+  _CMSGSHORTCUTAPPIDS._serialized_start=14020
+  _CMSGSHORTCUTAPPIDS._serialized_end=14056
+  _CMSGMONITORINFO._serialized_start=14059
+  _CMSGMONITORINFO._serialized_end=14229
+  _CMSGMONITORINFO_MONITORINFO._serialized_start=14157
+  _CMSGMONITORINFO_MONITORINFO._serialized_end=14229
 # @@protoc_insertion_point(module_scope)

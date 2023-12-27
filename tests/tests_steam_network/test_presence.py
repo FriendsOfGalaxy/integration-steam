@@ -8,7 +8,7 @@ from galaxy.api.types import UserPresence
 
 from steam_network.presence import presence_from_user_info
 from steam_network.protocol.consts import EPersonaState
-from steam_network.protocol.types import ProtoUserInfo
+from steam_network.protocol.steam_types import ProtoUserInfo
 
 
 class TOKEN(NamedTuple):

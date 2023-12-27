@@ -1,0 +1,12 @@
+{
+	"name": "Galaxy Steam plugin Version 2",
+	"platform": "steam",
+	"guid": "ca27391f-2675-49b1-92c0-896d43afa4f8",
+	"version": "1.2.1",
+	"description": "Galaxy plugin for Steam. Updated with new authentication logic",
+	"author": "ABaumher, don-de-marco, et al.",
+	"email": "baumhera912@gmail.com",
+	"url": "https://github.com/GOG-Nebula/galaxy-integration-steam/",
+	"update_url": "https://raw.githubusercontent.com/GOG-Nebula/galaxy-integration-steam/master/current_version.json",
+	"script": "plugin.py"
+}

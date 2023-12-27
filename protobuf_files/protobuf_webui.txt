@@ -1,0 +1,1 @@
+https://raw.githubusercontent.com/SteamDatabase/Protobufs/master/webui/service_cloudconfigstore.proto

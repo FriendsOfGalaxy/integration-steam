@@ -2,7 +2,7 @@ from galaxy.api.types import UserInfo
 from galaxy.api.errors import AuthenticationRequired
 import pytest
 
-from steam_network.protocol.types import ProtoUserInfo, EPersonaState
+from steam_network.protocol.steam_types import ProtoUserInfo, EPersonaState
 
 
 @pytest.mark.asyncio

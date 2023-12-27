@@ -3,6 +3,7 @@
 # source: service_cloudconfigstore.proto
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
+from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
@@ -14,338 +15,24 @@ _sym_db = _symbol_database.Default()
 import steammessages_unified_base_pb2 as steammessages__unified__base__pb2
 
 
-DESCRIPTOR = _descriptor.FileDescriptor(
-  name='service_cloudconfigstore.proto',
-  package='',
-  syntax='proto2',
-  serialized_options=None,
-  create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x1eservice_cloudconfigstore.proto\x1a steammessages_unified_base.proto\"[\n\"CCloudConfigStore_Download_Request\x12\x35\n\x08versions\x18\x01 \x03(\x0b\x32#.CCloudConfigStore_NamespaceVersion\"I\n\"CCloudConfigStore_NamespaceVersion\x12\x12\n\nenamespace\x18\x01 \x01(\r\x12\x0f\n\x07version\x18\x02 \x01(\x04\"U\n#CCloudConfigStore_Download_Response\x12.\n\x04\x64\x61ta\x18\x01 \x03(\x0b\x32 .CCloudConfigStore_NamespaceData\"q\n\x1f\x43\x43loudConfigStore_NamespaceData\x12\x12\n\nenamespace\x18\x01 \x01(\r\x12\x0f\n\x07version\x18\x02 \x01(\x04\x12)\n\x07\x65ntries\x18\x03 \x03(\x0b\x32\x18.CCloudConfigStore_Entry\"m\n\x17\x43\x43loudConfigStore_Entry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x12\n\nis_deleted\x18\x02 \x01(\x08\x12\r\n\x05value\x18\x03 \x01(\t\x12\x11\n\ttimestamp\x18\x04 \x01(\x07\x12\x0f\n\x07version\x18\x05 \x01(\x04\"R\n CCloudConfigStore_Upload_Request\x12.\n\x04\x64\x61ta\x18\x01 \x03(\x0b\x32 .CCloudConfigStore_NamespaceData\"Z\n!CCloudConfigStore_Upload_Response\x12\x35\n\x08versions\x18\x01 \x03(\x0b\x32#.CCloudConfigStore_NamespaceVersion\"^\n%CCloudConfigStore_Change_Notification\x12\x35\n\x08versions\x18\x02 \x03(\x0b\x32#.CCloudConfigStore_NamespaceVersion2\xba\x01\n\x10\x43loudConfigStore\x12U\n\x08\x44ownload\x12#.CCloudConfigStore_Download_Request\x1a$.CCloudConfigStore_Download_Response\x12O\n\x06Upload\x12!.CCloudConfigStore_Upload_Request\x1a\".CCloudConfigStore_Upload_Response2]\n\x16\x43loudConfigStoreClient\x12\x43\n\x0cNotifyChange\x12&.CCloudConfigStore_Change_Notification\x1a\x0b.NoResponse'
-  ,
-  dependencies=[steammessages__unified__base__pb2.DESCRIPTOR,])
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1eservice_cloudconfigstore.proto\x1a steammessages_unified_base.proto\"^\n%CCloudConfigStore_Change_Notification\x12\x35\n\x08versions\x18\x02 \x03(\x0b\x32#.CCloudConfigStore_NamespaceVersion\"[\n\"CCloudConfigStore_Download_Request\x12\x35\n\x08versions\x18\x01 \x03(\x0b\x32#.CCloudConfigStore_NamespaceVersion\"U\n#CCloudConfigStore_Download_Response\x12.\n\x04\x64\x61ta\x18\x01 \x03(\x0b\x32 .CCloudConfigStore_NamespaceData\"m\n\x17\x43\x43loudConfigStore_Entry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x12\n\nis_deleted\x18\x02 \x01(\x08\x12\r\n\x05value\x18\x03 \x01(\t\x12\x11\n\ttimestamp\x18\x04 \x01(\x07\x12\x0f\n\x07version\x18\x05 \x01(\x04\"\x82\x01\n\x1f\x43\x43loudConfigStore_NamespaceData\x12\x12\n\nenamespace\x18\x01 \x01(\r\x12\x0f\n\x07version\x18\x02 \x01(\x04\x12)\n\x07\x65ntries\x18\x03 \x03(\x0b\x32\x18.CCloudConfigStore_Entry\x12\x0f\n\x07horizon\x18\x04 \x01(\x04\"I\n\"CCloudConfigStore_NamespaceVersion\x12\x12\n\nenamespace\x18\x01 \x01(\r\x12\x0f\n\x07version\x18\x02 \x01(\x04\"R\n CCloudConfigStore_Upload_Request\x12.\n\x04\x64\x61ta\x18\x01 \x03(\x0b\x32 .CCloudConfigStore_NamespaceData\"Z\n!CCloudConfigStore_Upload_Response\x12\x35\n\x08versions\x18\x01 \x03(\x0b\x32#.CCloudConfigStore_NamespaceVersion2\xba\x01\n\x10\x43loudConfigStore\x12U\n\x08\x44ownload\x12#.CCloudConfigStore_Download_Request\x1a$.CCloudConfigStore_Download_Response\x12O\n\x06Upload\x12!.CCloudConfigStore_Upload_Request\x1a\".CCloudConfigStore_Upload_Response2]\n\x16\x43loudConfigStoreClient\x12\x43\n\x0cNotifyChange\x12&.CCloudConfigStore_Change_Notification\x1a\x0b.NoResponse')
 
 
 
-
-_CCLOUDCONFIGSTORE_DOWNLOAD_REQUEST = _descriptor.Descriptor(
-  name='CCloudConfigStore_Download_Request',
-  full_name='CCloudConfigStore_Download_Request',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='versions', full_name='CCloudConfigStore_Download_Request.versions', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=68,
-  serialized_end=159,
-)
-
-
-_CCLOUDCONFIGSTORE_NAMESPACEVERSION = _descriptor.Descriptor(
-  name='CCloudConfigStore_NamespaceVersion',
-  full_name='CCloudConfigStore_NamespaceVersion',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='enamespace', full_name='CCloudConfigStore_NamespaceVersion.enamespace', index=0,
-      number=1, type=13, cpp_type=3, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='version', full_name='CCloudConfigStore_NamespaceVersion.version', index=1,
-      number=2, type=4, cpp_type=4, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=161,
-  serialized_end=234,
-)
-
-
-_CCLOUDCONFIGSTORE_DOWNLOAD_RESPONSE = _descriptor.Descriptor(
-  name='CCloudConfigStore_Download_Response',
-  full_name='CCloudConfigStore_Download_Response',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='data', full_name='CCloudConfigStore_Download_Response.data', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=236,
-  serialized_end=321,
-)
-
-
-_CCLOUDCONFIGSTORE_NAMESPACEDATA = _descriptor.Descriptor(
-  name='CCloudConfigStore_NamespaceData',
-  full_name='CCloudConfigStore_NamespaceData',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='enamespace', full_name='CCloudConfigStore_NamespaceData.enamespace', index=0,
-      number=1, type=13, cpp_type=3, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='version', full_name='CCloudConfigStore_NamespaceData.version', index=1,
-      number=2, type=4, cpp_type=4, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='entries', full_name='CCloudConfigStore_NamespaceData.entries', index=2,
-      number=3, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=323,
-  serialized_end=436,
-)
-
-
-_CCLOUDCONFIGSTORE_ENTRY = _descriptor.Descriptor(
-  name='CCloudConfigStore_Entry',
-  full_name='CCloudConfigStore_Entry',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='key', full_name='CCloudConfigStore_Entry.key', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='is_deleted', full_name='CCloudConfigStore_Entry.is_deleted', index=1,
-      number=2, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='value', full_name='CCloudConfigStore_Entry.value', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='timestamp', full_name='CCloudConfigStore_Entry.timestamp', index=3,
-      number=4, type=7, cpp_type=3, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='version', full_name='CCloudConfigStore_Entry.version', index=4,
-      number=5, type=4, cpp_type=4, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=438,
-  serialized_end=547,
-)
-
-
-_CCLOUDCONFIGSTORE_UPLOAD_REQUEST = _descriptor.Descriptor(
-  name='CCloudConfigStore_Upload_Request',
-  full_name='CCloudConfigStore_Upload_Request',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='data', full_name='CCloudConfigStore_Upload_Request.data', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=549,
-  serialized_end=631,
-)
-
-
-_CCLOUDCONFIGSTORE_UPLOAD_RESPONSE = _descriptor.Descriptor(
-  name='CCloudConfigStore_Upload_Response',
-  full_name='CCloudConfigStore_Upload_Response',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='versions', full_name='CCloudConfigStore_Upload_Response.versions', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=633,
-  serialized_end=723,
-)
-
-
-_CCLOUDCONFIGSTORE_CHANGE_NOTIFICATION = _descriptor.Descriptor(
-  name='CCloudConfigStore_Change_Notification',
-  full_name='CCloudConfigStore_Change_Notification',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='versions', full_name='CCloudConfigStore_Change_Notification.versions', index=0,
-      number=2, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=725,
-  serialized_end=819,
-)
-
-_CCLOUDCONFIGSTORE_DOWNLOAD_REQUEST.fields_by_name['versions'].message_type = _CCLOUDCONFIGSTORE_NAMESPACEVERSION
-_CCLOUDCONFIGSTORE_DOWNLOAD_RESPONSE.fields_by_name['data'].message_type = _CCLOUDCONFIGSTORE_NAMESPACEDATA
-_CCLOUDCONFIGSTORE_NAMESPACEDATA.fields_by_name['entries'].message_type = _CCLOUDCONFIGSTORE_ENTRY
-_CCLOUDCONFIGSTORE_UPLOAD_REQUEST.fields_by_name['data'].message_type = _CCLOUDCONFIGSTORE_NAMESPACEDATA
-_CCLOUDCONFIGSTORE_UPLOAD_RESPONSE.fields_by_name['versions'].message_type = _CCLOUDCONFIGSTORE_NAMESPACEVERSION
-_CCLOUDCONFIGSTORE_CHANGE_NOTIFICATION.fields_by_name['versions'].message_type = _CCLOUDCONFIGSTORE_NAMESPACEVERSION
-DESCRIPTOR.message_types_by_name['CCloudConfigStore_Download_Request'] = _CCLOUDCONFIGSTORE_DOWNLOAD_REQUEST
-DESCRIPTOR.message_types_by_name['CCloudConfigStore_NamespaceVersion'] = _CCLOUDCONFIGSTORE_NAMESPACEVERSION
-DESCRIPTOR.message_types_by_name['CCloudConfigStore_Download_Response'] = _CCLOUDCONFIGSTORE_DOWNLOAD_RESPONSE
-DESCRIPTOR.message_types_by_name['CCloudConfigStore_NamespaceData'] = _CCLOUDCONFIGSTORE_NAMESPACEDATA
-DESCRIPTOR.message_types_by_name['CCloudConfigStore_Entry'] = _CCLOUDCONFIGSTORE_ENTRY
-DESCRIPTOR.message_types_by_name['CCloudConfigStore_Upload_Request'] = _CCLOUDCONFIGSTORE_UPLOAD_REQUEST
-DESCRIPTOR.message_types_by_name['CCloudConfigStore_Upload_Response'] = _CCLOUDCONFIGSTORE_UPLOAD_RESPONSE
-DESCRIPTOR.message_types_by_name['CCloudConfigStore_Change_Notification'] = _CCLOUDCONFIGSTORE_CHANGE_NOTIFICATION
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
+_CCLOUDCONFIGSTORE_CHANGE_NOTIFICATION = DESCRIPTOR.message_types_by_name['CCloudConfigStore_Change_Notification']
+_CCLOUDCONFIGSTORE_DOWNLOAD_REQUEST = DESCRIPTOR.message_types_by_name['CCloudConfigStore_Download_Request']
+_CCLOUDCONFIGSTORE_DOWNLOAD_RESPONSE = DESCRIPTOR.message_types_by_name['CCloudConfigStore_Download_Response']
+_CCLOUDCONFIGSTORE_ENTRY = DESCRIPTOR.message_types_by_name['CCloudConfigStore_Entry']
+_CCLOUDCONFIGSTORE_NAMESPACEDATA = DESCRIPTOR.message_types_by_name['CCloudConfigStore_NamespaceData']
+_CCLOUDCONFIGSTORE_NAMESPACEVERSION = DESCRIPTOR.message_types_by_name['CCloudConfigStore_NamespaceVersion']
+_CCLOUDCONFIGSTORE_UPLOAD_REQUEST = DESCRIPTOR.message_types_by_name['CCloudConfigStore_Upload_Request']
+_CCLOUDCONFIGSTORE_UPLOAD_RESPONSE = DESCRIPTOR.message_types_by_name['CCloudConfigStore_Upload_Response']
+CCloudConfigStore_Change_Notification = _reflection.GeneratedProtocolMessageType('CCloudConfigStore_Change_Notification', (_message.Message,), {
+  'DESCRIPTOR' : _CCLOUDCONFIGSTORE_CHANGE_NOTIFICATION,
+  '__module__' : 'service_cloudconfigstore_pb2'
+  # @@protoc_insertion_point(class_scope:CCloudConfigStore_Change_Notification)
+  })
+_sym_db.RegisterMessage(CCloudConfigStore_Change_Notification)
 
 CCloudConfigStore_Download_Request = _reflection.GeneratedProtocolMessageType('CCloudConfigStore_Download_Request', (_message.Message,), {
   'DESCRIPTOR' : _CCLOUDCONFIGSTORE_DOWNLOAD_REQUEST,
@@ -354,19 +41,19 @@ CCloudConfigStore_Download_Request = _reflection.GeneratedProtocolMessageType('C
   })
 _sym_db.RegisterMessage(CCloudConfigStore_Download_Request)
 
-CCloudConfigStore_NamespaceVersion = _reflection.GeneratedProtocolMessageType('CCloudConfigStore_NamespaceVersion', (_message.Message,), {
-  'DESCRIPTOR' : _CCLOUDCONFIGSTORE_NAMESPACEVERSION,
-  '__module__' : 'service_cloudconfigstore_pb2'
-  # @@protoc_insertion_point(class_scope:CCloudConfigStore_NamespaceVersion)
-  })
-_sym_db.RegisterMessage(CCloudConfigStore_NamespaceVersion)
-
 CCloudConfigStore_Download_Response = _reflection.GeneratedProtocolMessageType('CCloudConfigStore_Download_Response', (_message.Message,), {
   'DESCRIPTOR' : _CCLOUDCONFIGSTORE_DOWNLOAD_RESPONSE,
   '__module__' : 'service_cloudconfigstore_pb2'
   # @@protoc_insertion_point(class_scope:CCloudConfigStore_Download_Response)
   })
 _sym_db.RegisterMessage(CCloudConfigStore_Download_Response)
+
+CCloudConfigStore_Entry = _reflection.GeneratedProtocolMessageType('CCloudConfigStore_Entry', (_message.Message,), {
+  'DESCRIPTOR' : _CCLOUDCONFIGSTORE_ENTRY,
+  '__module__' : 'service_cloudconfigstore_pb2'
+  # @@protoc_insertion_point(class_scope:CCloudConfigStore_Entry)
+  })
+_sym_db.RegisterMessage(CCloudConfigStore_Entry)
 
 CCloudConfigStore_NamespaceData = _reflection.GeneratedProtocolMessageType('CCloudConfigStore_NamespaceData', (_message.Message,), {
   'DESCRIPTOR' : _CCLOUDCONFIGSTORE_NAMESPACEDATA,
@@ -375,12 +62,12 @@ CCloudConfigStore_NamespaceData = _reflection.GeneratedProtocolMessageType('CClo
   })
 _sym_db.RegisterMessage(CCloudConfigStore_NamespaceData)
 
-CCloudConfigStore_Entry = _reflection.GeneratedProtocolMessageType('CCloudConfigStore_Entry', (_message.Message,), {
-  'DESCRIPTOR' : _CCLOUDCONFIGSTORE_ENTRY,
+CCloudConfigStore_NamespaceVersion = _reflection.GeneratedProtocolMessageType('CCloudConfigStore_NamespaceVersion', (_message.Message,), {
+  'DESCRIPTOR' : _CCLOUDCONFIGSTORE_NAMESPACEVERSION,
   '__module__' : 'service_cloudconfigstore_pb2'
-  # @@protoc_insertion_point(class_scope:CCloudConfigStore_Entry)
+  # @@protoc_insertion_point(class_scope:CCloudConfigStore_NamespaceVersion)
   })
-_sym_db.RegisterMessage(CCloudConfigStore_Entry)
+_sym_db.RegisterMessage(CCloudConfigStore_NamespaceVersion)
 
 CCloudConfigStore_Upload_Request = _reflection.GeneratedProtocolMessageType('CCloudConfigStore_Upload_Request', (_message.Message,), {
   'DESCRIPTOR' : _CCLOUDCONFIGSTORE_UPLOAD_REQUEST,
@@ -396,74 +83,29 @@ CCloudConfigStore_Upload_Response = _reflection.GeneratedProtocolMessageType('CC
   })
 _sym_db.RegisterMessage(CCloudConfigStore_Upload_Response)
 
-CCloudConfigStore_Change_Notification = _reflection.GeneratedProtocolMessageType('CCloudConfigStore_Change_Notification', (_message.Message,), {
-  'DESCRIPTOR' : _CCLOUDCONFIGSTORE_CHANGE_NOTIFICATION,
-  '__module__' : 'service_cloudconfigstore_pb2'
-  # @@protoc_insertion_point(class_scope:CCloudConfigStore_Change_Notification)
-  })
-_sym_db.RegisterMessage(CCloudConfigStore_Change_Notification)
+_CLOUDCONFIGSTORE = DESCRIPTOR.services_by_name['CloudConfigStore']
+_CLOUDCONFIGSTORECLIENT = DESCRIPTOR.services_by_name['CloudConfigStoreClient']
+if _descriptor._USE_C_DESCRIPTORS == False:
 
-
-
-_CLOUDCONFIGSTORE = _descriptor.ServiceDescriptor(
-  name='CloudConfigStore',
-  full_name='CloudConfigStore',
-  file=DESCRIPTOR,
-  index=0,
-  serialized_options=None,
-  create_key=_descriptor._internal_create_key,
-  serialized_start=822,
-  serialized_end=1008,
-  methods=[
-  _descriptor.MethodDescriptor(
-    name='Download',
-    full_name='CloudConfigStore.Download',
-    index=0,
-    containing_service=None,
-    input_type=_CCLOUDCONFIGSTORE_DOWNLOAD_REQUEST,
-    output_type=_CCLOUDCONFIGSTORE_DOWNLOAD_RESPONSE,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-  _descriptor.MethodDescriptor(
-    name='Upload',
-    full_name='CloudConfigStore.Upload',
-    index=1,
-    containing_service=None,
-    input_type=_CCLOUDCONFIGSTORE_UPLOAD_REQUEST,
-    output_type=_CCLOUDCONFIGSTORE_UPLOAD_RESPONSE,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-])
-_sym_db.RegisterServiceDescriptor(_CLOUDCONFIGSTORE)
-
-DESCRIPTOR.services_by_name['CloudConfigStore'] = _CLOUDCONFIGSTORE
-
-
-_CLOUDCONFIGSTORECLIENT = _descriptor.ServiceDescriptor(
-  name='CloudConfigStoreClient',
-  full_name='CloudConfigStoreClient',
-  file=DESCRIPTOR,
-  index=1,
-  serialized_options=None,
-  create_key=_descriptor._internal_create_key,
-  serialized_start=1010,
-  serialized_end=1103,
-  methods=[
-  _descriptor.MethodDescriptor(
-    name='NotifyChange',
-    full_name='CloudConfigStoreClient.NotifyChange',
-    index=0,
-    containing_service=None,
-    input_type=_CCLOUDCONFIGSTORE_CHANGE_NOTIFICATION,
-    output_type=steammessages__unified__base__pb2._NORESPONSE,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-])
-_sym_db.RegisterServiceDescriptor(_CLOUDCONFIGSTORECLIENT)
-
-DESCRIPTOR.services_by_name['CloudConfigStoreClient'] = _CLOUDCONFIGSTORECLIENT
-
+  DESCRIPTOR._options = None
+  _CCLOUDCONFIGSTORE_CHANGE_NOTIFICATION._serialized_start=68
+  _CCLOUDCONFIGSTORE_CHANGE_NOTIFICATION._serialized_end=162
+  _CCLOUDCONFIGSTORE_DOWNLOAD_REQUEST._serialized_start=164
+  _CCLOUDCONFIGSTORE_DOWNLOAD_REQUEST._serialized_end=255
+  _CCLOUDCONFIGSTORE_DOWNLOAD_RESPONSE._serialized_start=257
+  _CCLOUDCONFIGSTORE_DOWNLOAD_RESPONSE._serialized_end=342
+  _CCLOUDCONFIGSTORE_ENTRY._serialized_start=344
+  _CCLOUDCONFIGSTORE_ENTRY._serialized_end=453
+  _CCLOUDCONFIGSTORE_NAMESPACEDATA._serialized_start=456
+  _CCLOUDCONFIGSTORE_NAMESPACEDATA._serialized_end=586
+  _CCLOUDCONFIGSTORE_NAMESPACEVERSION._serialized_start=588
+  _CCLOUDCONFIGSTORE_NAMESPACEVERSION._serialized_end=661
+  _CCLOUDCONFIGSTORE_UPLOAD_REQUEST._serialized_start=663
+  _CCLOUDCONFIGSTORE_UPLOAD_REQUEST._serialized_end=745
+  _CCLOUDCONFIGSTORE_UPLOAD_RESPONSE._serialized_start=747
+  _CCLOUDCONFIGSTORE_UPLOAD_RESPONSE._serialized_end=837
+  _CLOUDCONFIGSTORE._serialized_start=840
+  _CLOUDCONFIGSTORE._serialized_end=1026
+  _CLOUDCONFIGSTORECLIENT._serialized_start=1028
+  _CLOUDCONFIGSTORECLIENT._serialized_end=1121
 # @@protoc_insertion_point(module_scope)

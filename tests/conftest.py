@@ -1,8 +1,14 @@
 import pathlib
-from unittest.mock import MagicMock, PropertyMock, Mock, sentinel
-
 import pytest
+
+from unittest.mock import MagicMock, PropertyMock, Mock, sentinel
 from galaxy.unittest.mock import AsyncMock, async_return_value
+
+from os import path
+BASE_DIR = path.abspath(path.curdir)
+
+import sys
+sys.path.append(path.join(BASE_DIR, "src"))
 
 from plugin import SteamPlugin, AUTH_SETUP_ON_VERSION__CACHE_KEY
 from backend_interface import BackendInterface

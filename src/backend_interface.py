@@ -6,7 +6,6 @@ from galaxy.api.consts import Feature
 from galaxy.api.types import Authentication, NextStep
 from galaxy.api.plugin import Plugin
 
-
 class BackendInterface(abc.ABC):
     POSSIBLE_FEATURES = {
         Feature.ImportOwnedGames: "get_owned_games",
@@ -41,7 +40,11 @@ class BackendInterface(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def register_auth_lost_callback(self, callback: Callable):
+    async def pass_login_credentials(self, deprecated:str, credentials, cookies):
+        pass
+
+    @abc.abstractmethod
+    def tick(self):
         pass
 
     def __getattr__(self, name: str):

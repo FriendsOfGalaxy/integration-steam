@@ -11,7 +11,7 @@ from galaxy.api.errors import AccessDenied, Banned, BackendNotAvailable
 from steam_network.protocol.protobuf_client import SteamLicense
 from steam_network.protocol.consts import EFriendRelationship, STEAM_CLIENT_APP_ID, EResult
 from steam_network.protocol_client import ProtocolClient
-from steam_network.protocol.types import ProtoUserInfo
+from steam_network.protocol.steam_types import ProtoUserInfo
 
 
 class ProtoResponse(NamedTuple):

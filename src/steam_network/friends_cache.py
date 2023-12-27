@@ -3,7 +3,7 @@ import asyncio
 from dataclasses import dataclass
 from typing import Dict
 
-from .protocol.types import ProtoUserInfo
+from .protocol.steam_types import ProtoUserInfo
 from .cache_proto import ProtoCache
 
 

@@ -1,0 +1,16 @@
+https://raw.githubusercontent.com/SteamDatabase/SteamTracking/master/Protobufs/encrypted_app_ticket.proto
+https://raw.githubusercontent.com/SteamDatabase/SteamTracking/master/Protobufs/enums.proto
+https://raw.githubusercontent.com/SteamDatabase/SteamTracking/master/Protobufs/steammessages_auth.steamclient.proto
+https://raw.githubusercontent.com/SteamDatabase/SteamTracking/master/Protobufs/steammessages_base.proto
+https://raw.githubusercontent.com/SteamDatabase/SteamTracking/master/Protobufs/steammessages_chat.steamclient.proto
+https://raw.githubusercontent.com/SteamDatabase/SteamTracking/master/Protobufs/steammessages_client_objects.proto
+https://raw.githubusercontent.com/SteamDatabase/SteamTracking/master/Protobufs/steammessages_clientserver_2.proto
+https://raw.githubusercontent.com/SteamDatabase/SteamTracking/master/Protobufs/steammessages_clientserver_appinfo.proto
+https://raw.githubusercontent.com/SteamDatabase/SteamTracking/master/Protobufs/steammessages_clientserver_friends.proto
+https://raw.githubusercontent.com/SteamDatabase/SteamTracking/master/Protobufs/steammessages_clientserver_login.proto
+https://raw.githubusercontent.com/SteamDatabase/SteamTracking/master/Protobufs/steammessages_clientserver.proto
+https://raw.githubusercontent.com/SteamDatabase/SteamTracking/master/Protobufs/steammessages_clientserver_userstats.proto
+https://raw.githubusercontent.com/SteamDatabase/SteamTracking/master/Protobufs/steammessages_player.steamclient.proto
+https://raw.githubusercontent.com/SteamDatabase/SteamTracking/master/Protobufs/steammessages_unified_base.steamclient.proto
+
+https://raw.githubusercontent.com/ValvePython/steam/26166e047b66a7be10bdf3c90e2e14de9283ab5a/protobufs/steammessages_webui_friends.proto

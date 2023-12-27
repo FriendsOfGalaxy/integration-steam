@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6ca78a9c-6df1-4c47-b700-4f413ff2ce59}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>src\plugin.py</StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId>MSBuild|env1|$(MSBuildProjectFullPath)</InterpreterId>
+    <TestFramework>Pytest</TestFramework>
+    <SuppressConfigureTestFrameworkPrompt>true</SuppressConfigureTestFrameworkPrompt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include=".gitignore" />
+    <Content Include="auto-copy-mac.command" />
+    <Content Include="auto-copy-windows.bat" />
+    <Content Include="current_version.json" />
+    <Content Include="galaxy-integration-steam.pyproj" />
+    <Content Include="LICENSE" />
+    <Content Include="protobuf_files\protobuf_steammessages.txt" />
+    <Content Include="protobuf_files\protobuf_webui.txt" />
+    <Content Include="protobuf_files\proto\encrypted_app_ticket.proto" />
+    <Content Include="protobuf_files\proto\enums.proto" />
+    <Content Include="protobuf_files\proto\service_cloudconfigstore.proto" />
+    <Content Include="protobuf_files\proto\steammessages_auth.proto" />
+    <Content Include="protobuf_files\proto\steammessages_base.proto" />
+    <Content Include="protobuf_files\proto\steammessages_chat.proto" />
+    <Content Include="protobuf_files\proto\steammessages_clientserver.proto" />
+    <Content Include="protobuf_files\proto\steammessages_clientserver_2.proto" />
+    <Content Include="protobuf_files\proto\steammessages_clientserver_appinfo.proto" />
+    <Content Include="protobuf_files\proto\steammessages_clientserver_friends.proto" />
+    <Content Include="protobuf_files\proto\steammessages_clientserver_login.proto" />
+    <Content Include="protobuf_files\proto\steammessages_clientserver_userstats.proto" />
+    <Content Include="protobuf_files\proto\steammessages_client_objects.proto" />
+    <Content Include="protobuf_files\proto\steammessages_player.proto" />
+    <Content Include="protobuf_files\proto\steammessages_unified_base.proto" />
+    <Content Include="protobuf_files\proto\steammessages_webui_friends.proto" />
+    <Content Include="pytest.ini" />
+    <Content Include="README_ALPHA.md" />
+    <Content Include="README.md" />
+    <Content Include="protobuf_files\README_UPDATE_PROTOBUF_FILES.md" />
+    <Content Include="requirements\app.txt" />
+    <Content Include="requirements\dev.txt" />
+    <Content Include="requirements\install.txt" />
+    <Content Include="src\commonWeb\css\common.css" />
+    <Content Include="src\commonWeb\fonts\LatoWeb\LatoWeb-Light.ttf" />
+    <Content Include="src\commonWeb\fonts\LatoWeb\LatoWeb-Regular.ttf" />
+    <Content Include="src\commonWeb\fonts\LatoWeb\LatoWeb-Semibold.ttf" />
+    <Content Include="src\commonWeb\img\icon-error.svg" />
+    <Content Include="src\commonWeb\img\icon-show.svg" />
+    <Content Include="src\commonWeb\img\icon-steam-logo.svg" />
+    <Content Include="src\commonWeb\img\icon-warning.svg" />
+    <Content Include="src\manifest.json" />
+    <Content Include="src\steam_network\custom_login\css\style.css" />
+    <Content Include="src\steam_network\custom_login\index.html" />
+    <Content Include="tests\appmanifest_386360.acf" />
+    <Content Include="tests\appmanifest_787480.acf" />
+    <Content Include="tests\appmanifest_970570.acf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="nethook_helpers.py" />
+    <Compile Include="src\achievements_cache.py" />
+    <Compile Include="src\backend_interface.py" />
+    <Compile Include="src\backend_steam_network.py" />
+    <Compile Include="src\cache.py" />
+    <Compile Include="src\client.py" />
+    <Compile Include="src\http_client.py" />
+    <Compile Include="src\leveldb_parser.py" />
+    <Compile Include="src\persistent_cache_state.py" />
+    <Compile Include="src\plugin.py" />
+    <Compile Include="src\registry_monitor.py" />
+    <Compile Include="src\steam_network\authentication_cache.py" />
+    <Compile Include="src\steam_network\cache_proto.py" />
+    <Compile Include="src\steam_network\enums.py" />
+    <Compile Include="src\steam_network\friends_cache.py" />
+    <Compile Include="src\steam_network\games_cache.py" />
+    <Compile Include="src\steam_network\local_machine_cache.py" />
+    <Compile Include="src\steam_network\presence.py" />
+    <Compile Include="src\steam_network\protocol\consts.py" />
+    <Compile Include="src\steam_network\protocol\messages\encrypted_app_ticket_pb2.py" />
+    <Compile Include="src\steam_network\protocol\messages\enums_pb2.py" />
+    <Compile Include="src\steam_network\protocol\messages\service_cloudconfigstore_pb2.py" />
+    <Compile Include="src\steam_network\protocol\messages\steammessages_auth_pb2.py" />
+    <Compile Include="src\steam_network\protocol\messages\steammessages_base_pb2.py" />
+    <Compile Include="src\steam_network\protocol\messages\steammessages_chat_pb2.py" />
+    <Compile Include="src\steam_network\protocol\messages\steammessages_clientserver_2_pb2.py" />
+    <Compile Include="src\steam_network\protocol\messages\steammessages_clientserver_appinfo_pb2.py" />
+    <Compile Include="src\steam_network\protocol\messages\steammessages_clientserver_friends_pb2.py" />
+    <Compile Include="src\steam_network\protocol\messages\steammessages_clientserver_login_pb2.py" />
+    <Compile Include="src\steam_network\protocol\messages\steammessages_clientserver_pb2.py" />
+    <Compile Include="src\steam_network\protocol\messages\steammessages_clientserver_userstats_pb2.py" />
+    <Compile Include="src\steam_network\protocol\messages\steammessages_client_objects_pb2.py" />
+    <Compile Include="src\steam_network\protocol\messages\steammessages_player_pb2.py" />
+    <Compile Include="src\steam_network\protocol\messages\steammessages_unified_base_pb2.py" />
+    <Compile Include="src\steam_network\protocol\messages\steammessages_webui_friends_pb2.py" />
+    <Compile Include="src\steam_network\protocol\messages\__init__.py" />
+    <Compile Include="src\steam_network\protocol\protobuf_client.py" />
+    <Compile Include="src\steam_network\protocol\steam_types.py" />
+    <Compile Include="src\steam_network\protocol\__init__.py" />
+    <Compile Include="src\steam_network\protocol_client.py" />
+    <Compile Include="src\steam_network\stats_cache.py" />
+    <Compile Include="src\steam_network\steam_auth_polling_data.py" />
+    <Compile Include="src\steam_network\steam_http_client.py" />
+    <Compile Include="src\steam_network\steam_public_key.py" />
+    <Compile Include="src\steam_network\times_cache.py" />
+    <Compile Include="src\steam_network\user_info_cache.py" />
+    <Compile Include="src\steam_network\utils.py" />
+    <Compile Include="src\steam_network\w3_hack.py" />
+    <Compile Include="src\steam_network\websocket_cache_persistence.py" />
+    <Compile Include="src\steam_network\websocket_client.py" />
+    <Compile Include="src\steam_network\websocket_list.py" />
+    <Compile Include="src\steam_network\__init__.py" />
+    <Compile Include="src\uri_scheme_handler.py" />
+    <Compile Include="src\version.py" />
+    <Compile Include="tasks.py" />
+    <Compile Include="tests\async_mock.py" />
+    <Compile Include="tests\conftest.py" />
+    <Compile Include="tests\tests_public_profiles\conftest.py" />
+    <Compile Include="tests\tests_public_profiles\test_achievements.py" />
+    <Compile Include="tests\tests_public_profiles\test_authentication__public_profile.py" />
+    <Compile Include="tests\tests_public_profiles\test_friends.py" />
+    <Compile Include="tests\tests_public_profiles\test_game_time.py" />
+    <Compile Include="tests\tests_public_profiles\test_lost_authentication.py" />
+    <Compile Include="tests\tests_public_profiles\test_owned_games.py" />
+    <Compile Include="tests\tests_public_profiles\__init__.py" />
+    <Compile Include="tests\tests_steam_network\conftest.py" />
+    <Compile Include="tests\tests_steam_network\test_achievements.py" />
+    <Compile Include="tests\tests_steam_network\test_authentication.py" />
+    <Compile Include="tests\tests_steam_network\test_data.py" />
+    <Compile Include="tests\tests_steam_network\test_friends.py" />
+    <Compile Include="tests\tests_steam_network\test_friends_cache.py" />
+    <Compile Include="tests\tests_steam_network\test_game_time.py" />
+    <Compile Include="tests\tests_steam_network\test_owned_games.py" />
+    <Compile Include="tests\tests_steam_network\test_owned_games_cache.py" />
+    <Compile Include="tests\tests_steam_network\test_presence.py" />
+    <Compile Include="tests\tests_steam_network\test_protobuf_client.py" />
+    <Compile Include="tests\tests_steam_network\test_protocol_client.py" />
+    <Compile Include="tests\tests_steam_network\test_user_info_cache.py" />
+    <Compile Include="tests\tests_steam_network\test_websocket_client.py" />
+    <Compile Include="tests\tests_steam_network\test_websocket_list.py" />
+    <Compile Include="tests\tests_steam_network\__init__.py" />
+    <Compile Include="tests\test_backend_switch.py" />
+    <Compile Include="tests\test_cache.py" />
+    <Compile Include="tests\test_calling_unsupported_method.py" />
+    <Compile Include="tests\test_custom_config.py" />
+    <Compile Include="tests\test_features.py" />
+    <Compile Include="tests\test_integration.py" />
+    <Compile Include="tests\test_local_games.py" />
+    <Compile Include="tests\test_local_size.py" />
+    <Compile Include="tests\test_plugin_version_cache.py" />
+    <Compile Include="tests\test_user_profile_checker.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="protobuf_files\" />
+    <Folder Include="protobuf_files\proto\" />
+    <Folder Include="requirements\" />
+    <Folder Include="src" />
+    <Folder Include="src\commonWeb\" />
+    <Folder Include="src\commonWeb\css" />
+    <Folder Include="src\commonWeb\fonts\" />
+    <Folder Include="src\commonWeb\fonts\LatoWeb" />
+    <Folder Include="src\commonWeb\img" />
+    <Folder Include="src\steam_network" />
+    <Folder Include="src\steam_network\custom_login" />
+    <Folder Include="src\steam_network\custom_login\css" />
+    <Folder Include="src\steam_network\protocol" />
+    <Folder Include="src\steam_network\protocol\messages\" />
+    <Folder Include="tests" />
+    <Folder Include="tests\tests_public_profiles" />
+    <Folder Include="tests\tests_steam_network" />
+  </ItemGroup>
+  <ItemGroup>
+    <Interpreter Include="env1\">
+      <Id>env1</Id>
+      <Version>3.7</Version>
+      <Description>env1 (Python 3.7 (64-bit))</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X64</Architecture>
+    </Interpreter>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+</Project>
